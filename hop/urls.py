@@ -17,6 +17,8 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
+from django.conf.urls import url, include
+
 
 from app import views, projects, jobtypes, customers, users, reports, works
 
@@ -57,6 +59,8 @@ urlpatterns = [
     url(r'^set_color_hoe_right_header$', views.set_color_hoe_right_header, name='set_color_hoe_right_header'),
     url(r'^set_color_hoeapp_container$', views.set_color_hoeapp_container, name='set_color_hoeapp_container'),
 
+    # APIs
+    url(r'^api/', include('rest.urls'), name='apis'),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
