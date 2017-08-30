@@ -57,6 +57,18 @@ class WorksViewDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
 
+class CompleteWorksView(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin,
+                    generics.GenericAPIView):
+    queryset = Works.objects.all()
+    serializer_class = WorksSerializer
+
+    def get(self, request, *args, **kwargs):
+        work = self.get_object()
+        work.is_completed = True
+        work.save()
+        return Response({"message": "Success"})
+
+
 class UserWorksView(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin,
                     generics.GenericAPIView):
     queryset = Works.objects.all()
@@ -68,7 +80,7 @@ class UserWorksView(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.D
         for the currently authenticated user.
         """
         user = Users.objects.get(user=self.request.user)
-        return Works.objects.filter(leader=user)
+        return Works.objects.filter(leader=user, is_completed=False)
 
     def get(self, request, *args, **kwargs):
         return Response([WorksSerializer(x).data for x in self.get_queryset()])
