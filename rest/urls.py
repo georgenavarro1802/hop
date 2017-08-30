@@ -12,19 +12,19 @@ from rest.views import *
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     # Projects
-    url(r'^projects/', ProjectsViewSet.as_view(), name='projects'),
+    url(r'^projects/', ProjectsViewSet.as_view(), name='api_projects'),
     # Work Types
-    url(r'^job_types/', JobTypesViewSet.as_view(), name='job_types'),
+    url(r'^job_types/', JobTypesViewSet.as_view(), name='api_job_types'),
     # Customers
-    url(r'^customers/', CustomersViewSet.as_view(), name='customers'),
+    url(r'^customers/', CustomersViewSet.as_view(), name='api_customers'),
     # Users
-    url(r'^users/', UsersViewSet.as_view(), name='users'),
+    url(r'^users/', UsersViewSet.as_view(), name='api_users'),
     # Works
     url(r'^user_works/', UserWorksView.as_view(), name='user_works_api_detail'),
     url(r'^works/(?P<pk>[0-9]+)/$', WorksViewDetail.as_view(), name='works_api_detail'),
     url(r'^works/', WorksViewSet.as_view(), name='works_api'),
     # WorksTypes
-    url(r'^works_types/', WorksTypesViewSet.as_view(), name='works'),
+    url(r'^works_types/', WorksTypesViewSet.as_view(), name='api_works'),
     # Tokens
     url(r'^token/', obtain_jwt_token),
     url(r'^refresh/', refresh_jwt_token),
