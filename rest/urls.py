@@ -20,11 +20,12 @@ urlpatterns = [
     # Users
     url(r'^users/', UsersViewSet.as_view(), name='users'),
     # Works
-    url(r'^works/', WorksViewSet.as_view(), name='works'),
+    url(r'^user_works/', UserWorksView.as_view(), name='user_works_api_detail'),
+    url(r'^works/(?P<pk>[0-9]+)/$', WorksViewDetail.as_view(), name='works_api_detail'),
+    url(r'^works/', WorksViewSet.as_view(), name='works_api'),
     # WorksTypes
     url(r'^works_types/', WorksTypesViewSet.as_view(), name='works'),
-
-
+    # Tokens
     url(r'^token/', obtain_jwt_token),
     url(r'^refresh/', refresh_jwt_token),
 

@@ -9,7 +9,6 @@ from rest_framework.response import Response
 from app.models import *
 from rest.serializers import *
 
-# ViewSets define the view behavior.
 class ProjectsViewSet(mixins.ListModelMixin, generics.GenericAPIView):
     queryset = Projects.objects.all()
     serializer_class = ProjectsSerializers
@@ -48,6 +47,31 @@ class WorksViewSet(mixins.ListModelMixin, generics.GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
+
+
+class WorksViewDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin,
+                    generics.GenericAPIView):
+    queryset = Works.objects.all()
+    serializer_class = WorksSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+
+class UserWorksView(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin,
+                    generics.GenericAPIView):
+    queryset = Works.objects.all()
+    serializer_class = WorksSerializer
+
+    def get_queryset(self):
+        """
+        This view should return a list of all the purchases
+        for the currently authenticated user.
+        """
+        user = Users.objects.get(user=self.request.user)
+        return Works.objects.filter(leader=user)
+
+    def get(self, request, *args, **kwargs):
+        return Response([WorksSerializer(x).data for x in self.get_queryset()])
 
 
 class WorksTypesViewSet(mixins.ListModelMixin, generics.GenericAPIView):
