@@ -1,0 +1,21 @@
+{% extends "forms.html" %}
+
+{% block extraheading %}
+    <style>
+        #id_group {
+            height: 2.5em;
+        }
+    </style>
+    <script>
+        $("#users").addClass("active");
+        $("#id_username").focus().css('text-transform', 'lowercase');
+    </script>
+{% endblock %}
+
+{% block form-title %}{{ title }}{% endblock %}
+{% block form-action %}{% url 'users' %}{% endblock %}
+{% block form-extra %}
+    <input type='hidden' name='action' value='edit'/>
+    <input type='hidden' name='id' value='{{ myuser.id }}'/>
+{% endblock %}
+{% block form-back %}{% url 'users' %}{% endblock %}

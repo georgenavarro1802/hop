@@ -1,0 +1,186 @@
+from django.contrib.auth.models import User, Group
+from django.db import transaction
+from django.db.models import Q
+from django.http.response import HttpResponseRedirect
+from django.shortcuts import render
+
+from app.forms import UsersForm
+from app.functions import bad_json, MiPaginator, ok_json, DEFAULT_PASSWORD, generate_file_name
+from app.models import Users
+from app.views import adduserdata
+
+
+def views(request):
+    data = {'title': 'USERS'}
+    adduserdata(request, data)
+    if request.method == 'POST':
+
+        if 'action' in request.POST:
+            action = request.POST['action']
+
+            if action == 'add':
+                f = UsersForm(request.POST, request.FILES)
+                if f.is_valid():
+                    try:
+                        with transaction.atomic():
+
+                            if User.objects.filter(username=f.cleaned_data['username']).exists():
+                                return bad_json(message="Username already exists in other User. "
+                                                        "Please change the username of the user and try again.")
+
+                            if User.objects.filter(email=f.cleaned_data['email']).exists():
+                                return bad_json(message="Email already exists in other User. "
+                                                        "Please change the email of the user and try again.")
+
+                            django_user = User(username=f.cleaned_data['username'],
+                                               first_name=f.cleaned_data['first_name'],
+                                               last_name=f.cleaned_data['last_name'],
+                                               email=f.cleaned_data['email'])
+                            django_user.set_password(DEFAULT_PASSWORD)
+                            django_user.save()
+
+                            group = f.cleaned_data['group']
+                            group.user_set.add(django_user)
+                            group.save()
+
+                            myuser = Users(user=django_user, phone=f.cleaned_data['phone'])
+                            myuser.save()
+
+                            if 'avatar' in request.FILES:
+                                nfile = request.FILES['avatar']
+                                nfile._name = generate_file_name("avatar", nfile._name)
+                                myuser.avatar = nfile
+                                myuser.save()
+
+                            return ok_json(data={'redirect_url': '/users',
+                                                 'msg': 'You have successfully created a new USER ({}).'.format(group)})
+                    except Exception as ex:
+                        return bad_json(error=1)
+                else:
+                    return bad_json(message="Form is not valid.")
+
+            if action == 'edit':
+                myuser = Users.objects.get(pk=int(request.POST['id']))
+                django_user = myuser.user
+                f = UsersForm(request.POST, request.FILES)
+                if f.is_valid():
+                    try:
+                        with transaction.atomic():
+
+                            if User.objects.filter(username=f.cleaned_data['username']).exclude(id=django_user.id).exists():
+                                return bad_json(message="Username already exists in other User. "
+                                                        "Please change the username of the user and try again.")
+
+                            if User.objects.filter(email=f.cleaned_data['email']).exclude(id=django_user.id).exists():
+                                return bad_json(message="Email already exists in other User. "
+                                                        "Please change the email of the user and try again.")
+
+                            django_user.username = f.cleaned_data['username']
+                            django_user.first_name = f.cleaned_data['first_name']
+                            django_user.last_name = f.cleaned_data['last_name']
+                            django_user.email = f.cleaned_data['email']
+                            django_user.save()
+
+                            # Remove the currents groups and associate a new group to the user
+                            django_user.groups.all().delete()
+                            group = f.cleaned_data['group']
+                            group.user_set.add(django_user)
+                            group.save()
+
+                            myuser.phone = f.cleaned_data['phone']
+                            myuser.save()
+
+                            if 'avatar' in request.FILES:
+                                nfile = request.FILES['avatar']
+                                nfile._name = generate_file_name("avatar", nfile._name)
+                                myuser.avatar = nfile
+                                myuser.save()
+
+                            return ok_json(data={'redirect_url': '/users',
+                                                 'msg': 'You have successfully edited the USER ({}).'.format(group)})
+                    except Exception:
+                        return bad_json(error=2)
+                else:
+                    return bad_json(message="Form is not valid.")
+
+            if action == 'delete':
+                myuser = Users.objects.get(pk=int(request.POST['id']))
+                user = myuser.user
+                try:
+                    with transaction.atomic():
+                        myuser.delete()
+                        user.delete()
+                        return ok_json(data={'redirect_url': '/users',
+                                             'msg': 'You have successfully deleted the USER.'})
+                except Exception:
+                    return bad_json(error=3)
+
+        return bad_json(error=0)
+
+    else:
+
+        if 'action' in request.GET:
+            if 'action' in request.GET:
+                action = request.GET['action']
+
+                if action == 'add':
+                    try:
+                        data['title'] = 'New User'
+                        data['form'] = UsersForm()
+                        return render(request, 'users/add.html', data)
+                    except Exception:
+                        pass
+
+                if action == 'edit':
+                    try:
+                        data['title'] = 'Edit User'
+                        data['myuser'] = myuser = Users.objects.get(pk=request.GET['id'])
+                        user = myuser.user
+                        data['form'] = UsersForm(initial={'group': user.groups.all()[0],
+                                                          'username': user.username,
+                                                          'first_name': user.first_name,
+                                                          'last_name': user.last_name,
+                                                          'email': user.email,
+                                                          'phone': myuser.phone,
+                                                          'avatar': myuser.avatar})
+                        return render(request, 'users/edit.html', data)
+                    except Exception:
+                        pass
+
+                if action == 'delete':
+                    try:
+                        data['title'] = 'Delete User'
+                        data['myuser'] = Users.objects.get(pk=request.GET['id'])
+                        data['is_delete'] = True
+                        return render(request, 'users/delete.html', data)
+                    except Exception:
+                        pass
+
+            return HttpResponseRedirect('/users')
+
+        else:
+
+            users = Users.objects.exclude(user__id=1).order_by('-created_at')
+
+            search = None
+            if 's' in request.GET and request.GET['s'] != '':
+                search = request.GET['s']
+
+            if search:
+                users = users.filter(Q(user__username__icontains=search) |
+                                     Q(user__first_name__icontains=search) |
+                                     Q(user__last_name__icontains=search))
+
+            paging = MiPaginator(users, 10)
+
+            p = 1
+            if 'page' in request.GET:
+                p = int(request.GET['page'])
+            page = paging.page(p)
+
+            data['paging'] = paging
+            data['ranges_paging'] = paging.pages_range(p)
+            data['page'] = page
+            data['users'] = page.object_list
+
+            return render(request, 'users/view.html', data)

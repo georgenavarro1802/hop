@@ -1,0 +1,27 @@
+{% extends "forms.html" %}
+
+{% block extraheading %}
+    <style>
+
+        #id_project, #id_customer {
+            height: 2.5em;
+        }
+    </style>
+    <script>
+        $("#works").addClass("active");
+        $("#id_name").focus();
+
+        $("#id_date").datepicker({format:"mm-dd-yyyy"}).on('changeDate', function(ev){ $(this).datepicker('hide');});
+
+    </script>
+{% endblock %}
+
+{% block form-title %}{{ title }}{% endblock %}
+{% block form-action %}{% url 'works' %}{% endblock %}
+{% block form-width %}form-m{% endblock %}
+
+{% block form-extra %}
+    <input type='hidden' name='action' value='edit'/>
+    <input type='hidden' name='id' value='{{ work.id }}'/>
+{% endblock %}
+{% block form-back %}{% url 'works' %}{% endblock %}

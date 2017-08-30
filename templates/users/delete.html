@@ -1,0 +1,18 @@
+{% extends "forms.html" %}
+
+{% block extraheading %}
+    <script>
+        $("#users").addClass("active");
+    </script>
+{% endblock %}
+
+{% block form-title %}{{ title }}{% endblock %}
+{% block form-action %}{% url 'users' %}{% endblock %}
+{% block form-extra %}
+    <input type='hidden' name='action' value='delete'/>
+    <input type='hidden' name='id' value='{{ myuser.id }}'/>
+{% endblock %}
+{% block form-back %}{% url 'users' %}{% endblock %}
+{% block form-object %}{{ user }}{% endblock %}
+{% block buttonname %}YES{% endblock %}
+{% block buttoncancel %}NO{% endblock %}

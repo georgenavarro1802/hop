@@ -1,0 +1,15 @@
+{% extends "forms.html" %}
+
+{% block extraheading %}
+    <script>
+        $("#jobtypes").addClass("active");
+        $("#id_name").focus();
+    </script>
+{% endblock %}
+
+{% block form-title %}{{ title }}{% endblock %}
+{% block form-action %}{% url 'jobtypes' %}{% endblock %}
+{% block form-extra %}
+    <input type='hidden' name='action' value='add'/>
+{% endblock %}
+{% block form-back %}{% url 'jobtypes' %}{% endblock %}

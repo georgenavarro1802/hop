@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block heading %}
+    <script>
+        $(".menu-principal").removeClass("active");
+        $("#jobtypes").addClass("active");
+    </script>
+{% endblock %}
+
+{% block canvas %}
+    <div class="container-fluid">
+        <div class="row margin-row">
+            <p class="myheading"> <i class="fa fa-list"></i> {{ title }}</p>
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr style="font-weight: bold; font-size: 1.1em; background-color: #043b8a; color: white">
+                    <th>Name</th>
+                    <th style="width: 100px" class="text-center">Works</th>
+                    <th style="width: 100px" class="text-center">Created</th>
+                    <th style="width: 80px"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for jt in jobtypes %}
+                    <tr>
+                        <td class="font14">{{ jt }}</td>
+                        <td class="text-center font14">10</td>
+                        <td class="text-center font12">{{ jt.created_at|date:'m-d-Y' }}</td>
+                        <td class="text-center">
+                            <a class="btn btn-xs btn-info tu" href="{% url 'jobtypes' %}?action=edit&id={{ jt.id }}" title="Edit"><i class="fa fa-edit"></i></a>
+                            <a class="btn btn-xs btn-danger tu" href="{% url 'jobtypes' %}?action=delete&id={{ jt.id }}" title="Delete" style="margin-left: 0.3em"><i class="fa fa-times"></i></a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5" class="alert alert-info">
+                            <i>There are not job types in the system. Click in the <strong>+ Add Job Type</strong> button to add your first job type</i>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <a class="btn btn-success" href="{% url 'jobtypes' %}?action=add"><i class="fa fa-plus"></i> Add Job Type</a>
+                </div>
+                <div class="col-sm-6 text-right">
+                    {% if paging.num_pages > 20 %}
+                        <ul class="pagination">
+                            {% if paging.first_page %}
+                                <li><a href="{%  url 'jobtypes' %}?page=1{% if search %}&s={{ search }}{% endif %}">1</a></li>
+                                <li><a href="{%  url 'jobtypes' %}?page={{ paging.ellipsis_left}}{% if search %}&s={{ search }}{% endif %}"
+                                       class="active">...</a></li>
+                            {% endif %}
+                            {% for pagenumber in paging.pages %}
+                                <li {% ifequal pagenumber page.number %}class='active'{% endifequal %}>
+                                    <a href="{%  url 'jobtypes' %}?page={{ pagenumber }}{% if search %}&s={{ search }}{% endif %}">
+                                        {{ pagenumber }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                            {% if paging.last_page %}
+                                <li>
+                                    <a href="{%  url 'jobtypes' %}?page={{ paging.ellipsis_right }}{% if search %}&s={{ search }}{% endif %}"
+                                       class="active">
+                                        ...
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{%  url 'projects' %}?page={{ paging.num_pages }}{% if search %}&s={{ search }}{% endif %}">
+                                        {{ paging.num_pages }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    {% else %}
+                        <ul class='pagination pagination-sm'>
+                            {% for pagenumber in paging.page_range %}
+                                <li {% ifequal pagenumber page.number %}class='active'{% endifequal %}>
+                                    <a href="{%  url 'jobtypes' %}?page={{ pagenumber }}{% if search %}&s={{ search }}{% endif %}">
+                                        {{ pagenumber }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

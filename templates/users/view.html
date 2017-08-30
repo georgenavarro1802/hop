@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block heading %}
+    <script>
+        $("#users").addClass("active");
+    </script>
+{% endblock %}
+
+{% block canvas %}
+    <div class="container-fluid">
+        <div class="row margin-row">
+            <p class="myheading"> <i class="fa fa-user"></i> {{ title }}</p>
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr style="font-weight: bold; font-size: 1em; background-color: #043b8a; color: white">
+                    <th style="width: 80px" class="text-center"></th>
+                    <th style="width: 120px">Username</th>
+                    <th>Name</th>
+                    <th style="width: 250px">Email</th>
+                    <th style="width: 100px" class="text-center">Phone</th>
+                    <th style="width: 100px" class="text-center">Created</th>
+                    <th style="width: 80px" class="text-center">Works</th>
+                    <th style="width: 80px"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for u in users %}
+                    <tr>
+                        <td class="text-center">
+                            {% if u.avatar %}
+                                <img class="main" src="{{ u.download_avatar }}" width="50px" height="50px"/>
+                            {% else %}
+                                <img class="main" src="{% static 'images/avatar.png' %}" width="50px" height="50px" />
+                            {% endif %}
+                        </td>
+                        <td class="font14">{{ u.user.username }}</td>
+                        <td class="font14">{{ u.user.first_name }} {{ u.user.last_name }}</td>
+                        <td class="font12">{{ u.user.email }}</td>
+                        <td class="font12">{{ u.phone }}</td>
+                        <td class="text-center font12">{{ u.created_at|date:'m-d-Y' }}</td>
+                        <td class="text-center font14">10</td>
+                        <td class="text-center">
+                            <a class="btn btn-xs btn-info tu" href="{% url 'users' %}?action=edit&id={{ u.id }}" title="Edit"><i class="fa fa-edit"></i></a>
+                            <a class="btn btn-xs btn-danger tu" href="{% url 'users' %}?action=delete&id={{ u.id }}" title="Delete" style="margin-left: 0.2em"><i class="fa fa-times"></i></a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="10" class="alert alert-info">
+                            <i>There are not users in the system. Click in the <strong>+ Add User</strong> button to add your first user</i>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <a class="btn btn-success" href="{% url 'users' %}?action=add"><i class="fa fa-plus"></i> Add User</a>
+                </div>
+                <div class="col-sm-6 text-right">
+                    {% if paging.num_pages > 20 %}
+                        <ul class="pagination">
+                            {% if paging.first_page %}
+                                <li><a href="{%  url 'users' %}?page=1{% if search %}&s={{ search }}{% endif %}">1</a></li>
+                                <li><a href="{%  url 'users' %}?page={{ paging.ellipsis_left}}{% if search %}&s={{ search }}{% endif %}"
+                                       class="active">...</a></li>
+                            {% endif %}
+                            {% for pagenumber in paging.pages %}
+                                <li {% ifequal pagenumber page.number %}class='active'{% endifequal %}>
+                                    <a href="{%  url 'users' %}?page={{ pagenumber }}{% if search %}&s={{ search }}{% endif %}">
+                                        {{ pagenumber }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                            {% if paging.last_page %}
+                                <li>
+                                    <a href="{%  url 'users' %}?page={{ paging.ellipsis_right }}{% if search %}&s={{ search }}{% endif %}"
+                                       class="active">
+                                        ...
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{%  url 'users' %}?page={{ paging.num_pages }}{% if search %}&s={{ search }}{% endif %}">
+                                        {{ paging.num_pages }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    {% else %}
+                        <ul class='pagination pagination-sm'>
+                            {% for pagenumber in paging.page_range %}
+                                <li {% ifequal pagenumber page.number %}class='active'{% endifequal %}>
+                                    <a href="{%  url 'users' %}?page={{ pagenumber }}{% if search %}&s={{ search }}{% endif %}">
+                                        {{ pagenumber }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

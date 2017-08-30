@@ -1,0 +1,18 @@
+{% extends "forms.html" %}
+
+{% block extraheading %}
+    <script>
+        $("#customers").addClass("active");
+    </script>
+{% endblock %}
+
+{% block form-title %}{{ title }}{% endblock %}
+{% block form-action %}{% url 'customers' %}{% endblock %}
+{% block form-extra %}
+    <input type='hidden' name='action' value='delete'/>
+    <input type='hidden' name='id' value='{{ customer.id }}'/>
+{% endblock %}
+{% block form-back %}{% url 'customers' %}{% endblock %}
+{% block form-object %}{{ customer }}{% endblock %}
+{% block buttonname %}YES{% endblock %}
+{% block buttoncancel %}NO{% endblock %}

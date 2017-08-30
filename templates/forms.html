@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block heading %}
+
+    <script type="text/javascript" src='/static/js/jquery.validationEngine.js?v=1.0.0'></script>
+
+    <script>
+        $(function() {
+            {% block javascript %}
+            {% endblock %}
+
+            sweetAlertSuccessRedirect = function (url, msg) {
+                swal({
+                    title: 'Great!!!',
+                    type: "success",
+                    text: msg,
+                    confirmButtonClass: "btn-success",
+                    confirmButtonText: "OK",
+                    closeOnConfirm: false
+                }, function(isConfirm){
+                    if (isConfirm) {
+                        location.href = url;
+                    }
+                });
+            };
+
+            sweetAlertErrorRedirect = function (msg) {
+                swal({
+                    title: 'Oops!!!',
+                    type: "error",
+                    text: msg,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "OK",
+                    closeOnConfirm: false
+                });
+            };
+
+            envioformulario = function(){
+                var formdata = new FormData($("#formulario")[0]);
+                $.ajax({
+                    type: "POST",
+                    url: "{% block form-action %}/{% endblock %}",
+                    data: formdata,
+                    success: function(data) {
+                        if (data.result === 'ok') {
+                            sweetAlertSuccessRedirect(data.redirect_url, data.msg);
+                        } else {
+                            sweetAlertErrorRedirect(data.msg);
+                        }
+                    },
+                    error: function() {
+                        sweetAlertErrorRedirect("Server Error");
+                    },
+                    dataType: "json",
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            };
+
+            $("#formbutton").click(function(){
+                envioformulario();
+            });
+
+        });
+    </script>
+
+    {% block extraheading %}
+    {% endblock %}
+{% endblock %}
+
+{% block canvas %}
+    <div class='row'>
+        <div class="{% block form-width %}form-s{% endblock %}">
+            <div class='row'>
+                <div class="well" style="margin-bottom: 3px; padding: 10px; color: #fff; background-color: #043b8a">
+                    <h4>{% block form-title %}{% endblock %}</h4>
+                    <h5>{% block form-subtitle %}{% endblock %}</h5>
+                </div>
+            </div>
+            <div class='row'>
+                <form id="formulario" class='well {% block form-type %}form-horizontal{% endblock %}' enctype="multipart/form-data" autocomplete="off">
+                    {% block form-extra %}
+                    {% endblock %}
+
+                    {% if is_delete %}
+
+                        <p>Are you sure want to delete: <b>{% block form-object %}{% endblock %}?</b></p>
+
+                    {%  elif is_confirmation %}
+
+                        <p>{% block confirmation-message %}{% endblock %}<b>{% block confirmation-form-object %}{% endblock %}</b></p>
+
+                    {% else %}
+
+                        {% for field in form %}
+                            {% if field.field.widget.attrs.separator %}
+                                <div style="width: 100%; height: 50px;">
+                                    <div class="alert alert-info" style="background-color: aliceblue; border-color: lightskyblue;">
+                                        <b>{{ field.field.widget.attrs.separator|upper }}</b>
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            <fieldset class="control-group nomargins">
+                                <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+                                <div class="controls">
+                                    {{ field }}
+                                    <p class="help-text">{{ field.help_text }} </p>
+                                </div>
+                            </fieldset>
+                        {% endfor %}
+                    {% endif %}
+                    <p style="text-align: right;">
+                        <a class="btn {% if is_delete %}btn-danger{% else %}btn-success{% endif %} btn-form" id="formbutton"><i class="fa fa-check"></i> {% block buttonname %}Confirm{% endblock %}</a>
+                        <a href="{% block form-back %}/{% endblock %}" class="btn btn-info" style="margin-left: .5em"><i class="fa fa-arrow-left"></i> {% block buttoncancel %}Cancel{% endblock %}</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

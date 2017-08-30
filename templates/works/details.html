@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block heading %}
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/demo.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style3.css' %}" />
+
+    <script>
+        $("#works").addClass("active");
+    </script>
+{% endblock %}
+
+{% block canvas %}
+    <div class="container-fluid">
+
+        <div class="row margin-row">
+            <div class="col-sm-10">
+                <p class="myheading">
+                    Work: Direccion Address del work
+                </p>
+                <p class="mysubheading">
+                    Project: XXVOP &nbsp; (Start: 10:30 | Register: 11:00 | End: 16:00)
+                </p>
+            </div>
+            <div class="col-sm-2 text-right">
+                <a href="{% url 'works' %}" class="btn btn-info btn-sm"><i class="fa fa-arrow-left"></i> Back</a>
+            </div>
+        </div>
+
+        <div class="row margin-row">
+
+            <div class="col-sm-8">
+                <div class="panel panel-primary" style="border: 0">
+
+                    <div class="panel-heading">
+                        SUMMARY
+                    </div>
+
+                    <div class="panel-body">
+                        <p class="label label-info" style="position: relative; top: 17px">Description</p>
+                        <div class="roundedBorder">
+                            Everyday, millions of Americans make WordPress sites. Tears are shed and fists are shaken in the air.
+                            One day, we will live in an America where Squarespace isn't a privilige but a right. That day is very soon.
+                        </div>
+
+                        <p class="label label-info" style="position: relative; top: 17px">Pictures</p>
+                        <div class="roundedBorder">
+                            <ul class="lb-album">
+                                <li>
+                                    <a href="#image-1">
+                                        <img src="/static/images/thumbs/1.jpg" alt="image01">
+                                        <span>Photo 1</span>
+                                    </a>
+                                    <div class="lb-overlay" id="image-1">
+                                        <img src="/static/images/full/1.jpg" alt="image01" />
+                                        <div>
+                                            <h4>Photo 1</h4>
+                                            <a href="#image-4" class="lb-prev">Prev</a>
+                                            <a href="#image-2" class="lb-next">Next</a>
+                                        </div>
+                                        <a href="#page" class="lb-close">Close</a>
+                                    </div>
+                                </li>
+                                <li>
+                                    <a href="#image-2">
+                                        <img src="/static/images/thumbs/2.jpg" alt="image02">
+                                        <span>Photo 2</span>
+                                    </a>
+                                    <div class="lb-overlay" id="image-2">
+                                        <img src="/static/images/full/2.jpg" alt="image02" />
+                                        <div>
+                                            <h4>Photo 2</h4>
+                                            <a href="#image-1" class="lb-prev">Prev</a>
+                                            <a href="#image-3" class="lb-next">Next</a>
+                                        </div>
+                                        <a href="#page" class="lb-close">Close</a>
+                                    </div>
+                                </li>
+                                <li>
+                                    <a href="#image-3">
+                                        <img src="/static/images/thumbs/3.jpg" alt="image03">
+                                        <span>Photo 3</span>
+                                    </a>
+                                    <div class="lb-overlay" id="image-3">
+                                        <img src="/static/images/full/3.jpg" alt="image03" />
+                                        <div>
+                                            <h4>Photo 3</h4>
+                                            <a href="#image-2" class="lb-prev">Prev</a>
+                                            <a href="#image-4" class="lb-next">Next</a>
+                                        </div>
+                                        <a href="#page" class="lb-close">Close</a>
+                                    </div>
+                                </li>
+                                <li>
+                                    <a href="#image-4">
+                                        <img src="/static/images/thumbs/4.jpg" alt="image04">
+                                        <span>Photo 4</span>
+                                    </a>
+                                    <div class="lb-overlay" id="image-4">
+                                        <img src="/static/images/full/4.jpg" alt="image04" />
+                                        <div>
+                                            <h4>Photo 4</h4>
+                                            <a href="#image-3" class="lb-prev">Prev</a>
+                                            <a href="#image-1" class="lb-next">Next</a>
+                                        </div>
+                                        <a href="#page" class="lb-close">Close</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <p class="label label-info" style="position: relative; top: 17px">Team</p>
+                        <div class="roundedBorder">
+                            <img class="img-circle" src="/media/avatars/avatar2017828212646.jpeg" width="50px" height="50px">
+                            <span class="margin-right">Pepe Aguilar (LEAD) </span>
+                            <img class="img-circle" src="/media/avatars/avatar2017828212646.jpeg" width="50px" height="50px">
+                            <span class="margin-right">Antonio Mesa</span>
+                            <img class="img-circle" src="/media/avatars/avatar2017828212646.jpeg" width="50px" height="50px">
+                            <span class="margin-right">Javier Alvarado</span>
+                            <img class="img-circle" src="/media/avatars/avatar2017828212646.jpeg" width="50px" height="50px">
+                            <span class="margin-right">Gabriela Garcia</span>
+                        </div>
+
+                    </div> <!-- end panel-body -->
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="panel panel-primary" style="border: 0">
+                    <div class="panel-heading">
+                        FEEDBACK
+                    </div>
+                    <div class="panel-body">
+                        <p class="label label-info" style="position: relative; top: 17px">Customer</p>
+                        <div class="roundedBorder">
+                            <table>
+                                <tr>
+                                    <td style="width: 30%; font-weight: bold; color: black"><b>Name</b></td>
+                                    <td>Cliente 1 1 1 </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold; color: black">Email</td>
+                                    <td>cliente111@gmail.com</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold; color: black">Phone</td>
+                                    <td>234-5678</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!-- Customer Sign -->
+                        <p class="label label-info" style="position: relative; top: 17px">Signature</p>
+                        <div class="roundedBorder text-center">
+                            <img src="{% static 'images/sign.png' %}" width="170px" height="170px">
+                        </div>
+
+                        <p class="label label-info" style="position: relative; top: 17px">Evaluation</p>
+                        <div class="roundedBorder text-center">
+                            <img src="{% static 'images/star1.png' %}">
+                            <img src="{% static 'images/star0.png' %}">
+                            <img src="{% static 'images/star0.png' %}">
+                            <img src="{% static 'images/star0.png' %}">
+                            <img src="{% static 'images/star0.png' %}">
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

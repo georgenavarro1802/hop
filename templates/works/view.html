@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block heading %}
+    <script>
+        $("#works").addClass("active");
+    </script>
+{% endblock %}
+
+{% block canvas %}
+    <div class="container-fluid">
+        <div class="row margin-row">
+            <p class="myheading"> <i class="fa fa-briefcase"></i> {{ title }}</p>
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr style="font-weight: bold; font-size: 1em; background-color: #043b8a; color: white">
+                    <th style="width: 140px">Project</th>
+                    <th>Address</th>
+                    <th style="width: 170px">Customer</th>
+                    <th style="width: 100px" class="text-center">Date</th>
+                    <th style="width: 70px" class="text-center">Start</th>
+                    <th style="width: 70px" class="text-center">Register</th>
+                    <th style="width: 70px" class="text-center">End</th>
+                    <th style="width: 70px" class="text-center">Lead</th>
+                    <th style="width: 30px" class="text-center">Status</th>
+                    <th style="width: 30px"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for w in works %}
+                    <tr>
+                        <td class="font12">{{ w.project }}</td>
+                        <td class="font12">{{ w.address }}</td>
+                        <td class="font12">{{ w.customer.name }}</td>
+                        <td class="text-center font12">{{ w.date|date:'m-d-Y' }}</td>
+                        <td class="text-center font12">{{ w.initial_time }}</td>
+                        <td class="text-center font12">{{ w.register_time|default_if_none:'' }}</td>
+                        <td class="text-center font12">{{ w.end_time|default_if_none:'' }}</td>
+                        <td class="text-center font12">{{ w.leader|default_if_none:'' }}</td>
+                        <td class="text-center font12">
+                            {% if is_completed %}
+                                <span class="label label-success">Completed</span>
+                            {% else %}
+                                <span class="label label-warning">Pending</span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            <div class="btn-group">
+                                <a class="font12 btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#">
+                                    Actions
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="font12 dropdown-menu pull-right list-group">
+                                    <li>
+                                        <a href="{% url 'works' %}?action=details&id={{ w.id }}"><i class="fa fa-list"></i> Details</a>
+                                    </li>
+                                    {% if w.register_time and w.latitude_register and w.longitude_register %}
+                                        <li>
+                                            <a href="http://maps.google.com/?q={{ w.latitude_register }},{{ w.longitude_register }}" target="_blank">
+                                                <i class="fa fa-globe"></i> Location
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    <li><hr class="margin-10"/></li>
+                                    <li>
+                                        <a href="{% url 'works' %}?action=edit&id={{ w.id }}"><i class="fa fa-edit"></i> Edit</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'works' %}?action=delete&id={{ w.id }}"><i class="fa fa-times"></i> Delete</a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="10" class="alert alert-info">
+                            <i>There are not works in the system. Click in the <strong>+ Add Work</strong> button to add your first work</i>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <a class="btn btn-success" href="{% url 'works' %}?action=add"><i class="fa fa-plus"></i> Add Work</a>
+                </div>
+                <div class="col-sm-6 text-right">
+                    {% if paging.num_pages > 20 %}
+                        <ul class="pagination">
+                            {% if paging.first_page %}
+                                <li><a href="{%  url 'works' %}?page=1{% if search %}&s={{ search }}{% endif %}">1</a></li>
+                                <li><a href="{%  url 'works' %}?page={{ paging.ellipsis_left}}{% if search %}&s={{ search }}{% endif %}"
+                                       class="active">...</a></li>
+                            {% endif %}
+                            {% for pagenumber in paging.pages %}
+                                <li {% ifequal pagenumber page.number %}class='active'{% endifequal %}>
+                                    <a href="{%  url 'works' %}?page={{ pagenumber }}{% if search %}&s={{ search }}{% endif %}">
+                                        {{ pagenumber }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                            {% if paging.last_page %}
+                                <li>
+                                    <a href="{%  url 'works' %}?page={{ paging.ellipsis_right }}{% if search %}&s={{ search }}{% endif %}"
+                                       class="active">
+                                        ...
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{%  url 'works' %}?page={{ paging.num_pages }}{% if search %}&s={{ search }}{% endif %}">
+                                        {{ paging.num_pages }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    {% else %}
+                        <ul class='pagination pagination-sm'>
+                            {% for pagenumber in paging.page_range %}
+                                <li {% ifequal pagenumber page.number %}class='active'{% endifequal %}>
+                                    <a href="{%  url 'works' %}?page={{ pagenumber }}{% if search %}&s={{ search }}{% endif %}">
+                                        {{ pagenumber }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
