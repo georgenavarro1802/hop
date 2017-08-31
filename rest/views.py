@@ -9,6 +9,9 @@ from rest_framework.response import Response
 from app.models import *
 from rest.serializers import *
 
+from datetime import datetime
+
+
 class ProjectsViewSet(mixins.ListModelMixin, generics.GenericAPIView):
     queryset = Projects.objects.all()
     serializer_class = ProjectsSerializers
@@ -56,6 +59,26 @@ class WorksViewDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins
 
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        try:
+            work = self.get_object()
+            if 'latitude' in request.data and request.data['latitude']:
+                latitude = request.data['latitude']
+            if 'longitude' in request.data and request.data['longitude']:
+                longitude = request.data['longitude']
+            if 'time' in request.data and request.data['time']:
+                time = request.data['time']
+            print("{}:{}".format(float(latitude), float(longitude)))
+            work.latitude_register = float(latitude)
+            work.longitude_register = float(longitude)
+            work.register_time = "{}".format(time)
+            work.save()
+            return Response({"Message": "Success"})
+        except Exception as ex:
+            print("ex {}".format(ex))
+            return Response({"Message":"Error"})
+
 
 class CompleteWorksView(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin,
                     generics.GenericAPIView):
