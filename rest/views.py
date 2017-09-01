@@ -1,3 +1,5 @@
+from django.core.files.base import ContentFile
+
 from rest_framework import routers, serializers, viewsets
 from rest_framework import filters
 from rest_framework import generics
@@ -8,6 +10,7 @@ from rest_framework.response import Response
 
 from app.models import *
 from rest.serializers import *
+from rest.functions import *
 
 from datetime import datetime
 
@@ -65,14 +68,71 @@ class WorksViewDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins
             work = self.get_object()
             if 'latitude' in request.data and request.data['latitude']:
                 latitude = request.data['latitude']
+                work.latitude_register = float(latitude)
             if 'longitude' in request.data and request.data['longitude']:
                 longitude = request.data['longitude']
-            if 'time' in request.data and request.data['time']:
-                time = request.data['time']
-            print("{}:{}".format(float(latitude), float(longitude)))
-            work.latitude_register = float(latitude)
-            work.longitude_register = float(longitude)
-            work.register_time = "{}".format(time)
+                work.longitude_register = float(longitude)
+            if 'register_time' in request.data and request.data['register_time']:
+                register_time = request.data['register_time']
+                work.register_time = "{}".format(register_time)
+            if 'report' in request.data and request.data['report']:
+                report = request.data['report']
+                work.report = report
+            if 'job_types' in request.data and request.data['job_types']:
+                job_types = request.data['job_types'].split(',')
+                for job_type_id in job_types:
+                    if job_type_id:
+                        if JobTypes.objects.filter(id=job_type_id).exists():
+                            job_type = JobTypes.objects.filter(id=job_type_id)[0]
+                            works_types, created = WorksTypes.objects.get_or_create(work=work, type=job_type)
+                            if not created:
+                                pass
+                            works_types.save()
+
+            imgdata = None
+            if 'photo1' in request.data:
+                uploaded_file = request.data['photo1']
+                imgdata = uploaded_file.file
+                if imgdata:
+                    print("name {}".format(uploaded_file._name))
+                    new_file_name = "{}_photo1.{}".format(work.address, uploaded_file.name)
+                    data = ContentFile(imgdata.read(), name=new_file_name)
+                    work.photo1 = data
+            imgdata = None
+            if 'photo2' in request.data:
+                uploaded_file = request.data['photo2']
+                imgdata = uploaded_file.file
+                if imgdata:
+                    new_file_name = "{}_photo2.{}".format(work.address, uploaded_file.name)
+                    data = ContentFile(imgdata.read(), name=new_file_name)
+                    work.photo2 = data
+            imgdata = None
+            if 'photo3' in request.data:
+                uploaded_file = request.data['photo3']
+                imgdata = uploaded_file.file
+                if imgdata:
+                    new_file_name = "{}_photo3.{}".format(work.address, uploaded_file.name)
+                    data = ContentFile(imgdata.read(), name=new_file_name)
+                    work.photo3 = data
+            imgdata = None
+            if 'photo4' in request.data:
+                uploaded_file = request.data['photo4']
+                imgdata = uploaded_file.file
+                if imgdata:
+                    new_file_name = "{}_photo4.{}".format(work.address, uploaded_file.name)
+                    data = ContentFile(imgdata.read(), name=new_file_name)
+                    work.photo4 = data
+            imgdata = None
+            if 'sign' in request.data:
+                uploaded_file = request.data['sign']
+                imgdata = uploaded_file.file
+                if imgdata:
+                    new_file_name = "{}_sign.{}".format(work.address, uploaded_file.name)
+                    data = ContentFile(imgdata.read(), name=new_file_name)
+                    work.sign = data
+            if 'evaluation' in request.data and request.data['evaluation']:
+                evaluation = int(request.data['evaluation'])
+                work.evaluation = evaluation
             work.save()
             return Response({"Message": "Success"})
         except Exception as ex:
@@ -85,9 +145,13 @@ class CompleteWorksView(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixi
     queryset = Works.objects.all()
     serializer_class = WorksSerializer
 
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         work = self.get_object()
         work.is_completed = True
+        if 'end_time' in request.data and request.data['end_time']:
+            work.end_time = request.data['end_time']
+        # Customer rating
+        # Customer Signature
         work.save()
         return Response({"message": "Success"})
 

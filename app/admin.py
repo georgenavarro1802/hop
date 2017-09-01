@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from app.models import Projects, JobTypes, Customers, Works, Users
+from app.models import Projects, JobTypes, Customers, Works, Users, WorksTypes
 
 
 class ProjectsAdmin(admin.ModelAdmin):
@@ -37,3 +37,10 @@ class UsersAdmin(admin.ModelAdmin):
     search_fields = ('user__username', 'user__first_name', 'phone')
 
 admin.site.register(Users, UsersAdmin)
+
+
+class WorksTypesAdmin(admin.ModelAdmin):
+    list_display = ('work', 'type')
+    search_fields = ('work', 'type')
+
+admin.site.register(WorksTypes, WorksTypesAdmin)

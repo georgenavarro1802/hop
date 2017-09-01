@@ -3,7 +3,7 @@ from rest_framework import routers
 from django.conf.urls import url, include
 
 
-from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
+from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token, verify_jwt_token
 
 
 from rest.views import *
@@ -29,6 +29,6 @@ urlpatterns = [
     # Tokens
     url(r'^token/', obtain_jwt_token),
     url(r'^refresh/', refresh_jwt_token),
-
+    url(r'^verify/', verify_jwt_token),
 
 ]
