@@ -130,6 +130,7 @@ class WorksViewDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins
                     new_file_name = "{}_sign.{}".format(work.address, uploaded_file.name)
                     data = ContentFile(imgdata.read(), name=new_file_name)
                     work.sign = data
+                    work.is_completed = True
             if 'evaluation' in request.data and request.data['evaluation']:
                 evaluation = int(request.data['evaluation'])
                 work.evaluation = evaluation
