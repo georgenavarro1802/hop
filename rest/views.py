@@ -136,6 +136,7 @@ class WorksViewDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins
                 work.evaluation = evaluation
             if 'end_time' in request.data and request.data['end_time']:
                 end_time = request.data['end_time']
+                print("this is endtime {}".format(end_time))
                 work.end_time = end_time
             work.save()
             return Response({"Message": "Success"})
@@ -165,13 +166,19 @@ class UserWorksView(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.D
     queryset = Works.objects.all()
     serializer_class = WorksSerializer
 
+    def order_by_time_str(self, works_array):
+        sorted([tuple(map(int, d.initial_time.split(":"))) for d in works_array])
+        return works_array
+
     def get_queryset(self):
         """
         This view should return a list of all the purchases
         for the currently authenticated user.
         """
         user = Users.objects.get(user=self.request.user)
-        return Works.objects.filter(leader=user, is_completed=False, date=datetime.now().date())
+        works_array = [x for x in Works.objects.filter(leader=user, is_completed=False, date=datetime.now().date())]
+        works = [x.id for x in self.order_by_time_str(works_array)]
+        return reversed(Works.objects.filter(id__in=works))
 
     def get(self, request, *args, **kwargs):
         return Response([WorksSerializer(x).data for x in self.get_queryset()])
