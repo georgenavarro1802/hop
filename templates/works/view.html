@@ -38,7 +38,7 @@
                         <td class="text-center font12">{{ w.end_time|default_if_none:'' }}</td>
                         <td class="text-center font12">{{ w.leader|default_if_none:'' }}</td>
                         <td class="text-center font12">
-                            {% if is_completed %}
+                            {% if w.is_completed %}
                                 <span class="label label-success">Completed</span>
                             {% else %}
                                 <span class="label label-warning">Pending</span>

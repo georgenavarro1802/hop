@@ -192,6 +192,11 @@ class Works(BaseModel):
             return self.photo4.url
         return ''
 
+    def download_signature(self):
+        if self.sign:
+            return self.sign.url
+        return ''
+
 
 class WorksTypes(BaseModel):
     work = models.ForeignKey(Works)
