@@ -168,7 +168,7 @@ class UserWorksView(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.D
         for the currently authenticated user.
         """
         user = Users.objects.get(user=self.request.user)
-        return Works.objects.filter(leader=user, is_completed=False)
+        return Works.objects.filter(leader=user, is_completed=False, date=datetime.now().date())
 
     def get(self, request, *args, **kwargs):
         return Response([WorksSerializer(x).data for x in self.get_queryset()])
