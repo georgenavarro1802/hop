@@ -134,6 +134,9 @@ class WorksViewDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins
             if 'evaluation' in request.data and request.data['evaluation']:
                 evaluation = int(request.data['evaluation'])
                 work.evaluation = evaluation
+            if 'end_time' in request.data and request.data['end_time']:
+                end_time = request.data['end_time']
+                work.end_time = end_time
             work.save()
             return Response({"Message": "Success"})
         except Exception as ex:
