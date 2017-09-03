@@ -3,11 +3,12 @@ from datetime import datetime
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
+from django.db.models import Count
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 
 from app.functions import (NOMBRE_INSTITUCION, bad_json, ok_json)
-from app.models import Users
+from app.models import Users, Projects, Works, Customers, WorksTypes
 
 
 def adduserdata(request, data):
@@ -30,6 +31,11 @@ def adduserdata(request, data):
 def index(request):
     data = {'title': 'Hop Platform'}
     adduserdata(request, data)
+    works = Works.objects.all().order_by('-created_at')
+    data['number_projects'] = Projects.objects.count()
+    data['number_customers'] = Customers.objects.count()
+    data['number_works'] = works.count()
+    data['last_five_works'] = works[:5]
     return render_to_response("dashboard.html", data)
 
 

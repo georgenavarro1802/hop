@@ -1066,7 +1066,7 @@ form input, form select, form textarea {
 .myheading {
     font-weight: bold;
     color: darkblue;
-    font-size: 1.3em
+    font-size: 1.7em
 }
 
 .mysubheading {
@@ -1110,4 +1110,37 @@ form input, form select, form textarea {
 
 .margin-right{
     margin-right: 1em;
+}
+
+.myhuge{
+    font-size: 4em;
+    padding: 0.3em;
+}
+
+.mybig{
+    font-size: 2.5em;
+    padding: 0.3em;
+}
+
+/* My Progress Bar */
+.progress {
+  height: 35px;
+
+}
+.progress .skill {
+  font: normal 12px "Open Sans Web";
+  line-height: 35px;
+  padding: 0;
+  margin: 0 0 0 20px;
+  text-transform: uppercase;
+}
+.progress .skill .val {
+  float: right;
+  font-style: normal;
+  margin: 0 20px 0 0;
+}
+
+.progress-bar {
+  text-align: left;
+  transition-duration: 3s;
 }

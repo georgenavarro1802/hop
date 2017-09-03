@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block heading %}
 
@@ -6,6 +7,12 @@
 
         $(".menu-principal").removeClass("active");
         $("#dashboard").addClass("active");
+
+        $('.progress .progress-bar').css("width",
+            function() {
+                return $(this).attr("aria-valuenow") + "%";
+            }
+        )
 
     </script>
 
@@ -15,25 +22,33 @@
 
     <div class="container-fluid">
         <div class="row margin-row">
-            <p class="myheading"><i class="fa fa-tachometer"></i> DASHBOARD </p>
-            <div class="row">
+            <div class="col-sm-12 text-center">
+                <p class="myheading">
+                    <i class="fa fa-tachometer"></i> DASHBOARD
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
                 <div class="col-sm-4">
-                    <div class="panel panel-blue">
+                    <div class="panel panel-brown">
                         <div class="panel-heading">
                             <div class="row">
                                 <div class="col-xs-3">
-                                    <i class="fa fa-flask fa-5x"></i>
+                                    <i class="fa fa-files-o fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">{{ number_curriculums }}</div>
-                                    <div class="element">Curriculums</div>
+                                    <div class="myhuge">{{ number_projects }}</div>
+                                    <div class="mybig">Projects</div>
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                        <a href="{% url 'projects' %}">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <span class="pull-right">
+                                    <i class="fa fa-arrow-circle-right"></i>
+                                </span>
                                 <div class="clearfix"></div>
                             </div>
                         </a>
@@ -44,15 +59,15 @@
                         <div class="panel-heading">
                             <div class="row">
                                 <div class="col-xs-3">
-                                    <i class="fa fa-graduation-cap fa-5x"></i>
+                                    <i class="fa fa-briefcase fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">{{ number_subjects }}</div>
-                                    <div class="element">Subjects</div>
+                                    <div class="myhuge">{{ number_works }}</div>
+                                    <div class="mybig">Works</div>
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                        <a href="{% url 'works' %}">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -66,94 +81,174 @@
                         <div class="panel-heading">
                             <div class="row">
                                 <div class="col-xs-3">
-                                    <i class="fa fa-home fa-5x"></i>
+                                    <i class="fa fa-users fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">{{ number_domains }}</div>
-                                    <div class="element">Domains</div>
+                                    <div class="myhuge">{{ number_customers }}</div>
+                                    <div class="mybig">Customers</div>
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                        <a href="{% url 'customers' %}">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                                 <div class="clearfix"></div>
                             </div>
                         </a>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- end first main row -->
+
+        <div class="row margin-row">
+
+            <div class="col-sm-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <i class="fa fa-table"></i> Last 5 works
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-bordered table-responsive table-condensed">
+                            <thead>
+                            <tr>
+                                <th>Address</th>
+                                <th style="width: 30%">Date</th>
+                                <th style="width: 10%" class="text-center">Done?</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for last_work in last_five_works %}
+                                <tr>
+                                    <td>{{ last_work.address }}</td>
+                                    <td>{{ last_work.date|date:'m-d-Y' }}</td>
+                                    <td class="text-center">
+                                        {% if last_work.is_completed %}
+                                            <img src="{% static 'images/check.ico' %}" width="20px" height="20px"/>
+                                        {% else %}
+                                            <img src="{% static 'images/uncheck.png' %}" width="20px" height="20px"/>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="panel panel-red">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-flask fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="huge">{{ number_curriculums }}</div>
-                                    <div class="element">Curriculums</div>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#">
-                            <div class="panel-footer">
-                                <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
+            <div class="col-sm-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <i class="fa fa-table"></i> Last 5 evaluations
                     </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="panel panel-brown">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-graduation-cap fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="huge">{{ number_subjects }}</div>
-                                    <div class="element">Subjects</div>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#">
-                            <div class="panel-footer">
-                                <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="panel panel-purple">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-home fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="huge">{{ number_domains }}</div>
-                                    <div class="element">Domains</div>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#">
-                            <div class="panel-footer">
-                                <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
+                    <div class="panel-body">
+                        <table class="table table-bordered table-responsive table-condensed">
+                            <thead>
+                            <tr>
+                                <th>Customer</th>
+                                <th style="width: 30%">Email</th>
+                                <th style="width: 30%">Rating</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for last_work in last_five_works %}
+                                <tr>
+                                    <td>{{ last_work.customer.name }}</td>
+                                    <td>{{ last_work.customer.email }}</td>
+                                    <td>
+                                        {% if last_work.evaluation == 1 %}
+                                            <img src="{% static 'images/star1.png' %}" style="width: 20px" height="20px">
+                                            <img src="{% static 'images/star0.png' %}" style="width: 20px" height="20px">
+                                            <img src="{% static 'images/star0.png' %}" style="width: 20px" height="20px">
+                                            <img src="{% static 'images/star0.png' %}" style="width: 20px" height="20px">
+                                            <img src="{% static 'images/star0.png' %}" style="width: 20px" height="20px">
+                                        {% elif last_work.evaluation == 2 %}
+                                            <img src="{% static 'images/star1.png' %}" style="width: 20px" height="20px">
+                                            <img src="{% static 'images/star1.png' %}" style="width: 20px" height="20px">
+                                            <img src="{% static 'images/star0.png' %}" style="width: 20px" height="20px">
+                                            <img src="{% static 'images/star0.png' %}" style="width: 20px" height="20px">
+                                            <img src="{% static 'images/star0.png' %}" style="width: 20px" height="20px">
+                                        {% elif last_work.evaluation == 3 %}
+                                            <img src="{% static 'images/star1.png' %}" style="width: 20px" height="20px">
+                                            <img src="{% static 'images/star1.png' %}" style="width: 20px" height="20px">
+                                            <img src="{% static 'images/star1.png' %}" style="width: 20px" height="20px">
+                                            <img src="{% static 'images/star0.png' %}" style="width: 20px" height="20px">
+                                            <img src="{% static 'images/star0.png' %}" style="width: 20px" height="20px">
+                                        {% elif last_work.evaluation == 4 %}
+                                            <img src="{% static 'images/star1.png' %}" style="width: 20px" height="20px">
+                                            <img src="{% static 'images/star1.png' %}" style="width: 20px" height="20px">
+                                            <img src="{% static 'images/star1.png' %}" style="width: 20px" height="20px">
+                                            <img src="{% static 'images/star1.png' %}" style="width: 20px" height="20px">
+                                            <img src="{% static 'images/star0.png' %}" style="width: 20px" height="20px">
+                                        {% elif last_work.evaluation == 5 %}
+                                            <img src="{% static 'images/star1.png' %}" style="width: 20px" height="20px">
+                                            <img src="{% static 'images/star1.png' %}" style="width: 20px" height="20px">
+                                            <img src="{% static 'images/star1.png' %}" style="width: 20px" height="20px">
+                                            <img src="{% static 'images/star1.png' %}" style="width: 20px" height="20px">
+                                            <img src="{% static 'images/star1.png' %}" style="width: 20px" height="20px">
+                                        {% else %}
+                                            <img src="{% static 'images/star0.png' %}" style="width: 20px" height="20px">
+                                            <img src="{% static 'images/star0.png' %}" style="width: 20px" height="20px">
+                                            <img src="{% static 'images/star0.png' %}" style="width: 20px" height="20px">
+                                            <img src="{% static 'images/star0.png' %}" style="width: 20px" height="20px">
+                                            <img src="{% static 'images/star0.png' %}" style="width: 20px" height="20px">
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
+
+        </div>  <!-- end second main row -->
+
+        <div class="row margin-row">
+            <div class="col-sm-12">
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <i class="fa fa-table"></i> Job Types most used in projects
+                    </div>
+                    <div class="panel-body">
+                        <div class="progress skill-bar">
+                            <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" >
+                                <span class="skill">Construction<i class="val">90%</i></span>
+                            </div>
+                        </div>
+
+                        <div class="progress skill-bar">
+                            <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="83" aria-valuemin="0" aria-valuemax="100" >
+                                <span class="skill">Painting<i class="val">83%</i></span>
+                            </div>
+                        </div>
+
+                        <div class="progress skill-bar">
+                            <div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100" >
+                                <span class="skill">Network<i class="val">95%</i></span>
+                            </div>
+                        </div>
+
+                        <div class="progress skill-bar">
+                            <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                                <span class="skill">Electric<i class="val">75%</i></span>
+                            </div>
+                        </div>
+
+                        <div class="progress skill-bar">
+                            <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100">
+                                <span class="skill">Cleaning<i class="val">55%</i></span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
         </div>
-    </div>
+
+    </div> <!-- end of container -->
 
 {% endblock %}
