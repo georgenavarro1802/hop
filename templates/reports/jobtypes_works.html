@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block heading %}
+
+    <script src="{% static 'js/amcharts/amcharts.js' %}"></script>
+    <script src="{% static 'js/amcharts/pie.js' %}"></script>
+    <script src="{% static 'js/amcharts/export.min.js' %}"></script>
+    <script src="{% static 'js/amcharts/fabric.min.js' %}"></script>
+    <script src="{% static 'js/amcharts/FileSaver.min.js' %}"></script>
+    <script src="{% static 'js/amcharts/jszip.min.js' %}"></script>
+    <script src="{% static 'js/amcharts/pdfmake.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/amcharts/export.css' %}" type="text/css" media="all" />
+    <script src="{% static 'js/amcharts/light.js' %}"></script>
+
+    <script>
+
+        $("#reports_jobtypes_works").addClass("active");
+
+        $(function () {
+
+            $("#reports").addClass("active");
+
+            var chart = AmCharts.makeChart("chartdiv", {
+                "type": "pie",
+                "theme": "light",
+                "innerRadius": "40%",
+                "gradientRatio": [-0.4, -0.4, -0.4, -0.4, -0.4, -0.4, 0, 0.1, 0.2, 0.1, 0, -0.2, -0.5],
+                "dataProvider": [{
+                    "jobtype": "Construction",
+                    "litres": 501.9
+                }, {
+                    "jobtype": "Painting",
+                    "litres": 301.9
+                }, {
+                    "jobtype": "Electric",
+                    "litres": 201.1
+                }, {
+                    "jobtype": "Network",
+                    "litres": 165.8
+                }, {
+                    "jobtype": "Installation",
+                    "litres": 139.9
+                }, {
+                    "jobtype": "Security",
+                    "litres": 128.3
+                }],
+                "balloonText": "[[value]]",
+                "valueField": "litres",
+                "titleField": "jobtype",
+                "balloon": {
+                    "drop": true,
+                    "adjustBorderColor": false,
+                    "color": "#FFFFFF",
+                    "fontSize": 16
+                },
+                "export": {
+                    "enabled": true
+                }
+            });
+
+        });
+
+    </script>
+{% endblock %}
+
+{% block canvas %}
+    <div class="container-fluid">
+        <div class="row margin-row">
+
+            <div class="col-sm-12">
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <i class="fa fa-bar-chart"></i> {{ report_title }}
+                    </div>
+                    <div class="panel-body">
+                        <div id="chartdiv"></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}

@@ -21,15 +21,15 @@
 {% block canvas %}
 
     <div class="container-fluid">
+{#        <div class="row margin-row">#}
+{#            <div class="col-sm-12 text-center">#}
+{#                <p class="myheading">#}
+{#                    <i class="fa fa-tachometer"></i> DASHBOARD#}
+{#                </p>#}
+{#            </div>#}
+{#        </div>#}
         <div class="row margin-row">
-            <div class="col-sm-12 text-center">
-                <p class="myheading">
-                    <i class="fa fa-tachometer"></i> DASHBOARD
-                </p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12">
+{#            <div class="col-sm-12">#}
                 <div class="col-sm-4">
                     <div class="panel panel-brown">
                         <div class="panel-heading">
@@ -98,8 +98,52 @@
                         </a>
                     </div>
                 </div>
-            </div>
+{#            </div>#}
         </div> <!-- end first main row -->
+
+        <div class="row margin-row">
+            <div class="col-sm-12">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <i class="fa fa-table"></i> Job Types most used in projects
+                    </div>
+                    <div class="panel-body">
+                        <div class="progress skill-bar">
+                            <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" >
+                                <span class="skill">Construction<i class="val">90%</i></span>
+                            </div>
+                        </div>
+
+                        <div class="progress skill-bar">
+                            <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="83" aria-valuemin="0" aria-valuemax="100" >
+                                <span class="skill">Painting<i class="val">83%</i></span>
+                            </div>
+                        </div>
+
+                        <div class="progress skill-bar">
+                            <div class="progress-bar progress-bar-primary progress-bar-striped active" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100" >
+                                <span class="skill">Network<i class="val">95%</i></span>
+                            </div>
+                        </div>
+
+                        <div class="progress skill-bar">
+                            <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                                <span class="skill">Electric<i class="val">75%</i></span>
+                            </div>
+                        </div>
+
+                        <div class="progress skill-bar">
+                            <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100">
+                                <span class="skill">Cleaning<i class="val">55%</i></span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
 
         <div class="row margin-row">
 
@@ -204,50 +248,6 @@
             </div>
 
         </div>  <!-- end second main row -->
-
-        <div class="row margin-row">
-            <div class="col-sm-12">
-
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <i class="fa fa-table"></i> Job Types most used in projects
-                    </div>
-                    <div class="panel-body">
-                        <div class="progress skill-bar">
-                            <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" >
-                                <span class="skill">Construction<i class="val">90%</i></span>
-                            </div>
-                        </div>
-
-                        <div class="progress skill-bar">
-                            <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="83" aria-valuemin="0" aria-valuemax="100" >
-                                <span class="skill">Painting<i class="val">83%</i></span>
-                            </div>
-                        </div>
-
-                        <div class="progress skill-bar">
-                            <div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100" >
-                                <span class="skill">Network<i class="val">95%</i></span>
-                            </div>
-                        </div>
-
-                        <div class="progress skill-bar">
-                            <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
-                                <span class="skill">Electric<i class="val">75%</i></span>
-                            </div>
-                        </div>
-
-                        <div class="progress skill-bar">
-                            <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100">
-                                <span class="skill">Cleaning<i class="val">55%</i></span>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
 
     </div> <!-- end of container -->
 

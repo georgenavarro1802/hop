@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block heading %}
+    <script src="{% static 'js/amcharts/amcharts.js' %}"></script>
+    <script src="{% static 'js/amcharts/pie.js' %}"></script>
+    <script src="{% static 'js/amcharts/export.min.js' %}"></script>
+    <script src="{% static 'js/amcharts/fabric.min.js' %}"></script>
+    <script src="{% static 'js/amcharts/FileSaver.min.js' %}"></script>
+    <script src="{% static 'js/amcharts/jszip.min.js' %}"></script>
+    <script src="{% static 'js/amcharts/pdfmake.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/amcharts/export.css' %}" type="text/css" media="all" />
+    <script src="{% static 'js/amcharts/none.js' %}"></script>
+
+    <script>
+
+        $(function () {
+
+            $("#reports_incomplete_works").addClass("active");
+
+            var chart = AmCharts.makeChart( "chartdiv", {
+                "type": "pie",
+                "theme": "none",
+                "dataProvider": [ {
+                    "country": "Lithuania",
+                    "value": 260
+                }, {
+                    "country": "Ireland",
+                    "value": 201
+                }, {
+                    "country": "Germany",
+                    "value": 65
+                }, {
+                    "country": "Australia",
+                    "value": 39
+                }, {
+                    "country": "UK",
+                    "value": 19
+                }, {
+                    "country": "Latvia",
+                    "value": 10
+                } ],
+                "valueField": "value",
+                "titleField": "country",
+                "outlineAlpha": 0.4,
+                "depth3D": 15,
+                "balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
+                "angle": 30,
+                "export": {
+                    "enabled": true
+                }
+            });
+
+        });
+
+    </script>
+{% endblock %}
+
+{% block canvas %}
+    <div class="container-fluid">
+        <div class="row margin-row">
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <i class="fa fa-bar-chart"></i> {{ report_title }}
+                </div>
+                <div class="panel-body">
+                    <div id="chartdiv"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

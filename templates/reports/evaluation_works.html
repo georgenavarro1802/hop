@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block heading %}
+
+    <script src="{% static 'js/amcharts/amcharts.js' %}"></script>
+    <script src="{% static 'js/amcharts/serial.js' %}"></script>
+    <script src="{% static 'js/amcharts/export.min.js' %}"></script>
+    <script src="{% static 'js/amcharts/fabric.min.js' %}"></script>
+    <script src="{% static 'js/amcharts/FileSaver.min.js' %}"></script>
+    <script src="{% static 'js/amcharts/jszip.min.js' %}"></script>
+    <script src="{% static 'js/amcharts/pdfmake.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/amcharts/export.css' %}" type="text/css" media="all" />
+    <script src="{% static 'js/amcharts/light.js' %}"></script>
+
+    <script>
+
+        $("#reports_evaluation_works").addClass("active");
+
+        $(function () {
+
+            $("#reports").addClass("active");
+
+            var chart = AmCharts.makeChart("chartdiv", {
+                "theme": "light",
+                "type": "serial",
+                "startDuration": 2,
+                "dataProvider": [{
+                    "country": "Bad",
+                    "visits": 2025,
+                    "color": "#FF0F00"
+                }, {
+                    "country": "Regular",
+                    "visits": 2982,
+                    "color": "#FF6600"
+                }, {
+                    "country": "Good",
+                    "visits": 3809,
+                    "color": "#F8FF01"
+                }, {
+                    "country": "Very Good",
+                    "visits": 4322,
+                    "color": "#0D52D1"
+                }, {
+                    "country": "Excellent",
+                    "visits": 3722,
+                    "color": "#04D215"
+                }],
+                "valueAxes": [{
+                    "position": "left",
+                    "title": "Visitors"
+                }],
+                "graphs": [{
+                    "balloonText": "[[category]]: <b>[[value]]</b>",
+                    "fillColorsField": "color",
+                    "fillAlphas": 1,
+                    "lineAlpha": 0.1,
+                    "type": "column",
+                    "valueField": "visits"
+                }],
+                "depth3D": 20,
+                "angle": 30,
+                "chartCursor": {
+                    "categoryBalloonEnabled": false,
+                    "cursorAlpha": 0,
+                    "zoomable": false
+                },
+                "categoryField": "country",
+                "categoryAxis": {
+                    "gridPosition": "start",
+                    "labelRotation": 90
+                },
+                "export": {
+                    "enabled": true
+                }
+
+            });
+
+        });
+
+    </script>
+{% endblock %}
+
+{% block canvas %}
+    <div class="container-fluid">
+        <div class="row margin-row">
+
+            <div class="col-sm-12">
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <i class="fa fa-bar-chart"></i> {{ report_title }}
+                    </div>
+                    <div class="panel-body">
+                        <div id="chartdiv"></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}

@@ -101,3 +101,7 @@ def set_color_hoeapp_container(request):
             return ok_json()
     except Exception:
         return bad_json(error=1)
+
+
+def web(request):
+    return render_to_response("index.html",)
