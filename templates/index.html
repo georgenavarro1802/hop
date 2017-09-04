@@ -30,7 +30,7 @@
 
     <script type="text/javascript">
         window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.2.1\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.2.1\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/webuild.netbee.shop\/demo\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.7.5"}};
-        !function(a,b,c){function d(a){var b,c,d,e,f=String.fromCharCode;if(!k||!k.fillText)return!1;switch(k.clearRect(0,0,j.width,j.height),k.textBaseline="top",k.font="600 32px Arial",a){case"flag":return k.fillText(f(55356,56826,55356,56819),0,0),!(j.toDataURL().length<3e3)&&(k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,57331,65039,8205,55356,57096),0,0),b=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,57331,55356,57096),0,0),c=j.toDataURL(),b!==c);case"emoji4":return k.fillText(f(55357,56425,55356,57341,8205,55357,56507),0,0),d=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55357,56425,55356,57341,55357,56507),0,0),e=j.toDataURL(),d!==e}return!1}function e(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g,h,i,j=b.createElement("canvas"),k=j.getContext&&j.getContext("2d");for(i=Array("flag","emoji4"),c.supports={everything:!0,everythingExceptFlag:!0},h=0;h<i.length;h++)c.supports[i[h]]=d(i[h]),c.supports.everything=c.supports.everything&&c.supports[i[h]],"flag"!==i[h]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[i[h]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+        !function(a,b,c){function d(a){var b,c,d,e,f=String.fromCharCode;if(!k||!k.fillText)return!1;switch(k.clearRect(0,0,j.width,j.height),k.textBaseline="top",k.font="600 32px Arial",a){case"flag":return k.fillText(f(55356,56826,55356,56819),0,0);!(j.toDataURL().length<3e3)&&(k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,57331,65039,8205,55356,57096),0,0),b=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,57331,55356,57096),0,0),c=j.toDataURL(),b!==c);case"emoji4":return k.fillText(f(55357,56425,55356,57341,8205,55357,56507),0,0),d=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55357,56425,55356,57341,55357,56507),0,0),e=j.toDataURL(),d!==e}return!1}function e(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g,h,i,j=b.createElement("canvas"),k=j.getContext&&j.getContext("2d");for(i=Array("flag","emoji4"),c.supports={everything:!0,everythingExceptFlag:!0},h=0;h<i.length;h++)c.supports[i[h]]=d(i[h]),c.supports.everything=c.supports.everything&&c.supports[i[h]],"flag"!==i[h]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[i[h]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
     </script>
 
     <style type="text/css">
@@ -71,8 +71,8 @@
     <link rel='stylesheet' id='yith-wcwl-main-css'  href="{% static 'css/web/webuild/style.css' %}" type='text/css' media='all' />
     <link rel='stylesheet' id='webuild-main-style-css'  href="{% static 'css/web/themes/style.css' %}" type='text/css' media='all' />
 
-    <link rel='stylesheet' id='pro-woocommerce-css'  href='https://webuild.netbee.shop/demo/wp-content/themes/webuild/css/vendor/woocommerce.css' type='text/css' media='all' />
-    <link rel='stylesheet' id='webuild-royalslider-css'  href='https://webuild.netbee.shop/demo/wp-content/themes/webuild/css/vendor/royalslider.css?ver=4.7.5' type='text/css' media='all' />
+    <link rel='stylesheet' id='pro-woocommerce-css'  href="{% static 'css/web/vendor/woocommerce.css' %}" type='text/css' media='all' />
+    <link rel='stylesheet' id='webuild-royalslider-css'  href="{% static 'css/web/vendor/royalslider.css' %}" type='text/css' media='all' />
 
     <link rel='stylesheet' id='webuild-bootstrap-css'  href="{% static 'css/bootstrap.min.css' %}" type='text/css' media='all' />
     <link rel='stylesheet' id='pro-woocommerce-css'  href="{% static 'css/web/vendor/woocommerce.css' %}" type='text/css' media='all' />
@@ -192,7 +192,8 @@
                 // SYNC AJAX REQUEST
                 jQuery.ajax({
                     type:"post",
-                    url:"https://webuild.netbee.shop/demo/wp-admin/admin-ajax.php",
+{#                    url:"https://webuild.netbee.shop/demo/wp-admin/admin-ajax.php",#}
+                    url:"",
                     dataType: 'json',
                     data:data,
                     async:false,
@@ -352,7 +353,7 @@
                                     </li>
 
                                     <li id="menu-item-2755" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2755 pro-depth-0">
-                                        <a href="#prices" class="pro-link with-hover pro-link-depth-0 pro-sticky-item">Prices</a>
+                                        <a href="#prices" class="pro-link with-hover pro-link-depth-0 pro-sticky-item">Join Us</a>
                                     </li>
 
                                     <li id="menu-item-2756" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2756 pro-depth-0">
@@ -439,7 +440,7 @@
                                     </li>
 
                                     <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2755 pro-depth-0">
-                                        <a href="#prices" class="pro-link with-hover pro-link-depth-0 pro-sticky-item">Prices</a>
+                                        <a href="#prices" class="pro-link with-hover pro-link-depth-0 pro-sticky-item">Join Us</a>
                                     </li>
 
                                     <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2756 pro-depth-0">
@@ -465,7 +466,7 @@
                     <li data-index="rs-59" data-transition="fade" data-slotamount="default" data-hideafterloop="0" data-hideslideonmobile="off"  data-easein="default" data-easeout="default" data-masterspeed="300"  data-rotate="0"  data-saveperformance="off"  data-title="Slide" data-param1="" data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7="" data-param8="" data-param9="" data-param10="" data-description="">
 
                         <!-- MAIN IMAGE -->
-                        <img src="https://webuild.netbee.shop/demo/wp-content/uploads/2015/11/one-page.jpg"  alt="" title="one-page"  width="1900" height="764" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" data-bgparallax="off" class="rev-slidebg" data-no-retina>
+                        <img src="{% static 'images/web/one-page.jpeg' %}"  alt="" title="one-page"  width="1900" height="764" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" data-bgparallax="off" class="rev-slidebg" data-no-retina>
 
                         <!-- LAYERS -->
 
@@ -485,7 +486,7 @@
                              data-paddingbottom="[0,0,0,0]"
                              data-paddingleft="[0,0,0,0]" style="z-index: 5;">
 
-                            <img src="https://webuild.netbee.shop/demo/wp-content/uploads/2015/11/roulette.png" alt="" data-ww="214px" data-hh="205px" width="214" height="205" data-no-retina>
+                            <img src="{% static 'images/web/roulette.png' %}" alt="" data-ww="214px" data-hh="205px" width="214" height="205" data-no-retina>
                         </div>
                     </li>
                 </ul>
@@ -592,7 +593,7 @@
                                     </div>
                                     <div id="ultimate-heading-608159ac9ce07af32" class="uvc-heading ult-adjust-bottom-margin ultimate-heading-608159ac9ce07af32 uvc-6956 " data-hspacer="no_spacer"  data-halign="center" style="text-align:center">
 
-                                        <div class="uvc-heading-spacer no_spacer" style="top"></div>
+                                        <div class="uvc-heading-spacer no_spacer"></div>
 
                                         <div class="uvc-main-heading ult-responsive"  data-ultimate-target='.uvc-heading.ultimate-heading-608159ac9ce07af32 h2'  data-responsive-json-new='{"font-size":"desktop:18px;","line-height":"desktop:24px;"}' >
                                             <h2 style="font-family:'Lato';font-weight:300;">YEARS OF EXPERIENCE</h2>
@@ -1005,7 +1006,7 @@
                                                             <div class="aio-icon-heading-right" >
                                                                 <div class="ult-just-icon-wrapper  ">
                                                                     <div class="align-icon" style="text-align:center;">
-                                                                        <div class="aio-icon advanced" style="color:#ffffff;background:#2e3841;border-color:#333333;border-width:1px;width:60px;height:60px;line-height:60px;border-radius:500px;font-size:18px;display:inline-block;">
+                                                                        <div class="aio-icon advanced" style="color:#ffffff;background:#2e3841; border: 1px #333333;width:60px;height:60px;line-height:60px;border-radius:500px;font-size:18px;display:inline-block;">
                                                                             <i class="fa fa-user"></i>
                                                                         </div>
                                                                     </div>
@@ -1832,7 +1833,7 @@
 
                                         <div class="stats-desc" id="counter-responsv-wrap-6128">
                                             <div id="counter_22414714259ac9ce0853b0" data-id="counter_22414714259ac9ce0853b0"  data-ultimate-target='#counter-responsv-wrap-6128 .stats-number'  data-responsive-json-new='{"font-size":"desktop:70px;","line-height":"desktop:78px;"}'  class="stats-number ult-responsive" style=" color:#ffffff; font-family:'Lato';font-weight:300;color:#ffffff;" data-speed="5" data-counter-value="189" data-separator="," data-decimal=".">0</div>
-                                            <div  data-ultimate-target='#counter-responsv-wrap-6128 .stats-text'  data-responsive-json-new='{"font-size":"desktop:18px;","line-height":""}'  class="stats-text ult-responsive" style="font-size:px; color:#ffffff; font-family:'Lato';font-weight:300;">
+                                            <div  data-ultimate-target='#counter-responsv-wrap-6128 .stats-text'  data-responsive-json-new='{"font-size":"desktop:18px;","line-height":""}'  class="stats-text ult-responsive" style="color:#ffffff; font-family:'Lato';font-weight:300;">
                                                 HOUSES BUILT
                                             </div>
                                         </div>
@@ -1884,7 +1885,7 @@
 
                                         <div class="stats-desc" id="counter-responsv-wrap-7447">
                                             <div id="counter_156046601659ac9ce085890" data-id="counter_156046601659ac9ce085890"  data-ultimate-target='#counter-responsv-wrap-7447 .stats-number'  data-responsive-json-new='{"font-size":"desktop:70px;","line-height":"desktop:78px;"}'  class="stats-number ult-responsive" style=" color:#ffffff; font-family:'Lato';font-weight:300" data-speed="5" data-counter-value="108" data-separator="," data-decimal=".">0</div>
-                                            <div counter-responsv-wrap-7447  data-ultimate-target='#counter-responsv-wrap-7447 .stats-text'  data-responsive-json-new='{"font-size":"desktop:18px;","line-height":""}'  class="stats-text ult-responsive" style="font-size:px; color:#ffffff; font-family:'Lato';font-weight:300;">
+                                            <div counter-responsv-wrap-7447  data-ultimate-target='#counter-responsv-wrap-7447 .stats-text'  data-responsive-json-new='{"font-size":"desktop:18px;","line-height":""}'  class="stats-text ult-responsive" style="color:#ffffff; font-family:'Lato';font-weight:300;">
                                                 QUALIFIED WORKERS
                                             </div>
                                         </div>
@@ -2445,7 +2446,7 @@
     <!-- #page -->
 </div>
 
-<style id="custom-shortcode-css" type="text/css" scoped>
+<style id="custom-shortcode-css" type="text/css">
     .sticky-header.fixed .primary-menu .navbar-nav > li > a{padding-right:15px;padding-left:15px;}.primary-menu .navbar-nav > li > a{font-family:Lato;text-transform:uppercase;line-height:24px;font-weight:700;font-style:normal;color:#2e3841;font-size:15px;}.primary-menu > li > a:hover, .primary-menu .navbar-nav > li > a:hover, .primary-menu .navbar-nav > li.current-menu-item > a, #header-sticky .primary-menu .navbar-nav > li.current-menu-item > a , #header-sticky .primary-menu .navbar-nav > li > a:hover , .sticky-header.fixed .primary-menu .navbar-nav > li > a:hover{color:#f7c51e;}.page-header .title-wrapper{height:150px;}.page-header .title-wrapper h1{font-family:Lato;line-height:36px;font-weight:900;font-style:normal;color:#ffffff;font-size:30px;}.page-header .title-wrapper span{font-family:Lato;line-height:20px;font-weight:700;font-style:normal;color:#ffffff;font-size:16px;}body{font-family:Lato;line-height:27px;font-weight:normal;font-style:normal;color:#647886;font-size:13px;}.cont-padding{padding-top:60px;padding-bottom:0;}#content-wrapper{background-color:#fff;background-repeat:repeat;background-position:center center;}.specific_1920 > button {background-color:#2c3e50;}.specific_1920 > button:hover{background-color:#f7c605;-webkit-transition:background-color 0.2s linear;-moz-transition:background-color 0.2s linear;-ms-transition:background-color 0.2s linear;-o-transition:background-color 0.2s linear;transition:background-color 0.2s linear;}.slick-prev, .slick-next{color:#ffffff !important;}.specific_32206 .pro-team-member:hover > .about, .specific_32206 .pro-team-member:hover > .social{top:200px;}.specific_32206 .pro-team-member:hover > h4{-webkit-transform:scale(1);transform:scale(1);-moz-transform:scale(1);-o-transform:scale(1);-ms-transform:scale(1);}.specific_32206 > button{background-color:#2e3841 ;}.specific_32206 > button:hover{background-color:;-webkit-transition:background-color 0.2s linear;-moz-transition:background-color 0.2s linear;-ms-transition:background-color 0.2s linear;-o-transition:background-color 0.2s linear;transition:background-color 0.2s linear;}.slick-prev, .slick-next{color:#ffffff !important;}.brochure-box-59ac9ce08e43e{background-color:#2c3e50;}.brochure-box-59ac9ce08e43e:hover{background-color:#f7c51e;}.brochure-box__text59ac9ce08e43e{color:#ffffff;}.brochure-box-59ac9ce08e43e:hover .brochure-box__text59ac9ce08e43e{color:#1a1c27!important;}.brochure-box-59ac9ce08e43e i{color:#ffffff;}.brochure-box-59ac9ce08e43e:hover i{color:#1a1c27!important;}.brochure-box-59ac9ce08e4e6{background-color:#2c3e50;}.brochure-box-59ac9ce08e4e6:hover{background-color:#f7c51e;}.brochure-box__text59ac9ce08e4e6{color:#ffffff;}.brochure-box-59ac9ce08e4e6:hover .brochure-box__text59ac9ce08e4e6{color:#1a1c27!important;}.brochure-box-59ac9ce08e4e6 i{color:#ffffff;}.brochure-box-59ac9ce08e4e6:hover i{color:#1a1c27!important;}#header-sticky.fixed .container { width:100%;}.primary-menu .navbar-nav > li > a {line-height:100px;}.open-search:hover { color:#f7c51e; }.cart-info .shopping-cart:hover { color:#f7c51e; }
 </style>
 

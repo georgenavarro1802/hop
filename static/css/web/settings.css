@@ -230,7 +230,7 @@ font-family: star;
 											}
 
 .esg-entry-media							{	width:100%;}
-.esg-entry-media img						{	width:100%; height:auto; max-width:none !important; min-width:none !important}
+.esg-entry-media img						{	width:100%; height:auto; max-width:none !important; min-width:0 !important}
 
 .esg-layout-masonry .esg-entry-media img	{
 	line-height: 0px;
@@ -338,7 +338,7 @@ font-family: star;
 												        -o-transform: scaleY(-1);
 												        -webkit-transform: scaleY(-1);
 												        transform: scaleY(-1);
-												        filter: FlipV;
+												        /*filter: FlipV;*/
 												        -ms-filter: "FlipV";}
 
 .esg-sorting-select							{	cursor: pointer;position:absolute;top:0px;left:0px;width:100%;height:100%;  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
@@ -385,7 +385,7 @@ font-family: star;
 											right: 0;
 											left: 0;
 											bottom: 0;
-											background: url(../images/ajax-loader.gif) center no-repeat rgba(255, 255, 255, 0.65);
+											background: url(/static/images/ajax-loader.gif) center no-repeat rgba(255, 255, 255, 0.65);
 										 }
 
 .esg-loader 	{
@@ -407,7 +407,7 @@ font-family: star;
 .esg-loader.spinner0 {
   width: 40px;
   height: 40px;
-  background:url(../images/loader.gif) no-repeat center center;
+  background:url(/static/images/ajax-loader.gif) no-repeat center center;
   background-color: #fff;
   box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.15);
   -webkit-box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.15);
@@ -614,17 +614,17 @@ font-family: star;
 /****************************
 * Fontello Icons
 ****************************/
-@font-face {
- font-family: 'eg-font';
-  src: url('../font/egfont.eot?85610117');
-  src: url('../font/egfont.eot?85610117#iefix') format('embedded-opentype'),
-       url('../font/egfont.woff?85610117') format('woff'),
-       url('../font/egfont.ttf?85610117') format('truetype'),
-       url('../font/egfont.svg?85610117#egfont') format('svg');
-  font-weight: normal;
-  font-style: normal;
+/*@font-face {*/
+ /*font-family: 'eg-font';*/
+  /*src: url('../font/egfont.eot?85610117');*/
+  /*src: url('../font/egfont.eot?85610117#iefix') format('embedded-opentype'),*/
+       /*url('../font/egfont.woff?85610117') format('woff'),*/
+       /*url('../font/egfont.ttf?85610117') format('truetype'),*/
+       /*url('../font/egfont.svg?85610117#egfont') format('svg');*/
+  /*font-weight: normal;*/
+  /*font-style: normal;*/
 
-}
+/*}*/
 
 [class^="eg-icon-"]:before, [class*=" eg-icon-"]:before {
 	font-family: "eg-font";
