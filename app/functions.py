@@ -1,9 +1,6 @@
 import json
 from datetime import datetime
-
-from decimal import Decimal
 from django.core.paginator import Paginator
-from django.forms import model_to_dict
 from django.http import HttpResponse
 
 from django.utils.translation import get_language
@@ -89,16 +86,6 @@ def convertir_time(time):
     return datetime(d.year, d.month, d.day, int(t[0]), int(t[1]))
 
 
-def model_to_dict_safe(m, exclude=None):
-    if not exclude:
-        exclude = []
-    d = model_to_dict(m, exclude=exclude)
-    for x, y in d.iteritems():
-        if type(y) == Decimal:
-            d[x] = float(y)
-    return d
-
-
 def url_back(request, mensaje=None):
     url = request.META['HTTP_REFERER'].split('/')[-1:][0]
     if 'mensj=' in url:
@@ -109,7 +96,6 @@ def url_back(request, mensaje=None):
         else:
             url += "?mensj=" + mensaje
     return url
-
 
 
 def bad_json(message=None, error=None, extradata=None):
