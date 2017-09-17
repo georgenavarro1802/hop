@@ -295,7 +295,7 @@ class Works(BaseModel):
 
     def get_my_job_types(self):
         if self.workstypes_set.exists():
-            return [x.type for x in self.workstypes_set.all()]
+            return [x.type for x in self.workstypes_set.all().order_by('type__name')]
         return None
 
 
