@@ -38,107 +38,122 @@
                     </div>
 
                     <div class="panel-body">
-                        <p class="label label-info" style="position: relative; top: 17px">Report</p>
-                        <div class="roundedBorder">
-                            {{ work.report }}
+
+                        <div class="row">
+                            <p class="label label-info" style="position: relative; top: 17px">Report</p>
+                            <div class="roundedBorder">
+                                {{ work.report }}
+                            </div>
                         </div>
 
-                        <p class="label label-info" style="position: relative; top: 17px">Pictures</p>
-                        <div class="roundedBorder">
-                            <ul class="lb-album">
-                                <li>
-                                    <a href="#image-1">
-                                        <img src="{% if work.photo1 %}{{ work.download_photo1 }}{% else %}{% static 'images/photo_logo.png' %}{% endif %}" alt="image01" width="150px" height="150px">
-                                        <span>Photo 1</span>
-                                    </a>
-                                    <div class="lb-overlay" id="image-1">
-                                        <img src="{% if work.photo1 %}{{ work.download_photo1 }}{% else %}{% static 'images/photo_logo.png' %}{% endif %}" alt="image01" />
-                                        <div>
-                                            <h4>Photo 1</h4>
-                                            <a href="#image-4" class="lb-prev">Prev</a>
-                                            <a href="#image-2" class="lb-next">Next</a>
+                        <div class="row">
+                            <p class="label label-info" style="position: relative; top: 3em">Pictures</p>
+                            <div class="roundedBorder">
+                                <ul class="lb-album">
+                                    <li>
+                                        <a href="#image-1">
+                                            <img src="{% if work.photo1 %}{{ work.download_photo1 }}{% else %}{% static 'images/photo_logo.png' %}{% endif %}" alt="image01" width="150px" height="150px">
+                                            <span>Photo 1</span>
+                                        </a>
+                                        <div class="lb-overlay" id="image-1">
+                                            <img src="{% if work.photo1 %}{{ work.download_photo1 }}{% else %}{% static 'images/photo_logo.png' %}{% endif %}" alt="image01" />
+                                            <div>
+                                                <h4>Photo 1</h4>
+                                                <a href="#image-4" class="lb-prev">Prev</a>
+                                                <a href="#image-2" class="lb-next">Next</a>
+                                            </div>
+                                            <a href="#page" class="lb-close">Close</a>
                                         </div>
-                                        <a href="#page" class="lb-close">Close</a>
-                                    </div>
-                                </li>
-                                <li>
-                                    <a href="#image-2">
-                                        <img src="{% if work.photo2 %}{{ work.download_photo2 }}{% else %}{% static 'images/photo_logo.png' %}{% endif %}" alt="image02" width="150px" height="150px">
-                                        <span>Photo 2</span>
-                                    </a>
-                                    <div class="lb-overlay" id="image-2">
-                                        <img src="{% if work.photo2 %}{{ work.download_photo2 }}{% else %}{% static 'images/photo_logo.png' %}{% endif %}" alt="image02" />
-                                        <div>
-                                            <h4>Photo 2</h4>
-                                            <a href="#image-1" class="lb-prev">Prev</a>
-                                            <a href="#image-3" class="lb-next">Next</a>
+                                    </li>
+                                    <li>
+                                        <a href="#image-2">
+                                            <img src="{% if work.photo2 %}{{ work.download_photo2 }}{% else %}{% static 'images/photo_logo.png' %}{% endif %}" alt="image02" width="150px" height="150px">
+                                            <span>Photo 2</span>
+                                        </a>
+                                        <div class="lb-overlay" id="image-2">
+                                            <img src="{% if work.photo2 %}{{ work.download_photo2 }}{% else %}{% static 'images/photo_logo.png' %}{% endif %}" alt="image02" />
+                                            <div>
+                                                <h4>Photo 2</h4>
+                                                <a href="#image-1" class="lb-prev">Prev</a>
+                                                <a href="#image-3" class="lb-next">Next</a>
+                                            </div>
+                                            <a href="#page" class="lb-close">Close</a>
                                         </div>
-                                        <a href="#page" class="lb-close">Close</a>
-                                    </div>
-                                </li>
-                                <li>
-                                    <a href="#image-3">
-                                        <img src="{% if work.photo3 %}{{ work.download_photo3 }}{% else %}{% static 'images/photo_logo.png' %}{% endif %}" alt="image03" width="150px" height="150px">
-                                        <span>Photo 3</span>
-                                    </a>
-                                    <div class="lb-overlay" id="image-3">
-                                        <img src="{% if work.photo3 %}{{ work.download_photo3 }}{% else %}{% static 'images/photo_logo.png' %}{% endif %}" alt="image03" />
-                                        <div>
-                                            <h4>Photo 3</h4>
-                                            <a href="#image-2" class="lb-prev">Prev</a>
-                                            <a href="#image-4" class="lb-next">Next</a>
+                                    </li>
+                                    <li>
+                                        <a href="#image-3">
+                                            <img src="{% if work.photo3 %}{{ work.download_photo3 }}{% else %}{% static 'images/photo_logo.png' %}{% endif %}" alt="image03" width="150px" height="150px">
+                                            <span>Photo 3</span>
+                                        </a>
+                                        <div class="lb-overlay" id="image-3">
+                                            <img src="{% if work.photo3 %}{{ work.download_photo3 }}{% else %}{% static 'images/photo_logo.png' %}{% endif %}" alt="image03" />
+                                            <div>
+                                                <h4>Photo 3</h4>
+                                                <a href="#image-2" class="lb-prev">Prev</a>
+                                                <a href="#image-4" class="lb-next">Next</a>
+                                            </div>
+                                            <a href="#page" class="lb-close">Close</a>
                                         </div>
-                                        <a href="#page" class="lb-close">Close</a>
-                                    </div>
-                                </li>
-                                <li>
-                                    <a href="#image-4">
-                                        <img src="{% if work.photo4 %}{{ work.download_photo4 }}{% else %}{% static 'images/photo_logo.png' %}{% endif %}" alt="image04" width="150px" height="150px">
-                                        <span>Photo 4</span>
-                                    </a>
-                                    <div class="lb-overlay" id="image-4">
-                                        <img src="{% if work.photo4 %}{{ work.download_photo4 }}{% else %}{% static 'images/photo_logo.png' %}{% endif %}" alt="image04" />
-                                        <div>
-                                            <h4>Photo 4</h4>
-                                            <a href="#image-3" class="lb-prev">Prev</a>
-                                            <a href="#image-1" class="lb-next">Next</a>
+                                    </li>
+                                    <li>
+                                        <a href="#image-4">
+                                            <img src="{% if work.photo4 %}{{ work.download_photo4 }}{% else %}{% static 'images/photo_logo.png' %}{% endif %}" alt="image04" width="150px" height="150px">
+                                            <span>Photo 4</span>
+                                        </a>
+                                        <div class="lb-overlay" id="image-4">
+                                            <img src="{% if work.photo4 %}{{ work.download_photo4 }}{% else %}{% static 'images/photo_logo.png' %}{% endif %}" alt="image04" />
+                                            <div>
+                                                <h4>Photo 4</h4>
+                                                <a href="#image-3" class="lb-prev">Prev</a>
+                                                <a href="#image-1" class="lb-next">Next</a>
+                                            </div>
+                                            <a href="#page" class="lb-close">Close</a>
                                         </div>
-                                        <a href="#page" class="lb-close">Close</a>
-                                    </div>
-                                </li>
-                            </ul>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
 
-                        <p class="label label-info" style="position: relative; top: 17px">Team</p>
-                        <div class="roundedBorder">
-                            <img class="img-circle" src="{% if work.leader and work.leader.avatar %}{{ work.leader.download_avatar }}{% else %}{% static 'images/avatar.png' %}{% endif %}" width="50px" height="50px">
-                            <span class="margin-right">{{ work.leader }} (LEAD) </span>
+                        <div class="row">
+                            <p class="label label-info" style="position: relative; top: 17px">Team</p>
+                            <div class="roundedBorder">
+                                <img class="img-circle" src="{% if work.leader and work.leader.avatar %}{{ work.leader.download_avatar }}{% else %}{% static 'images/avatar.png' %}{% endif %}" width="50px" height="50px">
+                                <span class="margin-right">{{ work.leader }} (LEAD) </span>
 
-                            {% if work.support1 %}
-                                <img class="img-circle" src="{% if work.support1.avatar %}{{ work.support1.download_avatar }}{% else %}{% static 'images/avatar.png' %}{% endif %}" width="50px" height="50px">
-                                <span class="margin-right">{{ work.support1 }}</span>
-                            {% endif %}
+                                {% if work.support1 %}
+                                    <img class="img-circle" src="{% if work.support1.avatar %}{{ work.support1.download_avatar }}{% else %}{% static 'images/avatar.png' %}{% endif %}" width="50px" height="50px">
+                                    <span class="margin-right">{{ work.support1 }}</span>
+                                {% endif %}
 
-                            {% if work.support2 %}
-                                <img class="img-circle" src="{% if work.support2.avatar %}{{ work.support2.download_avatar }}{% else %}{% static 'images/avatar.png' %}{% endif %}" width="50px" height="50px">
-                                <span class="margin-right">{{ work.support2 }}</span>
-                            {% endif %}
+                                {% if work.support2 %}
+                                    <img class="img-circle" src="{% if work.support2.avatar %}{{ work.support2.download_avatar }}{% else %}{% static 'images/avatar.png' %}{% endif %}" width="50px" height="50px">
+                                    <span class="margin-right">{{ work.support2 }}</span>
+                                {% endif %}
 
-                            {% if work.support3 %}
-                                <img class="img-circle" src="{% if work.support3.avatar %}{{ work.support3.download_avatar }}{% else %}{% static 'images/avatar.png' %}{% endif %}" width="50px" height="50px">
-                                <span class="margin-right">{{ work.support3 }}</span>
-                            {% endif %}
+                                {% if work.support3 %}
+                                    <img class="img-circle" src="{% if work.support3.avatar %}{{ work.support3.download_avatar }}{% else %}{% static 'images/avatar.png' %}{% endif %}" width="50px" height="50px">
+                                    <span class="margin-right">{{ work.support3 }}</span>
+                                {% endif %}
 
-                            {% if work.support4 %}
-                                <img class="img-circle" src="{% if work.support4.avatar %}{{ work.support4.download_avatar }}{% else %}{% static 'images/avatar.png' %}{% endif %}" width="50px" height="50px">
-                                <span class="margin-right">{{ work.support4 }}</span>
-                            {% endif %}
+                                {% if work.support4 %}
+                                    <img class="img-circle" src="{% if work.support4.avatar %}{{ work.support4.download_avatar }}{% else %}{% static 'images/avatar.png' %}{% endif %}" width="50px" height="50px">
+                                    <span class="margin-right">{{ work.support4 }}</span>
+                                {% endif %}
 
-                            {% if work.support5 %}
-                                <img class="img-circle" src="{% if work.support5.avatar %}{{ work.support5.download_avatar }}{% else %}{% static 'images/avatar.png' %}{% endif %}" width="50px" height="50px">
-                                <span class="margin-right">{{ work.support5 }}</span>
-                            {% endif %}
+                                {% if work.support5 %}
+                                    <img class="img-circle" src="{% if work.support5.avatar %}{{ work.support5.download_avatar }}{% else %}{% static 'images/avatar.png' %}{% endif %}" width="50px" height="50px">
+                                    <span class="margin-right">{{ work.support5 }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
 
+                        <div class="row">
+                            <p class="label label-info" style="position: relative">Job Types</p>
+                            <div class="roundedBorder">
+                                {% for jt in work.get_my_job_types %}
+                                    <span class="badge">{{ jt }}</span>
+                                {% endfor %}
+                            </div>
                         </div>
 
                     </div> <!-- end panel-body -->
@@ -169,13 +184,13 @@
                             </table>
                         </div>
                         <!-- Customer Sign -->
-                        <p class="label label-info" style="position: relative; top: 17px">Signature</p>
+                        <p class="label label-info" style="position: relative;">Signature</p>
                         <div class="roundedBorder text-center">
                             <img src="{% if work.sign %}{{ work.download_signature }}{% else %}{% static 'images/no_sign.png' %}{% endif %}" width="170px" height="170px">
                         </div>
 
-                        <p class="label label-info" style="position: relative; top: 17px">Evaluation</p>
-                        <div class="roundedBorder text-center">
+                        <p class="label label-info" style="position: relative; top: 8em">Evaluation</p>
+                        <div class="roundedBorder text-center" style="margin-top: 5em">
                             {% if work.evaluation == 1 %}
                                 <img src="{% static 'images/star1.png' %}">
                                 <img src="{% static 'images/star0.png' %}">

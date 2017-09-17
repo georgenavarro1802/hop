@@ -293,6 +293,11 @@ class Works(BaseModel):
             return self.sign.url
         return ''
 
+    def get_my_job_types(self):
+        if self.workstypes_set.exists():
+            return [x.type for x in self.workstypes_set.all()]
+        return None
+
 
 class WorksTypes(BaseModel):
     work = models.ForeignKey(Works)
