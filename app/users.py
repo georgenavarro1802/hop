@@ -160,27 +160,5 @@ def views(request):
 
         else:
 
-            users = Users.objects.exclude(user__id=1).order_by('-created_at')
-
-            search = None
-            if 's' in request.GET and request.GET['s'] != '':
-                search = request.GET['s']
-
-            if search:
-                users = users.filter(Q(user__username__icontains=search) |
-                                     Q(user__first_name__icontains=search) |
-                                     Q(user__last_name__icontains=search))
-
-            paging = MiPaginator(users, 10)
-
-            p = 1
-            if 'page' in request.GET:
-                p = int(request.GET['page'])
-            page = paging.page(p)
-
-            data['paging'] = paging
-            data['ranges_paging'] = paging.pages_range(p)
-            data['page'] = page
-            data['users'] = page.object_list
-
+            data['users'] = Users.objects.exclude(user__id=1).order_by('-created_at')
             return render(request, 'users/view.html', data)

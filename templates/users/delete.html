@@ -13,6 +13,6 @@
     <input type='hidden' name='id' value='{{ myuser.id }}'/>
 {% endblock %}
 {% block form-back %}{% url 'users' %}{% endblock %}
-{% block form-object %}{{ user }}{% endblock %}
+{% block form-object %}{{ myuser.complete_name }}{% endblock %}
 {% block buttonname %}YES{% endblock %}
 {% block buttoncancel %}NO{% endblock %}

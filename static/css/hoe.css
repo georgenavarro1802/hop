@@ -1027,6 +1027,10 @@ form input, form select, form textarea {
     font-size: 17px;
 }
 
+.my-vertical-align {
+    vertical-align: middle!important;
+}
+
 .imp-number { width: 100px;}
 
 .imp-anio { width: 50px;}

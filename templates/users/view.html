@@ -16,11 +16,14 @@
                 <tr style="font-weight: bold; font-size: 1em; background-color: #043b8a; color: white">
                     <th style="width: 80px" class="text-center"></th>
                     <th style="width: 120px">Username</th>
+                    <th style="width: 120px">Group</th>
                     <th>Name</th>
                     <th style="width: 250px">Email</th>
                     <th style="width: 100px" class="text-center">Phone</th>
-                    <th style="width: 100px" class="text-center">Created</th>
-                    <th style="width: 80px" class="text-center">Works</th>
+                    <th style="width: 70px" class="text-center">Works</th>
+                    <th style="width: 70px" class="text-center">Complete</th>
+                    <th style="width: 70px" class="text-center">Incomplete</th>
+                    <th style="width: 90px" class="text-center">Created</th>
                     <th style="width: 80px"></th>
                 </tr>
                 </thead>
@@ -29,20 +32,25 @@
                     <tr>
                         <td class="text-center">
                             {% if u.avatar %}
-                                <img class="main" src="{{ u.download_avatar }}" width="50px" height="50px"/>
+                                <img class="main" src="{{ u.download_avatar }}" width="40px" height="40px"/>
                             {% else %}
-                                <img class="main" src="{% static 'images/avatar.png' %}" width="50px" height="50px" />
+                                <img class="main" src="{% static 'images/avatar.png' %}" width="40px" height="40px" />
                             {% endif %}
                         </td>
-                        <td class="font14">{{ u.user.username }}</td>
-                        <td class="font14">{{ u.user.first_name }} {{ u.user.last_name }}</td>
-                        <td class="font12">{{ u.user.email }}</td>
-                        <td class="font12">{{ u.phone }}</td>
-                        <td class="text-center font12">{{ u.created_at|date:'m-d-Y' }}</td>
-                        <td class="text-center font14">10</td>
-                        <td class="text-center">
+                        <td class="my-vertical-align font14">{{ u.user.username }}</td>
+                        <td class="my-vertical-align font14">{{ u.user_group_name }}</td>
+                        <td class="my-vertical-align font14">{{ u.user.first_name }} {{ u.user.last_name }}</td>
+                        <td class="my-vertical-align font12">{{ u.user.email }}</td>
+                        <td class="my-vertical-align font12">{{ u.phone }}</td>
+                        <td class="my-vertical-align text-center font14">{{ u.get_number_works|floatformat:0 }}</td>
+                        <td class="my-vertical-align text-center font14">{{ u.get_number_works_completed|floatformat:0 }}</td>
+                        <td class="my-vertical-align text-center font14">{{ u.get_number_works_incompleted|floatformat:0 }}</td>
+                        <td class="my-vertical-align text-center font12">{{ u.created_at|date:'m-d-Y' }}</td>
+                        <td class="my-vertical-align">
                             <a class="btn btn-xs btn-info tu" href="{% url 'users' %}?action=edit&id={{ u.id }}" title="Edit"><i class="fa fa-edit"></i></a>
-                            <a class="btn btn-xs btn-danger tu" href="{% url 'users' %}?action=delete&id={{ u.id }}" title="Delete" style="margin-left: 0.2em"><i class="fa fa-times"></i></a>
+                            {% if not u.has_relations %}
+                                <a class="btn btn-xs btn-danger tu" href="{% url 'users' %}?action=delete&id={{ u.id }}" title="Delete" style="margin-left: 0.2em"><i class="fa fa-times"></i></a>
+                            {% endif %}
                         </td>
                     </tr>
                 {% empty %}

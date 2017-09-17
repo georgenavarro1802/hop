@@ -26,27 +26,9 @@
                 "theme": "light",
                 "innerRadius": "40%",
                 "gradientRatio": [-0.4, -0.4, -0.4, -0.4, -0.4, -0.4, 0, 0.1, 0.2, 0.1, 0, -0.2, -0.5],
-                "dataProvider": [{
-                    "jobtype": "Construction",
-                    "litres": 501.9
-                }, {
-                    "jobtype": "Painting",
-                    "litres": 301.9
-                }, {
-                    "jobtype": "Electric",
-                    "litres": 201.1
-                }, {
-                    "jobtype": "Network",
-                    "litres": 165.8
-                }, {
-                    "jobtype": "Installation",
-                    "litres": 139.9
-                }, {
-                    "jobtype": "Security",
-                    "litres": 128.3
-                }],
+                "dataProvider": [{% for jt in jobtypes %}{"jobtype": "{{ jt }}", "count": {{ jt.get_number_works }} }{% if not forloop.last %},{% endif %}{% endfor %}],
                 "balloonText": "[[value]]",
-                "valueField": "litres",
+                "valueField": "count",
                 "titleField": "jobtype",
                 "balloon": {
                     "drop": true,

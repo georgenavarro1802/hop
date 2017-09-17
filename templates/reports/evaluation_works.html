@@ -26,29 +26,29 @@
                 "type": "serial",
                 "startDuration": 2,
                 "dataProvider": [{
-                    "country": "Bad",
-                    "visits": 2025,
+                    "evaluation": "Bad",
+                    "evaluations": {{ evaluations_bad }},
                     "color": "#FF0F00"
                 }, {
-                    "country": "Regular",
-                    "visits": 2982,
+                    "evaluation": "Regular",
+                    "evaluations": {{ evaluations_regular }},
                     "color": "#FF6600"
                 }, {
-                    "country": "Good",
-                    "visits": 3809,
+                    "evaluation": "Good",
+                    "evaluations": {{ evaluations_good }},
                     "color": "#F8FF01"
                 }, {
-                    "country": "Very Good",
-                    "visits": 4322,
+                    "evaluation": "Very Good",
+                    "evaluations": {{ evaluations_very_good }},
                     "color": "#0D52D1"
                 }, {
-                    "country": "Excellent",
-                    "visits": 3722,
+                    "evaluation": "Excellent",
+                    "evaluations": {{ evaluations_excellent }},
                     "color": "#04D215"
                 }],
                 "valueAxes": [{
                     "position": "left",
-                    "title": "Visitors"
+                    "title": "Works Evaluations"
                 }],
                 "graphs": [{
                     "balloonText": "[[category]]: <b>[[value]]</b>",
@@ -56,7 +56,7 @@
                     "fillAlphas": 1,
                     "lineAlpha": 0.1,
                     "type": "column",
-                    "valueField": "visits"
+                    "valueField": "evaluations"
                 }],
                 "depth3D": 20,
                 "angle": 30,
@@ -65,7 +65,7 @@
                     "cursorAlpha": 0,
                     "zoomable": false
                 },
-                "categoryField": "country",
+                "categoryField": "evaluation",
                 "categoryAxis": {
                     "gridPosition": "start",
                     "labelRotation": 90

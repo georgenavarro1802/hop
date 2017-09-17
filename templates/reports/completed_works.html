@@ -22,30 +22,18 @@
                 "type": "pie",
                 "theme": "none",
                 "dataProvider": [ {
-                    "country": "Lithuania",
-                    "value": 260
+                    "works": "Completed Works",
+                    "value": {{ complete_works }}
                 }, {
-                    "country": "Ireland",
-                    "value": 201
-                }, {
-                    "country": "Germany",
-                    "value": 65
-                }, {
-                    "country": "Australia",
-                    "value": 39
-                }, {
-                    "country": "UK",
-                    "value": 19
-                }, {
-                    "country": "Latvia",
-                    "value": 10
-                } ],
+                    "works": "Incompleted Works",
+                    "value": {{ incomplete_works }}
+                }],
                 "valueField": "value",
-                "titleField": "country",
+                "titleField": "works",
                 "outlineAlpha": 0.4,
-                "depth3D": 15,
+                "depth3D": 20,
                 "balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
-                "angle": 30,
+                "angle": 25,
                 "export": {
                     "enabled": true
                 }

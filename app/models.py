@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models, router
+from django.db.models import Q
 from django.db.models.deletion import Collector
 
 from app.functions import EVALUATION_TYPES, USER_GROUP_ADMINISTRATOR_ID, USER_GROUP_PROJECT_MANAGER_ID, \
@@ -51,6 +52,24 @@ class Projects(BaseModel):
         db_table = 'projects'
         unique_together = ('name', )
 
+    def has_relations(self):
+        return self.works_set.exists()
+
+    def get_number_works(self):
+        if self.has_relations():
+            return self.works_set.count()
+        return 0
+
+    def get_number_works_completed(self):
+        if self.has_relations():
+            return self.works_set.filter(is_completed=True).count()
+        return 0
+
+    def get_number_works_incompleted(self):
+        if self.has_relations():
+            return self.works_set.filter(is_completed=False).count()
+        return 0
+
 
 class JobTypes(BaseModel):
     name = models.CharField(max_length=200)
@@ -63,6 +82,24 @@ class JobTypes(BaseModel):
         verbose_name_plural = 'Job Types'
         db_table = 'job_types'
         unique_together = ('name', )
+
+    def has_relations(self):
+        return self.workstypes_set.exists()
+
+    def get_number_works(self):
+        if self.has_relations():
+            return self.workstypes_set.count()
+        return 0
+
+    def get_number_works_completed(self):
+        if self.has_relations():
+            return self.workstypes_set.filter(work__is_completed=True).count()
+        return 0
+
+    def get_number_works_incompleted(self):
+        if self.has_relations():
+            return self.workstypes_set.filter(work__is_completed=False).count()
+        return 0
 
 
 class Customers(BaseModel):
@@ -78,6 +115,24 @@ class Customers(BaseModel):
         verbose_name_plural = 'Customers'
         db_table = 'customers'
         unique_together = ('email', )
+
+    def has_relations(self):
+        return self.works_set.exists()
+
+    def get_number_works(self):
+        if self.has_relations():
+            return self.works_set.count()
+        return 0
+
+    def get_number_works_completed(self):
+        if self.has_relations():
+            return self.works_set.filter(is_completed=True).count()
+        return 0
+
+    def get_number_works_incompleted(self):
+        if self.has_relations():
+            return self.works_set.filter(is_completed=False).count()
+        return 0
 
 
 class Users(BaseModel):
@@ -97,6 +152,9 @@ class Users(BaseModel):
         verbose_name_plural = 'Users Profile'
         db_table = 'users_profiles'
         unique_together = ('user', )
+
+    def complete_name(self):
+        return "{} {}".format(self.user.first_name, self.user.last_name)
 
     def download_avatar(self):
         return self.avatar.url
@@ -126,6 +184,44 @@ class Users(BaseModel):
 
     def is_technician(self):
         return USER_GROUP_PROJECT_TECHNICIAN_ID in [x.id for x in self.user.groups.all()]
+
+    def has_relations(self):
+        return self.leader.exists() or \
+               self.support1.exists() or \
+               self.support2.exists() or \
+               self.support3.exists() or \
+               self.support4.exists() or \
+               self.support5.exists()
+
+    def get_number_works(self):
+        if self.has_relations():
+            return Works.objects.filter(Q(leader=self) |
+                                        Q(support1=self) |
+                                        Q(support2=self) |
+                                        Q(support3=self) |
+                                        Q(support4=self) |
+                                        Q(support5=self)).count()
+        return 0
+
+    def get_number_works_completed(self):
+        if self.has_relations():
+            return Works.objects.filter(Q(leader=self) |
+                                        Q(support1=self) |
+                                        Q(support2=self) |
+                                        Q(support3=self) |
+                                        Q(support4=self) |
+                                        Q(support5=self), is_completed=True).count()
+        return 0
+
+    def get_number_works_incompleted(self):
+        if self.has_relations():
+            return Works.objects.filter(Q(leader=self) |
+                                        Q(support1=self) |
+                                        Q(support2=self) |
+                                        Q(support3=self) |
+                                        Q(support4=self) |
+                                        Q(support5=self), is_completed=False).count()
+        return 0
 
 
 class Works(BaseModel):

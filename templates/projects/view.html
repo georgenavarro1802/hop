@@ -15,6 +15,8 @@
                 <tr style="font-weight: bold; font-size: 1.1em; background-color: #043b8a; color: white">
                     <th>Name</th>
                     <th style="width: 100px" class="text-center">Works</th>
+                    <th style="width: 100px" class="text-center">Complete</th>
+                    <th style="width: 100px" class="text-center">Incomplete</th>
                     <th style="width: 100px" class="text-center">Created</th>
                     <th style="width: 80px"></th>
                 </tr>
@@ -23,11 +25,15 @@
                 {% for p in projects %}
                     <tr>
                         <td class="font14">{{ p }}</td>
-                        <td class="text-center font14">10</td>
+                        <td class="text-center font14">{{ p.get_number_works|floatformat:0 }}</td>
+                        <td class="text-center font14">{{ p.get_number_works_completed|floatformat:0 }}</td>
+                        <td class="text-center font14">{{ p.get_number_works_incompleted|floatformat:0 }}</td>
                         <td class="text-center font12">{{ p.created_at|date:'m-d-Y' }}</td>
-                        <td class="text-center">
+                        <td>
                             <a class="btn btn-xs btn-info tu" href="{% url 'projects' %}?action=edit&id={{ p.id }}" title="Edit"><i class="fa fa-edit"></i></a>
-                            <a class="btn btn-xs btn-danger tu" href="{% url 'projects' %}?action=delete&id={{ p.id }}" title="Delete" style="margin-left: 0.3em"><i class="fa fa-times"></i></a>
+                            {% if not p.has_relations %}
+                                <a class="btn btn-xs btn-danger tu" href="{% url 'projects' %}?action=delete&id={{ p.id }}" title="Delete" style="margin-left: 0.3em"><i class="fa fa-times"></i></a>
+                            {% endif %}
                         </td>
                     </tr>
                 {% empty %}
