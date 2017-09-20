@@ -1,0 +1,184 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Works Track</title>
+
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+         * element that contains the map. */
+        #map {
+            height: 100%;
+        }
+        /* Optional: Makes the sample page fill the window. */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"/>
+
+</head>
+<body>
+<div id="map"></div>
+<script>
+
+    // This example creates a 2-pixel-wide red polyline showing the path of William
+    // Kingsford Smith's first trans-Pacific flight between Oakland, CA, and
+    // Brisbane, Australia.
+
+    function initMap() {
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 15,
+            center: {lat: 25.781441, lng: -80.186801},
+            mapTypeId: 'terrain'
+        });
+
+        var flightPlanCoordinates = [
+
+            {lat: 25.781441, lng: -80.186801},
+            {lat: 25.787759, lng: -80.188603},
+            {lat: 25.789720, lng: -80.199225},
+            {lat: 25.780880, lng: -80.204386}
+
+        ];
+
+        var flightPath = new google.maps.Polyline({
+            path: flightPlanCoordinates,
+            geodesic: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 1.0,
+            strokeWeight: 4
+        });
+
+        flightPath.setMap(map);
+
+        // InfoWindow
+        var contentString1 = '<div>'+
+            '<h2 class="firstHeading">Work 1</h2>'+
+            '<div>'+
+                '<p><b>Project: </b> Project 111-444 </p>'+
+                '<p><b>Address: </b> 1422 SW 84 AVE. Miami, FL, 33144</p>'+
+                '<p><b>Customer: </b> Cliente 1</p>'+
+                '<img src="{% static 'images/star1.png' %}" width="25px" height="25px">' +
+                '<img src="{% static 'images/star1.png' %}" width="25px" height="25px">' +
+                '<img src="{% static 'images/star1.png' %}" width="25px" height="25px">' +
+                '<img src="{% static 'images/star1.png' %}" width="25px" height="25px">' +
+                '<img src="{% static 'images/star1.png' %}" width="25px" height="25px">' +
+                '<p class="text-right"><label class="label label-success"> Complete</label></p>'+
+            '</p>'+
+            '</div>'+
+            '</div>';
+
+        var infowindow1 = new google.maps.InfoWindow({
+            content: contentString1
+        });
+
+        var contentString2 = '<div>'+
+            '<h2 class="firstHeading">Work 2</h2>'+
+            '<div>'+
+                '<p><b>Project: </b> Project 2222-5555 </p>'+
+                '<p><b>Address: </b> 345 W 17 ST. Miami, FL, 33456</p>'+
+                '<p><b>Customer: </b> Cliente 1</p>'+
+                '<p class="text-right"><label class="label label-info"> In Progress</label></p>'+
+            '</p>'+
+            '</div>'+
+            '</div>';
+
+        var infowindow2 = new google.maps.InfoWindow({
+            content: contentString2
+        });
+
+        var contentString3 = '<div>'+
+            '<h2 class="firstHeading">Work 3</h2>'+
+            '<div>'+
+                '<p><b>Project: </b> Project 678-2343 </p>'+
+                '<p><b>Address: </b> 456 NE 12 ST. Miami, FL, 32453</p>'+
+                '<p><b>Customer: </b> Cliente 1</p>'+
+                '<img src="{% static 'images/star1.png' %}" width="25px" height="25px">' +
+                '<img src="{% static 'images/star1.png' %}" width="25px" height="25px">' +
+                '<img src="{% static 'images/star1.png' %}" width="25px" height="25px">' +
+                '<img src="{% static 'images/star1.png' %}" width="25px" height="25px">' +
+                '<img src="{% static 'images/star0.png' %}" width="25px" height="25px">' +
+                '<p class="text-right"><label class="label label-success"> Complete</label></p>'+
+            '</p>'+
+            '</div>'+
+            '</div>';
+
+        var infowindow3 = new google.maps.InfoWindow({
+            content: contentString3
+        });
+
+        var contentString4 = '<div>'+
+            '<h2 class="firstHeading">Work 4</h2>'+
+            '<div>'+
+                '<p><b>Project: </b> Project 678-2343 </p>'+
+                '<p><b>Address: </b> 789 SW 23 AVE. Miami, FL, 32145</p>'+
+                '<p><b>Customer: </b> Cliente 1</p>'+
+                '<img src="{% static 'images/star1.png' %}" width="25px" height="25px">' +
+                '<img src="{% static 'images/star1.png' %}" width="25px" height="25px">' +
+                '<img src="{% static 'images/star1.png' %}" width="25px" height="25px">' +
+                '<img src="{% static 'images/star0.png' %}" width="25px" height="25px">' +
+                '<img src="{% static 'images/star0.png' %}" width="25px" height="25px">' +
+                '<p class="text-right"><label class="label label-success"> Complete</label></p>'+
+            '</p>'+
+            '</div>'+
+            '</div>';
+
+        var infowindow4 = new google.maps.InfoWindow({
+            content: contentString4
+        });
+
+        // MARKERS
+        var marker1 = new google.maps.Marker({
+            position: {lat: 25.781441, lng: -80.186801},
+            map: map,
+            icon: "{% static 'images/marker_green.png' %}"
+        });
+
+        marker1.addListener('click', function() {
+            infowindow1.open(map, marker1);
+        });
+
+        var marker2 = new google.maps.Marker({
+            position: {lat: 25.787759, lng: -80.188603},
+            map: map,
+            icon: "{% static 'images/marker_blue.png' %}"
+        });
+
+        marker2.addListener('click', function() {
+            infowindow2.open(map, marker2);
+        });
+
+        var marker3 = new google.maps.Marker({
+            position: {lat: 25.789720, lng: -80.199225},
+            map: map,
+            icon: "{% static 'images/marker_green.png' %}"
+        });
+
+        marker3.addListener('click', function() {
+            infowindow3.open(map, marker3);
+        });
+
+        var marker4 = new google.maps.Marker({
+            position: {lat: 25.780880, lng: -80.204386},
+            map: map,
+            icon: "{% static 'images/marker_green.png' %}"
+        });
+
+        marker4.addListener('click', function() {
+            infowindow4.open(map, marker4);
+        });
+
+    }
+</script>
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB39SPoyU5m0rsUoDiqcYHeBdsGn7wm_d0&callback=initMap"></script>
+
+</body>
+</html>

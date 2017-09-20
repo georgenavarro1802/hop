@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>HOP Platform</title>
 
-    <!-- Bootstrap -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"/>
     <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
     <link href="http://fonts.googleapis.com/css?family=Lato:100italic,100,300italic,300,400italic,400,700italic,700,900italic,900" rel="stylesheet" type="text/css">
     <link href="{% static 'css/hoe.css' %}" rel="stylesheet">
@@ -60,7 +60,7 @@
                 <li class="dropdown hoe-rheader-submenu hoe-header-profile">
                     <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
                         <span><img class="img-circle " src="{{ myuser.download_avatar }}"></span>
-                        <span>James <b>Bond</b> <i class=" fa fa-angle-down"></i></span>
+                        <span>{{ myuser.user.first_name }} <b>{{ myuser.user.last_name }}</b> <i class=" fa fa-angle-down"></i></span>
                     </a>
                     <ul class="dropdown-menu ">
                         <li><a href="javascript:void(0)"><i class="fa fa-lock"></i>Change Password</a></li>
@@ -171,6 +171,18 @@
                         <li id="reports_jobtypes_works">
                             <a href="{% url 'reports' %}?action=jobtypes_works">
                                 <span class="menu-text">Job Types</span>
+                                <span class="selected"></span>
+                            </a>
+                        </li>
+                        <li id="reports_workers_perfomances">
+                            <a href="{% url 'reports' %}?action=workers_perfomances">
+                                <span class="menu-text">Workers Perfomances</span>
+                                <span class="selected"></span>
+                            </a>
+                        </li>
+                        <li id="reports_workers_track">
+                            <a href="{% url 'reports' %}?action=workers_track" target="_blank">
+                                <span class="menu-text">Workers Track</span>
                                 <span class="selected"></span>
                             </a>
                         </li>

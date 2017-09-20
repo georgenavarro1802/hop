@@ -37,4 +37,12 @@ def views(request):
                                                        workstypes__isnull=False).distinct()
             return render(request, 'reports/jobtypes_works.html', data)
 
+        if action == 'workers_perfomances':
+            data['report_title'] = 'Workers Perfomances'
+            return render(request, 'reports/workers_perfomances.html', data)
+
+        if action == 'workers_track':
+            data['report_title'] = 'Workers Tracks'
+            return render(request, 'reports/workers_track.html', data)
+
     return HttpResponseRedirect('/')
