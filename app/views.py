@@ -3,12 +3,11 @@ from datetime import datetime
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
-from django.db.models import Count
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 
 from app.functions import (NOMBRE_INSTITUCION, bad_json, ok_json)
-from app.models import Users, Projects, Works, Customers, WorksTypes
+from app.models import Users, Projects, Works, Customers
 
 
 def adduserdata(request, data):
@@ -104,4 +103,4 @@ def set_color_hoeapp_container(request):
 
 
 def web(request):
-    return render_to_response("index.html",)
+    return render_to_response("index.html", )

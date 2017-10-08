@@ -4,8 +4,8 @@ from django.db import models, router
 from django.db.models import Q
 from django.db.models.deletion import Collector
 
-from app.functions import EVALUATION_TYPES, USER_GROUP_ADMINISTRATOR_ID, USER_GROUP_PROJECT_MANAGER_ID, \
-    USER_GROUP_PROJECT_SUPERVISOR_ID, USER_GROUP_PROJECT_TECHNICIAN_ID
+from app.functions import (EVALUATION_TYPES, USER_GROUP_ADMINISTRATOR_ID, USER_GROUP_PROJECT_MANAGER_ID,
+                           USER_GROUP_PROJECT_SUPERVISOR_ID, USER_GROUP_PROJECT_TECHNICIAN_ID)
 
 
 class BaseModel(models.Model):
