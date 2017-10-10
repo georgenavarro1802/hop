@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from app.models import Projects, JobTypes, Customers, Works, Users, WorksTypes
+from app.models import Projects, JobTypes, Customers, Works, Users, WorksTypes, JobRequestsTypes, JobRequests
 
 
 class ProjectsAdmin(admin.ModelAdmin):
@@ -42,5 +42,21 @@ admin.site.register(Users, UsersAdmin)
 class WorksTypesAdmin(admin.ModelAdmin):
     list_display = ('work', 'type')
     search_fields = ('work', 'type')
+    list_filter = ('type', )
 
 admin.site.register(WorksTypes, WorksTypesAdmin)
+
+
+class JobRequestsAdmin(admin.ModelAdmin):
+    list_display = ('email', 'phone', 'notes')
+    search_fields = ('email', 'phone')
+
+admin.site.register(JobRequests, JobRequestsAdmin)
+
+
+class JobRequestsTypesAdmin(admin.ModelAdmin):
+    list_display = ('job_request', 'type')
+    search_fields = ('job_request', 'type')
+    list_filter = ('type', )
+
+admin.site.register(JobRequestsTypes, JobRequestsTypesAdmin)

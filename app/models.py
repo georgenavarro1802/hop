@@ -311,3 +311,34 @@ class WorksTypes(BaseModel):
         verbose_name_plural = 'Works Types '
         db_table = 'works_types'
         unique_together = ('work', 'type')
+
+
+class JobRequests(BaseModel):
+    email = models.CharField(max_length=200, blank=True, null=True, verbose_name='Email')
+    phone = models.CharField(max_length=100, blank=True, null=True, verbose_name='Phone')
+    notes = models.TextField(blank=True, null=True, verbose_name='Phone')
+
+    def __str__(self):
+        return "Job Request: {}".format(self.email)
+
+    class Meta:
+        verbose_name = 'Job Request'
+        verbose_name_plural = 'Job Requests'
+        db_table = 'job_requests'
+
+    def get_my_job_request_types(self):
+        return self.jobrequeststypes_set.all()
+
+
+class JobRequestsTypes(BaseModel):
+    job_request = models.ForeignKey(JobRequests)
+    type = models.ForeignKey(JobTypes)
+
+    def __str__(self):
+        return "{} - {}".format(self.job_request, self.type)
+
+    class Meta:
+        verbose_name = 'Job Request Type'
+        verbose_name_plural = 'Job Requests Types '
+        db_table = 'job_requests_types'
+        unique_together = ('job_request', 'type')
