@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from app.models import *
 
+
 # Serializers define the API representation.
 class ProjectsSerializers(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -18,6 +19,7 @@ class CustomersSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Customers
         fields = ('name', 'phone', 'email')
+
 
 class UsersSerializer(serializers.HyperlinkedModelSerializer):
     user = serializers.ReadOnlyField(source='user.id')
@@ -38,11 +40,11 @@ class WorksSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Works
-        fields = ('id','project', 'address', 'date', 'initial_time',
-        'leader', 'support1','support2','support3','support4','support5',
-        'register_time', 'latitude_register', 'longitude_register', 'end_time',
-        'report', 'photo1', 'photo2', 'photo3', 'photo4', 'is_completed', 'notes',
-        'customer', 'evaluation', 'sign')
+        fields = ('id','project', 'address', 'date', 'initial_time', 'leader',
+                  'support1', 'support2', 'support3', 'support4', 'support5',
+                  'register_time', 'latitude_register', 'longitude_register', 'end_time',
+                  'report', 'photo1', 'photo2', 'photo3', 'photo4', 'is_completed', 'notes',
+                  'customer', 'evaluation', 'sign')
 
 
 class WorksTypesSerializer(serializers.HyperlinkedModelSerializer):
