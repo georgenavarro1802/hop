@@ -1,18 +1,11 @@
-from django.core.files.base import ContentFile
+from datetime import datetime
 
-from rest_framework import routers, serializers, viewsets
-from rest_framework import filters
+from django.core.files.base import ContentFile
 from rest_framework import generics
 from rest_framework import mixins
-from rest_framework import status
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.response import Response
 
-from app.models import *
 from rest.serializers import *
-from rest.functions import *
-
-from datetime import datetime
 
 
 class ProjectsViewSet(mixins.ListModelMixin, generics.GenericAPIView):
@@ -56,7 +49,8 @@ class WorksViewSet(mixins.ListModelMixin, generics.GenericAPIView):
 
 
 class WorksViewDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin,
-                    generics.GenericAPIView):
+                      generics.GenericAPIView):
+
     queryset = Works.objects.all()
     serializer_class = WorksSerializer
 
@@ -98,6 +92,7 @@ class WorksViewDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins
                     new_file_name = "{}_photo1.{}".format(work.address, uploaded_file.name)
                     data = ContentFile(imgdata.read(), name=new_file_name)
                     work.photo1 = data
+
             imgdata = None
             if 'photo2' in request.data:
                 uploaded_file = request.data['photo2']
@@ -106,6 +101,7 @@ class WorksViewDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins
                     new_file_name = "{}_photo2.{}".format(work.address, uploaded_file.name)
                     data = ContentFile(imgdata.read(), name=new_file_name)
                     work.photo2 = data
+
             imgdata = None
             if 'photo3' in request.data:
                 uploaded_file = request.data['photo3']
@@ -114,6 +110,7 @@ class WorksViewDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins
                     new_file_name = "{}_photo3.{}".format(work.address, uploaded_file.name)
                     data = ContentFile(imgdata.read(), name=new_file_name)
                     work.photo3 = data
+
             imgdata = None
             if 'photo4' in request.data:
                 uploaded_file = request.data['photo4']
@@ -122,6 +119,7 @@ class WorksViewDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins
                     new_file_name = "{}_photo4.{}".format(work.address, uploaded_file.name)
                     data = ContentFile(imgdata.read(), name=new_file_name)
                     work.photo4 = data
+
             imgdata = None
             if 'sign' in request.data:
                 uploaded_file = request.data['sign']
@@ -131,22 +129,27 @@ class WorksViewDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins
                     data = ContentFile(imgdata.read(), name=new_file_name)
                     work.sign = data
                     work.is_completed = True
+
             if 'evaluation' in request.data and request.data['evaluation']:
                 evaluation = int(request.data['evaluation'])
                 work.evaluation = evaluation
+
             if 'end_time' in request.data and request.data['end_time']:
                 end_time = request.data['end_time']
                 print("this is endtime {}".format(end_time))
                 work.end_time = end_time
+
             work.save()
             return Response({"Message": "Success"})
+
         except Exception as ex:
             print("ex {}".format(ex))
-            return Response({"Message":"Error"})
+            return Response({"Message": "Error"})
 
 
 class CompleteWorksView(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin,
-                    generics.GenericAPIView):
+                        generics.GenericAPIView):
+
     queryset = Works.objects.all()
     serializer_class = WorksSerializer
 
@@ -183,7 +186,7 @@ class JobRequestsDetail(generics.GenericAPIView):
                     if JobTypes.objects.filter(id=type).exists():
                         job_type = JobTypes.objects.filter(id=type).first()
                         job_request_types, created = JobRequests.objects.get_or_create(job_request=job_request,
-                                                                                        type=job_type)
+                                                                                       type=job_type)
                 return Response({"message", "Success"})
         return Response({"message": "failure", "error": "missing required fields"})
 

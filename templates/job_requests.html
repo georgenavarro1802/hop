@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block heading %}
+    <script>
+        $("#job_requests").addClass("active");
+    </script>
+{% endblock %}
+
+{% block canvas %}
+    <div class="container-fluid">
+        <div class="row margin-row">
+            <p class="myheading"> <i class="fa fa-user"></i> {{ title }}</p>
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr style="font-weight: bold; font-size: 1em; background-color: #043b8a; color: white">
+                    <th style="width: 20px">No.</th>
+                    <th style="width: 250px">Email</th>
+                    <th style="width: 170px">Phone</th>
+                    <th>Notes</th>
+                    <th style="width: 120px" class="text-center">Created</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for j in job_requests %}
+                    <tr>
+                        <td class="my-vertical-align font14">{{ forloop.counter }}</td>
+                        <td class="my-vertical-align font14">{{ j.email }}</td>
+                        <td class="my-vertical-align font14">{{ j.phone }}</td>
+                        <td class="my-vertical-align font12">{{ j.notes }}</td>
+                        <td class="my-vertical-align text-center font12">{{ j.created_at|date:'m-d-Y' }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="7" class="alert alert-info">
+                            <i>There are not job requests in the system</i>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+{% endblock %}

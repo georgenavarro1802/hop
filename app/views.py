@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 
 from app.functions import (NOMBRE_INSTITUCION, bad_json, ok_json)
-from app.models import Users, Projects, Works, Customers
+from app.models import Users, Projects, Works, Customers, JobRequests
 
 
 def adduserdata(request, data):
@@ -102,5 +102,8 @@ def set_color_hoeapp_container(request):
         return bad_json(error=1)
 
 
-def web(request):
-    return render_to_response("index.html", )
+def job_requests(request):
+    data = {'title': 'Job Requests'}
+    adduserdata(request, data)
+    data['job_requests'] = JobRequests.objects.order_by('-created_at')
+    return render_to_response('job_requests.html', data)

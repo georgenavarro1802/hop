@@ -29,9 +29,6 @@ urlpatterns = [
     # INDEX (Dashboard)
     url(r'^$', views.index, name='dashboard'),
 
-    # WEB
-    url(r'^web$', views.web, name='web'),
-
     # LOGIN
     url(r'^login$', views.login_user, name='login'),
 
@@ -43,6 +40,9 @@ urlpatterns = [
 
     # JOB TYPES
     url(r'^jobtypes$', jobtypes.views, name='jobtypes'),
+
+    # JOB REQUESTS
+    url(r'^job_requests$', views.job_requests, name='job_requests'),
 
     # CUSTOMERS
     url(r'^customers$', customers.views, name='customers'),
