@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^complete_works/(?P<pk>[0-9]+)/$', CompleteWorksView.as_view(), name='complete_works_api_detail'),
     url(r'^works/(?P<pk>[0-9]+)/$', WorksViewDetail.as_view(), name='works_api_detail'),
     url(r'^works/', WorksViewSet.as_view(), name='works_api'),
+    url(r'^request/', JobRequestsDetail.as_view(), name='request_api'),
 
     # WorksTypes
     url(r'^works_types/', WorksTypesViewSet.as_view(), name='api_works'),
