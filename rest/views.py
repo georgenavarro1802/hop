@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 
 from rest.serializers import *
+from app.models import JobRequests, JobTypes
 
 
 class ProjectsViewSet(mixins.ListModelMixin, generics.GenericAPIView):
@@ -168,29 +169,32 @@ class CompleteWorksView(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixi
 
 class JobRequestsDetail(generics.GenericAPIView):
     queryset = JobRequests.objects.all()
+    permission_classes = (AllowAny, )
 
     def post(self, request, *args, **kwargs):
-        email = ''
-        phone = ''
-        notes = ''
-        if 'email' in request.data and request.data['email']:
-            email = request.data['email']
-        if 'phone' in request.data and request.data['phone']:
-            phone = request.data['phone']
-        if 'notes' in request.data and request.data['notes']:
-            notes = request.data['notes']
+        try:
+            email = ''
+            phone = ''
+            notes = ''
+            if 'email' in request.data and request.data['email']:
+                email = request.data['email']
+            if 'phone' in request.data and request.data['phone']:
+                phone = request.data['phone']
+            if 'notes' in request.data and request.data['notes']:
+                notes = request.data['notes']
 
-        if email and phone and notes:
-            job_request = JobRequests(email=email, phone=phone, notes=notes)
-
-            if 'types' in request.data and request.data['types']:
-                for type in request.data['types'].split(','):
-                    if JobTypes.objects.filter(id=type).exists():
-                        job_type = JobTypes.objects.filter(id=type).first()
-                        job_request_types, created = JobRequests.objects.get_or_create(job_request=job_request,
-                                                                                       type=job_type)
-                return Response({"message", "Success"})
-        return Response({"message": "failure", "error": "missing required fields"})
+            if email and phone and notes:
+                job_request = JobRequests(email=email, phone=phone, notes=notes)
+                if 'types' in request.data and request.data['types']:
+                    for type in request.data['types'].split(','):
+                        if type and JobTypes.objects.filter(id=type).exists():
+                            job_type = JobTypes.objects.filter(id=type).first()
+                            job_request_types = JobRequestsTypes(job_request=job_request,type=job_type)
+                    job_request.save()
+                    return Response({"message": "Success"})
+            return Response({"message": "failure", "error": "missing required fields"})
+        except Exception as ex:
+            print(ex)
 
 
 class UserWorksView(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin,
