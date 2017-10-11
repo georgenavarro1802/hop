@@ -7,6 +7,7 @@ from rest_framework import mixins
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
 
 from app.models import *
 from rest.serializers import *
@@ -26,6 +27,7 @@ class ProjectsViewSet(mixins.ListModelMixin, generics.GenericAPIView):
 class JobTypesViewSet(mixins.ListModelMixin, generics.GenericAPIView):
     queryset = JobTypes.objects.all()
     serializer_class = JobTypesSerializer
+    permission_classes = (AllowAny, )
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
