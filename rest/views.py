@@ -161,6 +161,33 @@ class CompleteWorksView(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixi
         return Response({"message": "Success"})
 
 
+class JobRequestsDetail(generics.GenericAPIView):
+    queryset = JobRequests.objects.all()
+
+    def post(self, request, *args, **kwargs):
+        email = ''
+        phone = ''
+        notes = ''
+        if 'email' in request.data and request.data['email']:
+            email = request.data['email']
+        if 'phone' in request.data and request.data['phone']:
+            phone = request.data['phone']
+        if 'notes' in request.data and request.data['notes']:
+            notes = request.data['notes']
+
+        if email and phone and notes:
+            job_request = JobRequests(email=email, phone=phone, notes=notes)
+
+            if 'types' in request.data and request.data['types']:
+                for type in request.data['types'].split(','):
+                    if JobTypes.objects.filter(id=type).exists():
+                        job_type = JobTypes.objects.filter(id=type).first()
+                        job_request_types, created = JobRequests.objects.get_or_create(job_request=job_request,
+                                                                                        type=job_type)
+                return Response({"message", "Success"})
+        return Response({"message": "failure", "error": "missing required fields"})
+
+
 class UserWorksView(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin,
                     generics.GenericAPIView):
     queryset = Works.objects.all()

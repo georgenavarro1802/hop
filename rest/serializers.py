@@ -54,3 +54,9 @@ class WorksTypesSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = WorksTypes
         fields = ('work', 'type', 'work_name', 'type_name')
+
+
+class JobRequestsSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = JobRequests
+        fields = ('email', 'phone', 'notes')
