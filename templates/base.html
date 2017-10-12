@@ -59,7 +59,7 @@
             <ul class="right-navbar">
                 <li class="dropdown hoe-rheader-submenu hoe-header-profile">
                     <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
-                        <span><img class="img-circle " src="{{ myuser.download_avatar }}"></span>
+                        <span><img class="img-circle " src="{% if myuser.avatar %}{{ myuser.download_avatar }}{% else %}{% endif %}"></span>
                         <span>{{ myuser.user.first_name }} <b>{{ myuser.user.last_name }}</b> <i class=" fa fa-angle-down"></i></span>
                     </a>
                     <ul class="dropdown-menu ">
