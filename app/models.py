@@ -307,8 +307,8 @@ class WorksTypes(BaseModel):
         return "{} - {}".format(self.work, self.type)
 
     class Meta:
-        verbose_name = 'Work Type'
-        verbose_name_plural = 'Works Types '
+        verbose_name = 'Work - Type'
+        verbose_name_plural = 'Works - Types '
         db_table = 'works_types'
         unique_together = ('work', 'type')
 
@@ -338,7 +338,7 @@ class JobRequestsTypes(BaseModel):
         return "{} - {}".format(self.job_request, self.type)
 
     class Meta:
-        verbose_name = 'Job Request Type'
-        verbose_name_plural = 'Job Requests Types '
+        verbose_name = 'Job Request - Type'
+        verbose_name_plural = 'Job Requests - Types '
         db_table = 'job_requests_types'
         unique_together = ('job_request', 'type')

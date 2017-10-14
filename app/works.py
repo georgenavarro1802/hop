@@ -4,7 +4,7 @@ from django.shortcuts import render
 
 from app.forms import WorksForm
 from app.functions import bad_json, MiPaginator, ok_json, convertir_fecha_month_first
-from app.models import Works
+from app.models import Works, Users
 from app.views import adduserdata
 
 
@@ -32,17 +32,20 @@ def views(request):
                                          address=f.cleaned_data['address'],
                                          date=convertir_fecha_month_first(f.cleaned_data['date']),
                                          initial_time=f.cleaned_data['initial_time'],
-                                         notes=f.cleaned_data['notes'],
-                                         leader=f.cleaned_data['leader'],
-                                         support1=f.cleaned_data['support1'],
-                                         support2=f.cleaned_data['support2'],
-                                         support3=f.cleaned_data['support3'],
-                                         support4=f.cleaned_data['support4'],
-                                         support5=f.cleaned_data['support5'])
+                                         notes=f.cleaned_data['notes'])
                             work.save()
+
+                            if f.cleaned_data['leader']:
+                                work.leader = Users.objects.get(pk=f.cleaned_data['leader'].id)
+                                work.save()
+                                         # support1=f.cleaned_data['support1'],
+                                         # support2=f.cleaned_data['support2'],
+                                         # support3=f.cleaned_data['support3'],
+                                         # support4=f.cleaned_data['support4'],
+                                         # support5=f.cleaned_data['support5']
                             return ok_json(data={'redirect_url': '/works',
                                                  'msg': 'You have successfully created a new WORK.'})
-                    except Exception:
+                    except Exception as ex:
                         return bad_json(error=1)
                 else:
                     return bad_json(message="Form is not valid.")
