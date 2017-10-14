@@ -190,6 +190,7 @@ class JobRequestsDetail(generics.GenericAPIView):
                         if type and JobTypes.objects.filter(id=type).exists():
                             job_type = JobTypes.objects.filter(id=type).first()
                             job_request_types = JobRequestsTypes(job_request=job_request,type=job_type)
+                            job_request_types.save()
                     job_request.save()
                     return Response({"message": "Success"})
             return Response({"message": "failure", "error": "missing required fields"})
