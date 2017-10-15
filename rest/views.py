@@ -183,13 +183,18 @@ class JobRequestsDetail(generics.GenericAPIView):
             if 'notes' in request.data and request.data['notes']:
                 notes = request.data['notes']
 
+            print("1")
             if email and phone and notes:
                 job_request = JobRequests(email=email, phone=phone, notes=notes)
+                job_request.save()
                 if 'types' in request.data and request.data['types']:
                     for type in request.data['types'].split(','):
+                        print("2")
                         if type and JobTypes.objects.filter(id=type).exists():
                             job_type = JobTypes.objects.filter(id=type).first()
+                            print("3")
                             job_request_types = JobRequestsTypes(job_request=job_request,type=job_type)
+                            print("4")
                             job_request_types.save()
                     job_request.save()
                     return Response({"message": "Success"})
