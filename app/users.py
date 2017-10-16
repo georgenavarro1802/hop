@@ -1,11 +1,10 @@
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
 from django.db import transaction
-from django.db.models import Q
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 
 from app.forms import UsersForm
-from app.functions import bad_json, MiPaginator, ok_json, DEFAULT_PASSWORD, generate_file_name
+from app.functions import bad_json, ok_json, DEFAULT_PASSWORD, generate_file_name
 from app.models import Users
 from app.views import adduserdata
 
@@ -54,7 +53,7 @@ def views(request):
 
                             return ok_json(data={'redirect_url': '/users',
                                                  'msg': 'You have successfully created a new USER ({}).'.format(group)})
-                    except Exception as ex:
+                    except Exception:
                         return bad_json(error=1)
                 else:
                     return bad_json(message="Form is not valid.")

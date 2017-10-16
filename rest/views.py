@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.core.files.base import ContentFile
+from django.db import transaction
 from rest_framework import generics
 from rest_framework import mixins
 from rest_framework.response import Response
@@ -11,6 +12,7 @@ from app.models import JobRequests, JobTypes
 
 
 class ProjectsViewSet(mixins.ListModelMixin, generics.GenericAPIView):
+
     queryset = Projects.objects.all()
     serializer_class = ProjectsSerializers
 
@@ -19,6 +21,7 @@ class ProjectsViewSet(mixins.ListModelMixin, generics.GenericAPIView):
 
 
 class JobTypesViewSet(mixins.ListModelMixin, generics.GenericAPIView):
+
     queryset = JobTypes.objects.all()
     serializer_class = JobTypesSerializer
     permission_classes = (AllowAny, )
@@ -28,6 +31,7 @@ class JobTypesViewSet(mixins.ListModelMixin, generics.GenericAPIView):
 
 
 class CustomersViewSet(mixins.ListModelMixin, generics.GenericAPIView):
+
     queryset = Customers.objects.all()
     serializer_class = CustomersSerializer
 
@@ -36,6 +40,7 @@ class CustomersViewSet(mixins.ListModelMixin, generics.GenericAPIView):
 
 
 class UsersViewSet(mixins.ListModelMixin, generics.GenericAPIView):
+
     queryset = Users.objects.all()
     serializer_class = UsersSerializer
 
@@ -44,6 +49,7 @@ class UsersViewSet(mixins.ListModelMixin, generics.GenericAPIView):
 
 
 class WorksViewSet(mixins.ListModelMixin, generics.GenericAPIView):
+
     queryset = Works.objects.all()
     serializer_class = WorksSerializer
 
@@ -62,88 +68,87 @@ class WorksViewDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins
 
     def post(self, request, *args, **kwargs):
         try:
-            work = self.get_object()
-            if 'latitude' in request.data and request.data['latitude']:
-                latitude = request.data['latitude']
-                work.latitude_register = float(latitude)
-            if 'longitude' in request.data and request.data['longitude']:
-                longitude = request.data['longitude']
-                work.longitude_register = float(longitude)
-            if 'register_time' in request.data and request.data['register_time']:
-                register_time = request.data['register_time']
-                work.register_time = "{}".format(register_time)
-            if 'report' in request.data and request.data['report']:
-                report = request.data['report']
-                work.report = report
-            if 'job_types' in request.data and request.data['job_types']:
-                job_types = request.data['job_types'].split(',')
-                for job_type_id in job_types:
-                    if job_type_id:
-                        if JobTypes.objects.filter(id=job_type_id).exists():
+            with transaction.atomic():
+
+                work = self.get_object()
+
+                if 'latitude' in request.data and request.data['latitude']:
+                    latitude = request.data['latitude']
+                    work.latitude_register = float(latitude)
+
+                if 'longitude' in request.data and request.data['longitude']:
+                    longitude = request.data['longitude']
+                    work.longitude_register = float(longitude)
+
+                if 'register_time' in request.data and request.data['register_time']:
+                    register_time = request.data['register_time']
+                    work.register_time = "{}".format(register_time)
+
+                if 'report' in request.data and request.data['report']:
+                    report = request.data['report']
+                    work.report = report
+
+                if 'job_types' in request.data and request.data['job_types']:
+                    job_types = request.data['job_types'].split(',')
+                    for job_type_id in job_types:
+                        if job_type_id and JobTypes.objects.filter(id=job_type_id).exists():
                             job_type = JobTypes.objects.filter(id=job_type_id)[0]
-                            works_types, created = WorksTypes.objects.get_or_create(work=work, type=job_type)
-                            if not created:
-                                pass
+                            works_types = WorksTypes(work=work, type=job_type)
                             works_types.save()
 
-            imgdata = None
-            if 'photo1' in request.data:
-                uploaded_file = request.data['photo1']
-                imgdata = uploaded_file.file
-                if imgdata:
-                    print("name {}".format(uploaded_file._name))
-                    new_file_name = "{}_photo1.{}".format(work.address, uploaded_file.name)
-                    data = ContentFile(imgdata.read(), name=new_file_name)
-                    work.photo1 = data
+                if 'photo1' in request.data:
+                    uploaded_file = request.data['photo1']
+                    imgdata = uploaded_file.file
+                    if imgdata:
+                        print("name {}".format(uploaded_file._name))
+                        new_file_name = "{}_photo1.{}".format(work.address, uploaded_file.name)
+                        data = ContentFile(imgdata.read(), name=new_file_name)
+                        work.photo1 = data
 
-            imgdata = None
-            if 'photo2' in request.data:
-                uploaded_file = request.data['photo2']
-                imgdata = uploaded_file.file
-                if imgdata:
-                    new_file_name = "{}_photo2.{}".format(work.address, uploaded_file.name)
-                    data = ContentFile(imgdata.read(), name=new_file_name)
-                    work.photo2 = data
+                if 'photo2' in request.data:
+                    uploaded_file = request.data['photo2']
+                    imgdata = uploaded_file.file
+                    if imgdata:
+                        new_file_name = "{}_photo2.{}".format(work.address, uploaded_file.name)
+                        data = ContentFile(imgdata.read(), name=new_file_name)
+                        work.photo2 = data
 
-            imgdata = None
-            if 'photo3' in request.data:
-                uploaded_file = request.data['photo3']
-                imgdata = uploaded_file.file
-                if imgdata:
-                    new_file_name = "{}_photo3.{}".format(work.address, uploaded_file.name)
-                    data = ContentFile(imgdata.read(), name=new_file_name)
-                    work.photo3 = data
+                if 'photo3' in request.data:
+                    uploaded_file = request.data['photo3']
+                    imgdata = uploaded_file.file
+                    if imgdata:
+                        new_file_name = "{}_photo3.{}".format(work.address, uploaded_file.name)
+                        data = ContentFile(imgdata.read(), name=new_file_name)
+                        work.photo3 = data
 
-            imgdata = None
-            if 'photo4' in request.data:
-                uploaded_file = request.data['photo4']
-                imgdata = uploaded_file.file
-                if imgdata:
-                    new_file_name = "{}_photo4.{}".format(work.address, uploaded_file.name)
-                    data = ContentFile(imgdata.read(), name=new_file_name)
-                    work.photo4 = data
+                if 'photo4' in request.data:
+                    uploaded_file = request.data['photo4']
+                    imgdata = uploaded_file.file
+                    if imgdata:
+                        new_file_name = "{}_photo4.{}".format(work.address, uploaded_file.name)
+                        data = ContentFile(imgdata.read(), name=new_file_name)
+                        work.photo4 = data
 
-            imgdata = None
-            if 'sign' in request.data:
-                uploaded_file = request.data['sign']
-                imgdata = uploaded_file.file
-                if imgdata:
-                    new_file_name = "{}_sign.{}".format(work.address, uploaded_file.name)
-                    data = ContentFile(imgdata.read(), name=new_file_name)
-                    work.sign = data
-                    work.is_completed = True
+                if 'sign' in request.data:
+                    uploaded_file = request.data['sign']
+                    imgdata = uploaded_file.file
+                    if imgdata:
+                        new_file_name = "{}_sign.{}".format(work.address, uploaded_file.name)
+                        data = ContentFile(imgdata.read(), name=new_file_name)
+                        work.sign = data
+                        work.is_completed = True
 
-            if 'evaluation' in request.data and request.data['evaluation']:
-                evaluation = int(request.data['evaluation'])
-                work.evaluation = evaluation
+                if 'evaluation' in request.data and request.data['evaluation']:
+                    evaluation = int(request.data['evaluation'])
+                    work.evaluation = evaluation
 
-            if 'end_time' in request.data and request.data['end_time']:
-                end_time = request.data['end_time']
-                print("this is endtime {}".format(end_time))
-                work.end_time = end_time
+                if 'end_time' in request.data and request.data['end_time']:
+                    end_time = request.data['end_time']
+                    print("this is endtime {}".format(end_time))
+                    work.end_time = end_time
 
-            work.save()
-            return Response({"Message": "Success"})
+                work.save()
+                return Response({"Message": "Success"})
 
         except Exception as ex:
             print("ex {}".format(ex))
@@ -157,14 +162,21 @@ class CompleteWorksView(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixi
     serializer_class = WorksSerializer
 
     def post(self, request, *args, **kwargs):
-        work = self.get_object()
-        work.is_completed = True
-        if 'end_time' in request.data and request.data['end_time']:
-            work.end_time = request.data['end_time']
-        # Customer rating
-        # Customer Signature
-        work.save()
-        return Response({"message": "Success"})
+        try:
+            with transaction.atomic():
+
+                work = self.get_object()
+                work.is_completed = True
+
+                if 'end_time' in request.data and request.data['end_time']:
+                    work.end_time = request.data['end_time']
+
+                work.save()
+                return Response({"message": "Success"})
+
+        except Exception as ex:
+            print("ex {}".format(ex))
+            return Response({"Message": "Error"})
 
 
 class JobRequestsDetail(generics.GenericAPIView):
@@ -172,39 +184,46 @@ class JobRequestsDetail(generics.GenericAPIView):
     permission_classes = (AllowAny, )
 
     def post(self, request, *args, **kwargs):
-        try:
-            email = ''
-            phone = ''
-            notes = ''
-            if 'email' in request.data and request.data['email']:
-                email = request.data['email']
-            if 'phone' in request.data and request.data['phone']:
-                phone = request.data['phone']
-            if 'notes' in request.data and request.data['notes']:
-                notes = request.data['notes']
 
-            print("1")
-            if email and phone and notes:
-                job_request = JobRequests(email=email, phone=phone, notes=notes)
-                job_request.save()
-                if 'types' in request.data and request.data['types']:
-                    for type in request.data['types'].split(','):
-                        print("2")
-                        if type and JobTypes.objects.filter(id=type).exists():
-                            job_type = JobTypes.objects.filter(id=type).first()
-                            print("3")
-                            job_request_types = JobRequestsTypes(job_request=job_request,type=job_type)
-                            print("4")
-                            job_request_types.save()
+        try:
+            with transaction.atomic():
+
+                email = ''
+                phone = ''
+                notes = ''
+
+                if 'email' in request.data and request.data['email']:
+                    email = request.data['email']
+
+                if 'phone' in request.data and request.data['phone']:
+                    phone = request.data['phone']
+
+                if 'notes' in request.data and request.data['notes']:
+                    notes = request.data['notes']
+
+                if email and phone and notes:
+                    job_request = JobRequests(email=email, phone=phone, notes=notes)
                     job_request.save()
-                    return Response({"message": "Success"})
+
+                    if 'types' in request.data and request.data['types']:
+                        for type in request.data['types'].split(','):
+                            if type and JobTypes.objects.filter(id=type).exists():
+                                job_type = JobTypes.objects.filter(id=type).first()
+                                job_request_types = JobRequestsTypes(job_request=job_request, type=job_type)
+                                job_request_types.save()
+                        job_request.save()
+
+                        return Response({"message": "Success"})
+
             return Response({"message": "failure", "error": "missing required fields"})
+
         except Exception as ex:
             print(ex)
 
 
 class UserWorksView(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin,
                     generics.GenericAPIView):
+
     queryset = Works.objects.all()
     serializer_class = WorksSerializer
 

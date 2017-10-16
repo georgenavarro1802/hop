@@ -4,31 +4,37 @@ from app.models import *
 
 # Serializers define the API representation.
 class ProjectsSerializers(serializers.HyperlinkedModelSerializer):
+
     class Meta:
         model = Projects
         fields = ('id', 'name', 'created_at')
 
 
 class JobTypesSerializer(serializers.HyperlinkedModelSerializer):
+
     class Meta:
         model = JobTypes
         fields = ('id', 'name')
 
 
 class CustomersSerializer(serializers.HyperlinkedModelSerializer):
+
     class Meta:
         model = Customers
         fields = ('name', 'phone', 'email')
 
 
 class UsersSerializer(serializers.HyperlinkedModelSerializer):
+
     user = serializers.ReadOnlyField(source='user.id')
+
     class Meta:
         model = Users
         fields = ('user', 'phone', 'avatar', 'color_hoe_header', 'color_hoe_right_header', 'color_hoeapp_container')
 
 
 class WorksSerializer(serializers.HyperlinkedModelSerializer):
+
     project = serializers.ReadOnlyField(source='project.id')
     leader = serializers.ReadOnlyField(source='leader.id')
     support1 = serializers.ReadOnlyField(source='support1.id')
@@ -40,7 +46,7 @@ class WorksSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Works
-        fields = ('id','project', 'address', 'date', 'initial_time', 'leader',
+        fields = ('id', 'project', 'address', 'date', 'initial_time', 'leader',
                   'support1', 'support2', 'support3', 'support4', 'support5',
                   'register_time', 'latitude_register', 'longitude_register', 'end_time',
                   'report', 'photo1', 'photo2', 'photo3', 'photo4', 'is_completed', 'notes',
@@ -48,6 +54,7 @@ class WorksSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class WorksTypesSerializer(serializers.HyperlinkedModelSerializer):
+
     work = serializers.ReadOnlyField(source='work.id')
     type = serializers.ReadOnlyField(source='type.id')
     work_name = serializers.ReadOnlyField(source='work.name')
@@ -59,6 +66,7 @@ class WorksTypesSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class JobRequestsSerializer(serializers.HyperlinkedModelSerializer):
+
     class Meta:
         model = JobRequests
         fields = ('email', 'phone', 'notes')
