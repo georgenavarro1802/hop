@@ -9,7 +9,8 @@
 </p>
 
 <h4>WORK DETAILS</h4>
-<p>Date:  {{ work.created_at|date:'m-d-Y' }} ({{ work.created_at|date:'H:i' }}) </p>
+<p>Date:  {{ work.date|date:'m-d-Y' }} </p>
+<p>Initial Time: {{ work.initial_time }} | Register Time: {{ work.register_time }} | End Time: {{ work.end_time }}) </p>
 <p>Project:  {{ work.project }} </p>
 <p>Customer:  {{ work.customer }} </p>
 <p>Address:  {{ work.address }} </p>
@@ -19,41 +20,41 @@
     Customer Evaluation:
     <span style="margin-left: 1em">
         {% if work.evaluation == 1 %}
-            <img src="{% static 'images/star1.png' %}">
-            <img src="{% static 'images/star0.png' %}">
-            <img src="{% static 'images/star0.png' %}">
-            <img src="{% static 'images/star0.png' %}">
-            <img src="{% static 'images/star0.png' %}">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-o"></i>
+            <i class="fa fa-star-o"></i>
+            <i class="fa fa-star-o"></i>
+            <i class="fa fa-star-o"></i>
         {% elif work.evaluation == 2 %}
-            <img src="{% static 'images/star1.png' %}">
-            <img src="{% static 'images/star1.png' %}">
-            <img src="{% static 'images/star0.png' %}">
-            <img src="{% static 'images/star0.png' %}">
-            <img src="{% static 'images/star0.png' %}">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-o"></i>
+            <i class="fa fa-star-o"></i>
+            <i class="fa fa-star-o"></i>
         {% elif work.evaluation == 3 %}
-            <img src="{% static 'images/star1.png' %}">
-            <img src="{% static 'images/star1.png' %}">
-            <img src="{% static 'images/star1.png' %}">
-            <img src="{% static 'images/star0.png' %}">
-            <img src="{% static 'images/star0.png' %}">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-o"></i>
+            <i class="fa fa-star-o"></i>
         {% elif work.evaluation == 4 %}
-            <img src="{% static 'images/star1.png' %}">
-            <img src="{% static 'images/star1.png' %}">
-            <img src="{% static 'images/star1.png' %}">
-            <img src="{% static 'images/star1.png' %}">
-            <img src="{% static 'images/star0.png' %}">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-o"></i>
         {% elif work.evaluation == 5 %}
-            <img src="{% static 'images/star1.png' %}">
-            <img src="{% static 'images/star1.png' %}">
-            <img src="{% static 'images/star1.png' %}">
-            <img src="{% static 'images/star1.png' %}">
-            <img src="{% static 'images/star1.png' %}">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
         {% else %}
-            <img src="{% static 'images/star0.png' %}">
-            <img src="{% static 'images/star0.png' %}">
-            <img src="{% static 'images/star0.png' %}">
-            <img src="{% static 'images/star0.png' %}">
-            <img src="{% static 'images/star0.png' %}">
+            <i class="fa fa-star-o"></i>
+            <i class="fa fa-star-o"></i>
+            <i class="fa fa-star-o"></i>
+            <i class="fa fa-star-o"></i>
+            <i class="fa fa-star-o"></i>
         {% endif %}
     </span>
 </h4>
