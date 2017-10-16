@@ -2,14 +2,13 @@
 
 <h4>JOB REQUESTS - HOP CONTRACTING APP</h4>
 
-<p>
-    <b>Congratulations!!!</b>
-    <br/>
-    We have received a notification that a new job request has been successfully registered.
-</p>
+<p>We have received a notification that a new job request has been successfully registered.</p>
 
 <h4>JOB REQUESTS DETAILS</h4>
-<p>Date:  {{ job_request.created|date:'m-d-Y' }} ({{ job_request.created|date:'H:i' }}) </p>
+<p>Date:  {{ job_request.created_at|date:'m-d-Y' }} ({{ job_request.created_at|date:'H:i' }}) </p>
 <p>Email:  {{ job_request.email }} </p>
 <p>Phone:  {{ job_request.phone }} </p>
-<p>Notes:  {{ job_request.notes }} </p>
+<p>
+    <b>Note:</b> <br/>
+    {{ job_request.notes }}
+</p>
