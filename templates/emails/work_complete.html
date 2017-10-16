@@ -15,8 +15,4 @@
 <p>Customer:  {{ work.customer }} </p>
 <p>Address:  {{ work.address }} </p>
 <p>Leader:  {{ work.leader }} </p>
-
-<h4>
-    Customer Evaluation:
-    {% if work.evaluation == 1 %} BAD {% elif work.evaluation == 2 %} REGULAR {% elif work.evaluation == 3 %} GOOD {% elif work.evaluation == 4 %} VERY GOOD {% elif work.evaluation == 5 %} EXCELLENT {% else%} NO EVALUATION {% endif %}
-</h4>
+<p>Customer Evaluation: <b>{% if work.evaluation == 1 %} BAD {% elif work.evaluation == 2 %} REGULAR {% elif work.evaluation == 3 %} GOOD {% elif work.evaluation == 4 %} VERY GOOD {% elif work.evaluation == 5 %} EXCELLENT {% else%} NO EVALUATION {% endif %}</b></p>
