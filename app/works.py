@@ -4,7 +4,7 @@ from django.shortcuts import render
 
 from app.forms import WorksForm
 from app.functions import bad_json, MiPaginator, ok_json, convertir_fecha_month_first
-from app.models import Works, Users
+from app.models import Works
 from app.views import adduserdata
 
 
@@ -35,14 +35,13 @@ def views(request):
                                          notes=f.cleaned_data['notes'])
                             work.save()
 
-                            if f.cleaned_data['leader']:
-                                work.leader = Users.objects.get(pk=f.cleaned_data['leader'].id)
-                                work.save()
-                                         # support1=f.cleaned_data['support1'],
-                                         # support2=f.cleaned_data['support2'],
-                                         # support3=f.cleaned_data['support3'],
-                                         # support4=f.cleaned_data['support4'],
-                                         # support5=f.cleaned_data['support5']
+                            work.leader = f.cleaned_data['leader']
+                            work.support1 = f.cleaned_data['support1'],
+                            work.support2 = f.cleaned_data['support2'],
+                            work.support3 = f.cleaned_data['support3'],
+                            work.support4 = f.cleaned_data['support4'],
+                            work.support5 = f.cleaned_data['support5']
+                            work.save()
                             return ok_json(data={'redirect_url': '/works',
                                                  'msg': 'You have successfully created a new WORK.'})
                     except Exception as ex:
@@ -86,6 +85,8 @@ def views(request):
                 work = Works.objects.get(pk=int(request.POST['id']))
                 try:
                     with transaction.atomic():
+                        if work.workstypes_set.exists():
+                            work.workstypes_set.all().delete()
                         work.delete()
                         return ok_json(data={'redirect_url': '/works',
                                              'msg': 'You have successfully deleted the WORK.'})

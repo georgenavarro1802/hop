@@ -7,6 +7,8 @@ from rest_framework import mixins
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 
+from hop.settings import EMAIL_ACTIVE, CONTACT_EMAILS
+from rest.functions import send_html_mail
 from rest.serializers import *
 from app.models import JobRequests, JobTypes
 
@@ -144,10 +146,16 @@ class WorksViewDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins
 
                 if 'end_time' in request.data and request.data['end_time']:
                     end_time = request.data['end_time']
-                    print("this is endtime {}".format(end_time))
                     work.end_time = end_time
 
                 work.save()
+
+                if EMAIL_ACTIVE and work.end_time:
+                    send_html_mail("HOP App - Complete Works",
+                                   "emails/work_complete.html",
+                                   {'work': work},
+                                   CONTACT_EMAILS)
+
                 return Response({"Message": "Success"})
 
         except Exception as ex:
@@ -212,6 +220,12 @@ class JobRequestsDetail(generics.GenericAPIView):
                                 job_request_types = JobRequestsTypes(job_request=job_request, type=job_type)
                                 job_request_types.save()
                         job_request.save()
+
+                        if EMAIL_ACTIVE and job_request:
+                            send_html_mail("HOP App - Job Requests",
+                                           "emails/job_request.html",
+                                           {'job_request': job_request},
+                                           CONTACT_EMAILS)
 
                         return Response({"message": "Success"})
 

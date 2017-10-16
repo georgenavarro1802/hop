@@ -1,0 +1,58 @@
+{% load static %}
+
+<h4>COMPLETE WORK - HOP CONTRACTING APP</h4>
+
+<p>
+    <b>Congratulations!!!</b>
+    <br/>
+    We have received a notification that a job has been successfully completed.
+</p>
+
+<h4>WORK DETAILS</h4>
+<p>Date:  {{ work.created|date:'m-d-Y' }} ({{ work.created|date:'H:i' }}) </p>
+<p>Project:  {{ work.project }} </p>
+<p>Customer:  {{ work.customer }} </p>
+<p>Address:  {{ work.address }} </p>
+<p>Leader:  {{ work.leader }} </p>
+
+<h4>Customer Evaluation</h4>
+
+<p>
+    {% if work.evaluation == 1 %}
+        <img src="{% static 'images/star1.png' %}">
+        <img src="{% static 'images/star0.png' %}">
+        <img src="{% static 'images/star0.png' %}">
+        <img src="{% static 'images/star0.png' %}">
+        <img src="{% static 'images/star0.png' %}">
+    {% elif work.evaluation == 2 %}
+        <img src="{% static 'images/star1.png' %}">
+        <img src="{% static 'images/star1.png' %}">
+        <img src="{% static 'images/star0.png' %}">
+        <img src="{% static 'images/star0.png' %}">
+        <img src="{% static 'images/star0.png' %}">
+    {% elif work.evaluation == 3 %}
+        <img src="{% static 'images/star1.png' %}">
+        <img src="{% static 'images/star1.png' %}">
+        <img src="{% static 'images/star1.png' %}">
+        <img src="{% static 'images/star0.png' %}">
+        <img src="{% static 'images/star0.png' %}">
+    {% elif work.evaluation == 4 %}
+        <img src="{% static 'images/star1.png' %}">
+        <img src="{% static 'images/star1.png' %}">
+        <img src="{% static 'images/star1.png' %}">
+        <img src="{% static 'images/star1.png' %}">
+        <img src="{% static 'images/star0.png' %}">
+    {% elif work.evaluation == 5 %}
+        <img src="{% static 'images/star1.png' %}">
+        <img src="{% static 'images/star1.png' %}">
+        <img src="{% static 'images/star1.png' %}">
+        <img src="{% static 'images/star1.png' %}">
+        <img src="{% static 'images/star1.png' %}">
+    {% else %}
+        <img src="{% static 'images/star0.png' %}">
+        <img src="{% static 'images/star0.png' %}">
+        <img src="{% static 'images/star0.png' %}">
+        <img src="{% static 'images/star0.png' %}">
+        <img src="{% static 'images/star0.png' %}">
+    {% endif %}
+</p>

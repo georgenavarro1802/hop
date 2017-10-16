@@ -57,6 +57,8 @@ def views(request):
                 project = Projects.objects.get(pk=int(request.POST['id']))
                 try:
                     with transaction.atomic():
+                        if project.works_set.exists():
+                            project.works_set.all().delete()
                         project.delete()
                         return ok_json(data={'redirect_url': '/projects',
                                              'msg': 'You have successfully deleted the PROJECT.'})
