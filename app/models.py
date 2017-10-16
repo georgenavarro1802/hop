@@ -316,7 +316,7 @@ class WorksTypes(BaseModel):
 class JobRequests(BaseModel):
     email = models.CharField(max_length=200, blank=True, null=True, verbose_name='Email')
     phone = models.CharField(max_length=100, blank=True, null=True, verbose_name='Phone')
-    notes = models.TextField(blank=True, null=True, verbose_name='Phone')
+    notes = models.TextField(blank=True, null=True, verbose_name='Notes')
 
     def __str__(self):
         return "Job Request: {}".format(self.email)

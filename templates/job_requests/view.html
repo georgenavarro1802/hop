@@ -19,6 +19,7 @@
                     <th style="width: 170px">Phone</th>
                     <th>Notes</th>
                     <th style="width: 120px" class="text-center">Created</th>
+                    <th style="width: 40px"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -29,6 +30,9 @@
                         <td class="my-vertical-align font14">{{ j.phone }}</td>
                         <td class="my-vertical-align font12">{{ j.notes }}</td>
                         <td class="my-vertical-align text-center font12">{{ j.created_at|date:'m-d-Y' }}</td>
+                        <td class="my-vertical-align text-center">
+                            <a class="btn btn-danger btn-xs" href="{% url 'job_requests' %}?action=delete&id={{ j.id }}" title="Delete"><i class="fa fa-times"></i></a>
+                        </td>
                     </tr>
                 {% empty %}
                     <tr>

@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, render
 
 from app.functions import (NOMBRE_INSTITUCION, bad_json, ok_json)
 from app.models import Users, Projects, Works, Customers, JobRequests
@@ -105,5 +105,39 @@ def set_color_hoeapp_container(request):
 def job_requests(request):
     data = {'title': 'Job Requests'}
     adduserdata(request, data)
+
+    if request.method == 'POST':
+        if 'action' in request.POST:
+            action = request.POST['action']
+
+            if action == 'delete':
+                job_request = JobRequests.objects.get(pk=int(request.POST['id']))
+                try:
+                    with transaction.atomic():
+                        if job_request.jobrequeststypes_set.exists():
+                            job_request.jobrequeststypes_set.all().delete()
+                        job_request.delete()
+                        return ok_json(data={'redirect_url': '/job_requests',
+                                             'msg': 'You have successfully deleted the JOB REQUEST.'})
+                except Exception:
+                    return bad_json(error=3)
+
+        return bad_json(error=0)
+
+    else:
+
+        if 'action' in request.GET:
+            if 'action' in request.GET:
+                action = request.GET['action']
+
+                if action == 'delete':
+                    try:
+                        data['title'] = 'Delete Job Request'
+                        data['job_request'] = JobRequests.objects.get(pk=request.GET['id'])
+                        data['is_delete'] = True
+                        return render(request, 'job_requests/delete.html', data)
+                    except Exception:
+                        pass
+
     data['job_requests'] = JobRequests.objects.order_by('-created_at')
-    return render_to_response('job_requests.html', data)
+    return render_to_response('job_requests/view.html', data)

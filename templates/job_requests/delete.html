@@ -1,0 +1,18 @@
+{% extends "forms.html" %}
+
+{% block extraheading %}
+    <script>
+        $("#job_request").addClass("active");
+    </script>
+{% endblock %}
+
+{% block form-title %}{{ title }}{% endblock %}
+{% block form-action %}{% url 'job_requests' %}{% endblock %}
+{% block form-extra %}
+    <input type='hidden' name='action' value='delete'/>
+    <input type='hidden' name='id' value='{{ job_request.id }}'/>
+{% endblock %}
+{% block form-back %}{% url 'job_requests' %}{% endblock %}
+{% block form-object %}{{ job_request }}{% endblock %}
+{% block buttonname %}YES{% endblock %}
+{% block buttoncancel %}NO{% endblock %}
