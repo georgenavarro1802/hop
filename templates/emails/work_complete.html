@@ -15,44 +15,45 @@
 <p>Address:  {{ work.address }} </p>
 <p>Leader:  {{ work.leader }} </p>
 
-<h4>Customer Evaluation</h4>
-
-<p>
-    {% if work.evaluation == 1 %}
-        <img src="{% static 'images/star1.png' %}">
-        <img src="{% static 'images/star0.png' %}">
-        <img src="{% static 'images/star0.png' %}">
-        <img src="{% static 'images/star0.png' %}">
-        <img src="{% static 'images/star0.png' %}">
-    {% elif work.evaluation == 2 %}
-        <img src="{% static 'images/star1.png' %}">
-        <img src="{% static 'images/star1.png' %}">
-        <img src="{% static 'images/star0.png' %}">
-        <img src="{% static 'images/star0.png' %}">
-        <img src="{% static 'images/star0.png' %}">
-    {% elif work.evaluation == 3 %}
-        <img src="{% static 'images/star1.png' %}">
-        <img src="{% static 'images/star1.png' %}">
-        <img src="{% static 'images/star1.png' %}">
-        <img src="{% static 'images/star0.png' %}">
-        <img src="{% static 'images/star0.png' %}">
-    {% elif work.evaluation == 4 %}
-        <img src="{% static 'images/star1.png' %}">
-        <img src="{% static 'images/star1.png' %}">
-        <img src="{% static 'images/star1.png' %}">
-        <img src="{% static 'images/star1.png' %}">
-        <img src="{% static 'images/star0.png' %}">
-    {% elif work.evaluation == 5 %}
-        <img src="{% static 'images/star1.png' %}">
-        <img src="{% static 'images/star1.png' %}">
-        <img src="{% static 'images/star1.png' %}">
-        <img src="{% static 'images/star1.png' %}">
-        <img src="{% static 'images/star1.png' %}">
-    {% else %}
-        <img src="{% static 'images/star0.png' %}">
-        <img src="{% static 'images/star0.png' %}">
-        <img src="{% static 'images/star0.png' %}">
-        <img src="{% static 'images/star0.png' %}">
-        <img src="{% static 'images/star0.png' %}">
-    {% endif %}
-</p>
+<h4>
+    Customer Evaluation:
+    <span style="margin-left: 1em">
+        {% if work.evaluation == 1 %}
+            <img src="{% static 'images/star1.png' %}">
+            <img src="{% static 'images/star0.png' %}">
+            <img src="{% static 'images/star0.png' %}">
+            <img src="{% static 'images/star0.png' %}">
+            <img src="{% static 'images/star0.png' %}">
+        {% elif work.evaluation == 2 %}
+            <img src="{% static 'images/star1.png' %}">
+            <img src="{% static 'images/star1.png' %}">
+            <img src="{% static 'images/star0.png' %}">
+            <img src="{% static 'images/star0.png' %}">
+            <img src="{% static 'images/star0.png' %}">
+        {% elif work.evaluation == 3 %}
+            <img src="{% static 'images/star1.png' %}">
+            <img src="{% static 'images/star1.png' %}">
+            <img src="{% static 'images/star1.png' %}">
+            <img src="{% static 'images/star0.png' %}">
+            <img src="{% static 'images/star0.png' %}">
+        {% elif work.evaluation == 4 %}
+            <img src="{% static 'images/star1.png' %}">
+            <img src="{% static 'images/star1.png' %}">
+            <img src="{% static 'images/star1.png' %}">
+            <img src="{% static 'images/star1.png' %}">
+            <img src="{% static 'images/star0.png' %}">
+        {% elif work.evaluation == 5 %}
+            <img src="{% static 'images/star1.png' %}">
+            <img src="{% static 'images/star1.png' %}">
+            <img src="{% static 'images/star1.png' %}">
+            <img src="{% static 'images/star1.png' %}">
+            <img src="{% static 'images/star1.png' %}">
+        {% else %}
+            <img src="{% static 'images/star0.png' %}">
+            <img src="{% static 'images/star0.png' %}">
+            <img src="{% static 'images/star0.png' %}">
+            <img src="{% static 'images/star0.png' %}">
+            <img src="{% static 'images/star0.png' %}">
+        {% endif %}
+    </span>
+</h4>
