@@ -6,7 +6,7 @@ from django.db import transaction
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, render
 
-from app.functions import (NOMBRE_INSTITUCION, bad_json, ok_json)
+from app.functions import (NOMBRE_INSTITUCION, bad_json, ok_json, MiPaginator)
 from app.models import Users, Projects, Works, Customers, JobRequests
 
 
@@ -139,5 +139,17 @@ def job_requests(request):
                     except Exception:
                         pass
 
-    data['job_requests'] = JobRequests.objects.order_by('-created_at')
+    job_request = JobRequests.objects.order_by('-created_at')
+    paging = MiPaginator(job_request, 17)
+
+    p = 1
+    if 'page' in request.GET:
+        p = int(request.GET['page'])
+    page = paging.page(p)
+
+    data['paging'] = paging
+    data['ranges_paging'] = paging.pages_range(p)
+    data['page'] = page
+    data['job_requests'] = page.object_list
+
     return render_to_response('job_requests/view.html', data)
