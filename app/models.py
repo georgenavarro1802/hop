@@ -4,8 +4,8 @@ from django.db import models, router
 from django.db.models import Q
 from django.db.models.deletion import Collector
 
-from app.functions import (EVALUATION_TYPES, USER_GROUP_ADMINISTRATOR_ID, USER_GROUP_PROJECT_MANAGER_ID,
-                           USER_GROUP_PROJECT_SUPERVISOR_ID, USER_GROUP_PROJECT_TECHNICIAN_ID)
+from app.functions import (USER_GROUP_ADMINISTRATOR_ID, USER_GROUP_TECHNICIAN_ID, USER_GROUP_HOTWIRE_ID,
+                           EVALUATION_TYPES, USERS_GROUPS)
 
 
 class BaseModel(models.Model):
@@ -137,6 +137,7 @@ class Customers(BaseModel):
 
 class Users(BaseModel):
     user = models.ForeignKey(User)
+    group = models.IntegerField(choices=USERS_GROUPS, default=USER_GROUP_TECHNICIAN_ID)
     phone = models.CharField(max_length=100, blank=True, null=True)
     avatar = models.FileField(upload_to='avatars/', max_length=100, blank=True, null=True)
     # Interface preferences
@@ -160,30 +161,24 @@ class Users(BaseModel):
         return self.avatar.url
 
     def user_group_name(self):
-        mygroups = self.user.groups.all()
-        if USER_GROUP_ADMINISTRATOR_ID in [x.id for x in mygroups]:
+        if self.group == USER_GROUP_ADMINISTRATOR_ID:
             mygroup = "Admin"
-        elif USER_GROUP_PROJECT_MANAGER_ID in [x.id for x in mygroups]:
-            mygroup = "Project Manager"
-        elif USER_GROUP_PROJECT_SUPERVISOR_ID in [x.id for x in mygroups]:
-            mygroup = "Supervisor"
-        elif USER_GROUP_PROJECT_TECHNICIAN_ID in [x.id for x in mygroups]:
+        elif self.group == USER_GROUP_TECHNICIAN_ID:
             mygroup = "Technician"
+        elif self.group == USER_GROUP_HOTWIRE_ID:
+            mygroup = "Hotwire"
         else:
             mygroup = "N/A"
         return mygroup
 
     def is_admin(self):
-        return USER_GROUP_ADMINISTRATOR_ID in [x.id for x in self.user.groups.all()]
-
-    def is_project_manager(self):
-        return USER_GROUP_PROJECT_MANAGER_ID in [x.id for x in self.user.groups.all()]
-
-    def is_supervisor(self):
-        return USER_GROUP_PROJECT_SUPERVISOR_ID in [x.id for x in self.user.groups.all()]
+        return self.group == USER_GROUP_ADMINISTRATOR_ID
 
     def is_technician(self):
-        return USER_GROUP_PROJECT_TECHNICIAN_ID in [x.id for x in self.user.groups.all()]
+        return self.group == USER_GROUP_TECHNICIAN_ID
+
+    def is_hotwire(self):
+        return self.group == USER_GROUP_HOTWIRE_ID
 
     def has_relations(self):
         return self.leader.exists() or \

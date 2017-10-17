@@ -12,6 +12,10 @@ from app.views import adduserdata
 def views(request):
     data = {'title': 'USERS'}
     adduserdata(request, data)
+
+    if data['is_hotwire']:
+        return HttpResponseRedirect('/works')
+
     if request.method == 'POST':
 
         if 'action' in request.POST:
@@ -35,14 +39,13 @@ def views(request):
                                                first_name=f.cleaned_data['first_name'],
                                                last_name=f.cleaned_data['last_name'],
                                                email=f.cleaned_data['email'])
+
                             django_user.set_password(DEFAULT_PASSWORD)
                             django_user.save()
 
-                            group = f.cleaned_data['group']
-                            group.user_set.add(django_user)
-                            group.save()
-
-                            myuser = Users(user=django_user, phone=f.cleaned_data['phone'])
+                            myuser = Users(user=django_user,
+                                           group=f.cleaned_data['group'],
+                                           phone=f.cleaned_data['phone'])
                             myuser.save()
 
                             if 'avatar' in request.FILES:
@@ -51,8 +54,8 @@ def views(request):
                                 myuser.avatar = nfile
                                 myuser.save()
 
-                            return ok_json(data={'redirect_url': '/users',
-                                                 'msg': 'You have successfully created a new USER ({}).'.format(group)})
+                            return ok_json(data={'redirect_url': '/users', 'msg': 'Successfully created a new USER ({})'.format(myuser.user_group_name())})
+
                     except Exception:
                         return bad_json(error=1)
                 else:
@@ -80,12 +83,7 @@ def views(request):
                             django_user.email = f.cleaned_data['email']
                             django_user.save()
 
-                            # Remove the currents groups and associate a new group to the user
-                            django_user.groups.all().delete()
-                            group = f.cleaned_data['group']
-                            group.user_set.add(django_user)
-                            group.save()
-
+                            myuser.group = int(f.cleaned_data['group'])
                             myuser.phone = f.cleaned_data['phone']
                             myuser.save()
 
@@ -96,7 +94,7 @@ def views(request):
                                 myuser.save()
 
                             return ok_json(data={'redirect_url': '/users',
-                                                 'msg': 'You have successfully edited the USER ({}).'.format(group)})
+                                                 'msg': 'Successfully edited the USER ({})'.format(myuser.user_group_name())})
                     except Exception:
                         return bad_json(error=2)
                 else:
@@ -135,15 +133,15 @@ def views(request):
                         data['title'] = 'Edit User'
                         data['myuser'] = myuser = Users.objects.get(pk=request.GET['id'])
                         user = myuser.user
-                        data['form'] = UsersForm(initial={'group': user.groups.all()[0],
-                                                          'username': user.username,
+                        data['form'] = UsersForm(initial={'username': user.username,
                                                           'first_name': user.first_name,
                                                           'last_name': user.last_name,
                                                           'email': user.email,
                                                           'phone': myuser.phone,
-                                                          'avatar': myuser.avatar})
+                                                          'group': myuser.group,
+                                                          'avatar': myuser.avatar.url if myuser.avatar else ""})
                         return render(request, 'users/edit.html', data)
-                    except Exception:
+                    except Exception as ex:
                         pass
 
                 if action == 'delete':
@@ -152,7 +150,7 @@ def views(request):
                         data['myuser'] = Users.objects.get(pk=request.GET['id'])
                         data['is_delete'] = True
                         return render(request, 'users/delete.html', data)
-                    except Exception:
+                    except Exception as ex:
                         pass
 
             return HttpResponseRedirect('/users')

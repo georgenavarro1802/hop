@@ -29,52 +29,48 @@
 <body hoe-navigation-type="vertical-compact" hoe-nav-placement="left" style="background-color: white">
 
 <div id="hoeapp-wrapper" class="hoe-hide-lpanel" hoe-device-type="desktop">
-    <header id="hoe-header" hoe-lpanel-effect="shrink" class="hoe-minimized-lpanel" hoe-color-type="logo-bg{{ myuser.color_hoe_header }}">
-        <div class="hoe-left-header">
 
-            <a href="javascript:void(0)">
-                <i class="fa fa-certificate"></i>
-                <span>HOP Contracting</span>
-            </a>
-            <span class="hoe-sidebar-toggle">
-                <a href="javascript:void(0)"></a>
-            </span>
-        </div>
+    <header id="hoe-header" hoe-lpanel-effect="shrink" class="hoe-minimized-lpanel" hoe-color-type="logo-bg{{ myuser.color_hoe_header }}">
+
+        {% if is_administrator %}
+            <div class="hoe-left-header">
+                <a href="javascript:void(0)">
+                    <i class="fa fa-certificate"></i>
+                    <span>HOP Contracting</span>
+                </a>
+                <span class="hoe-sidebar-toggle">
+                    <a href="javascript:void(0)"></a>
+                </span>
+            </div>
+
+        {% endif %}
 
         <div class="hoe-right-header" hoe-position-type="relative" hoe-color-type="header-bg{{ myuser.color_hoe_right_header }}">
 
-            <span class="hoe-sidebar-toggle">
-                <a href="javascript:void(0)"></a>
-            </span>
+            {% if is_administrator %}
+                <span class="hoe-sidebar-toggle">
+                    <a href="javascript:void(0)"></a>
+                </span>
 
-            <ul class="left-navbar">
-                <li>
-                    <form method="post" class="hoe-searchbar">
-                        <input type="text" placeholder="Search..." name="keyword" class="form-control">
-                        <span class="search-icon"><i class="fa fa-search"></i></span>
-                    </form>
-                </li>
-            </ul>
+                <ul class="left-navbar">
+                    <li>
+                        <form method="post" class="hoe-searchbar">
+                            <input type="text" placeholder="Search..." name="keyword" class="form-control">
+                            <span class="search-icon"><i class="fa fa-search"></i></span>
+                        </form>
+                    </li>
+                </ul>
+            {% endif %}
 
             <ul class="right-navbar">
                 <li class="dropdown hoe-rheader-submenu hoe-header-profile">
                     <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
-                        <span><img class="img-circle " src="{% if myuser.avatar %}{{ myuser.download_avatar }}{% else %}{% endif %}"></span>
-                        <span>{{ myuser.user.first_name }} <b>{{ myuser.user.last_name }}</b> <i class=" fa fa-angle-down"></i></span>
+                        <span><img class="img-circle " style="width: 30px!important; height: 30px!important;" src="{% if myuser.avatar %}{{ myuser.download_avatar }}{% else %}{% endif %}"></span>
+                        <span style="margin-left: 1em">{{ myuser.user.first_name }} <b>{{ myuser.user.last_name }}</b> <i class=" fa fa-angle-down"></i></span>
                     </a>
                     <ul class="dropdown-menu ">
-                        <li><a href="javascript:void(0)"><i class="fa fa-lock"></i>Change Password</a></li>
                         <li><a href="{% url 'logout' %}"><i class="fa fa-power-off"></i>Logout</a></li>
-                        {#                        <li><a href="javascript:void(0)"><i class="fa fa-user"></i>My Profile</a></li>#}
-                        {#                        <li><a href="javascript:void(0)"><i class="fa fa-calendar"></i>My Calendar</a></li>#}
-{#                        <li>#}
-{#                            <a href="javascript:void(0)"><i class="fa fa-envelope"></i>My Inbox  <span class="badge badge-danger">3 </span></a>#}
-{#                        </li>#}
-{#                        <li>#}
-{#                            <a href="javascript:void(0)"><i class="fa fa-rocket"></i>My Tasks <span class="badge badge-success">7 </span></a>#}
-{#                        </li>#}
-{#                        <li><a href="javascript:void(0)"><i class="fa fa-lock"></i>Lock Screen</a></li>#}
-
+                        {#  <li><a href="javascript:void(0)"><i class="fa fa-lock"></i>Change Password</a></li>#}
                     </ul>
                 </li>
             </ul>
@@ -83,7 +79,9 @@
     </header>
 
     <div id="hoeapp-container" hoe-lpanel-effect="shrink" class="hoe-minimized-lpanel" hoe-color-type="lpanel-bg{{ myuser.color_hoeapp_container }}">
-        <aside id="hoe-left-panel" hoe-position-type="absolute">
+
+        {% if is_administrator %}
+            <aside id="hoe-left-panel" hoe-position-type="absolute">
             <div class="profile-box">
                 <div class="media">
                     <a class="pull-left" href="javascript:void(0)">
@@ -198,6 +196,7 @@
                 </li>
             </ul>
         </aside>
+        {% endif %}
 
         <!-- Main CONTENT CANVAS -->
         <section id="main-content" style="background-color: white">
@@ -214,20 +213,39 @@
                 <li>
                     <p class="selector-title">Style Selector</p>
                 </li>
-                <li class="theme-option">
-                    <span class="sub-title">Logo Color BG Option</span>
-                    <div id="theme-color">
-                        <a href="javascript:void(0)" class="logo-bg" hoe-color-type="logo-bg1">&nbsp;</a>
-                        <a href="javascript:void(0)" class="logo-bg" hoe-color-type="logo-bg2">&nbsp;</a>
-                        <a href="javascript:void(0)" class="logo-bg" hoe-color-type="logo-bg3">&nbsp;</a>
-                        <a href="javascript:void(0)" class="logo-bg" hoe-color-type="logo-bg4">&nbsp;</a>
-                        <a href="javascript:void(0)" class="logo-bg" hoe-color-type="logo-bg5">&nbsp;</a>
-                        <a href="javascript:void(0)" class="logo-bg" hoe-color-type="logo-bg6">&nbsp;</a>
-                        <a href="javascript:void(0)" class="logo-bg" hoe-color-type="logo-bg7">&nbsp;</a>
-                        <a href="javascript:void(0)" class="logo-bg" hoe-color-type="logo-bg8">&nbsp;</a>
-                        <a href="javascript:void(0)" class="logo-bg" hoe-color-type="logo-bg9">&nbsp;</a>
-                    </div>
-                </li>
+                {% if is_administrator %}
+                    <li class="theme-option">
+                        <span class="sub-title">Logo Color BG Option</span>
+                        <div id="theme-color">
+                            <a href="javascript:void(0)" class="logo-bg" hoe-color-type="logo-bg1">&nbsp;</a>
+                            <a href="javascript:void(0)" class="logo-bg" hoe-color-type="logo-bg2">&nbsp;</a>
+                            <a href="javascript:void(0)" class="logo-bg" hoe-color-type="logo-bg3">&nbsp;</a>
+                            <a href="javascript:void(0)" class="logo-bg" hoe-color-type="logo-bg4">&nbsp;</a>
+                            <a href="javascript:void(0)" class="logo-bg" hoe-color-type="logo-bg5">&nbsp;</a>
+                            <a href="javascript:void(0)" class="logo-bg" hoe-color-type="logo-bg6">&nbsp;</a>
+                            <a href="javascript:void(0)" class="logo-bg" hoe-color-type="logo-bg7">&nbsp;</a>
+                            <a href="javascript:void(0)" class="logo-bg" hoe-color-type="logo-bg8">&nbsp;</a>
+                            <a href="javascript:void(0)" class="logo-bg" hoe-color-type="logo-bg9">&nbsp;</a>
+                        </div>
+                    </li>
+                    <li class="theme-option">
+                        <span class="sub-title">Left Panel BG Color Option</span>
+                        <div id="theme-color">
+                            <a href="javascript:void(0)" class="lpanel-bg" hoe-color-type="lpanel-bg1">&nbsp;</a>
+                            <a href="javascript:void(0)" class="lpanel-bg" hoe-color-type="lpanel-bg2">&nbsp;</a>
+                            <a href="javascript:void(0)" class="lpanel-bg" hoe-color-type="lpanel-bg3">&nbsp;</a>
+                            <a href="javascript:void(0)" class="lpanel-bg" hoe-color-type="lpanel-bg4">&nbsp;</a>
+                            <a href="javascript:void(0)" class="lpanel-bg" hoe-color-type="lpanel-bg5">&nbsp;</a>
+                            <a href="javascript:void(0)" class="lpanel-bg" hoe-color-type="lpanel-bg6">&nbsp;</a>
+                            <a href="javascript:void(0)" class="lpanel-bg" hoe-color-type="lpanel-bg7">&nbsp;</a>
+                            <a href="javascript:void(0)" class="lpanel-bg" hoe-color-type="lpanel-bg8">&nbsp;</a>
+                            <a href="javascript:void(0)" class="lpanel-bg" hoe-color-type="lpanel-bg9">&nbsp;</a>
+                        </div>
+                    </li>
+                    <li>
+                        <p class="selector-title"></p>
+                    </li>
+                {% endif %}
                 <li class="theme-option">
                     <span class="sub-title">Header BG Color Option</span>
                     <div id="theme-color">
@@ -242,27 +260,11 @@
                         <a href="javascript:void(0)" class="header-bg" hoe-color-type="header-bg9">&nbsp;</a>
                     </div>
                 </li>
-                <li class="theme-option">
-                    <span class="sub-title">Left Panel BG Color Option</span>
-                    <div id="theme-color">
-                        <a href="javascript:void(0)" class="lpanel-bg" hoe-color-type="lpanel-bg1">&nbsp;</a>
-                        <a href="javascript:void(0)" class="lpanel-bg" hoe-color-type="lpanel-bg2">&nbsp;</a>
-                        <a href="javascript:void(0)" class="lpanel-bg" hoe-color-type="lpanel-bg3">&nbsp;</a>
-                        <a href="javascript:void(0)" class="lpanel-bg" hoe-color-type="lpanel-bg4">&nbsp;</a>
-                        <a href="javascript:void(0)" class="lpanel-bg" hoe-color-type="lpanel-bg5">&nbsp;</a>
-                        <a href="javascript:void(0)" class="lpanel-bg" hoe-color-type="lpanel-bg6">&nbsp;</a>
-                        <a href="javascript:void(0)" class="lpanel-bg" hoe-color-type="lpanel-bg7">&nbsp;</a>
-                        <a href="javascript:void(0)" class="lpanel-bg" hoe-color-type="lpanel-bg8">&nbsp;</a>
-                        <a href="javascript:void(0)" class="lpanel-bg" hoe-color-type="lpanel-bg9">&nbsp;</a>
-                    </div>
-                </li>
-                <li>
-                    <p class="selector-title"></p>
-                </li>
             </ul>
         </div>
     </div>
 </div>
+
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="{% static 'js/jquery-2.1.3.min.js' %}"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->

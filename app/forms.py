@@ -2,6 +2,7 @@ import os
 from django import forms
 from django.contrib.auth.models import Group
 
+from app.functions import USER_GROUP_ADMINISTRATOR_ID, USER_GROUP_HOTWIRE_ID, USER_GROUP_TECHNICIAN_ID, USERS_GROUPS
 from app.models import Projects, Customers, Users
 
 
@@ -54,41 +55,62 @@ class CustomersForm(forms.Form):
 
 
 class UsersForm(forms.Form):
-    group = forms.ModelChoiceField(Group.objects.all(), label='Group', required=True,
-                                   widget=forms.Select(attrs={'class': 'imp-50'}))
-    username = forms.CharField(max_length=100, required=True, label='Username',
-                               widget=forms.TextInput(attrs={'class': 'imp-50'}))
+    group = forms.ChoiceField(choices=USERS_GROUPS, label='Group', required=True, widget=forms.Select(attrs={'class': 'imp-50'}))
+    username = forms.CharField(max_length=100, required=True, label='Username', widget=forms.TextInput(attrs={'class': 'imp-50'}))
     first_name = forms.CharField(max_length=300, required=True, label='FirstName')
     last_name = forms.CharField(max_length=300, required=True, label='LastName')
     email = forms.CharField(max_length=300, required=False, label='Email')
     phone = forms.CharField(max_length=100, required=False, label='Phone',
                             widget=forms.TextInput(attrs={'class': 'imp-50'}))
     avatar = ExtFileField(label='Avatar', help_text='Max size allowed 5Mb in jpeg, jpg, gif, png format',
-                          required=False, ext_whitelist=(".jpeg", ".jpg", ".gif", ".png"), max_upload_size=5242880)
+                          required=True, ext_whitelist=(".jpeg", ".jpg", ".gif", ".png"), max_upload_size=5242880)
 
 
 class WorksForm(forms.Form):
     project = forms.ModelChoiceField(Projects.objects.all().order_by('name'), label='Project',
                                      required=True, widget=forms.Select(attrs={'class': 'imp-50'}))
     customer = forms.ModelChoiceField(Customers.objects.order_by('name'), label='Customer',
-                                      required=True, widget=forms.Select(attrs={'class': 'imp-50'}))
-    address = forms.CharField(required=True, label='Address')
+                                      required=False, widget=forms.Select(attrs={'class': 'imp-50'}))
+    address = forms.CharField(required=False, label='Address')
     date = forms.CharField(required=False, label='Date', widget=forms.TextInput(attrs={'class': 'imp-20',
                                                                                        'placeholder': 'mm-dd-yyyy'}))
-    initial_time = forms.CharField(label='Start Time', widget=forms.TextInput(attrs={'class': 'imp-20',
-                                                                                     'placeholder': 'hh:mm'}))
-    notes = forms.CharField(required=True, label='Notes')
+    initial_time = forms.CharField(required=False, label='Start Time', widget=forms.TextInput(attrs={'class': 'imp-20',
+                                                                                                     'placeholder': 'hh:mm'}))
+    notes = forms.CharField(required=False, label='Notes')
     # Asign Lead and Support Team
-    leader = forms.ModelChoiceField(Users.objects.exclude(user__id=1).order_by('user__username'), label='Leader',
-                                    required=True, widget=forms.Select(attrs={'class': 'imp-50',
-                                                                              'separator': 'Team Support'}))
-    support1 = forms.ModelChoiceField(Users.objects.exclude(user__id=1).order_by('user__username'), label='Support 1',
-                                      required=False, widget=forms.Select(attrs={'class': 'imp-50'}))
-    support2 = forms.ModelChoiceField(Users.objects.exclude(user__id=1).order_by('user__username'), label='Support 2',
-                                      required=False, widget=forms.Select(attrs={'class': 'imp-50'}))
-    support3 = forms.ModelChoiceField(Users.objects.exclude(user__id=1).order_by('user__username'), label='Support 3',
-                                      required=False, widget=forms.Select(attrs={'class': 'imp-50'}))
-    support4 = forms.ModelChoiceField(Users.objects.exclude(user__id=1).order_by('user__username'), label='Support 4',
-                                      required=False, widget=forms.Select(attrs={'class': 'imp-50'}))
-    support5 = forms.ModelChoiceField(Users.objects.exclude(user__id=1).order_by('user__username'), label='Support 5',
-                                      required=False, widget=forms.Select(attrs={'class': 'imp-50'}))
+    leader = forms.ModelChoiceField(Users.objects.filter(group=USER_GROUP_TECHNICIAN_ID), required=False,
+                                    widget=forms.Select(attrs={'class': 'imp-50'}), label='Leader')
+    support1 = forms.ModelChoiceField(Users.objects.filter(group=USER_GROUP_TECHNICIAN_ID), required=False,
+                                      widget=forms.Select(attrs={'class': 'imp-50'}), label='Support 1')
+    support2 = forms.ModelChoiceField(Users.objects.filter(group=USER_GROUP_TECHNICIAN_ID), required=False,
+                                      widget=forms.Select(attrs={'class': 'imp-50'}), label='Support 2')
+    support3 = forms.ModelChoiceField(Users.objects.filter(group=USER_GROUP_TECHNICIAN_ID), required=False,
+                                      widget=forms.Select(attrs={'class': 'imp-50'}), label='Support 3')
+    support4 = forms.ModelChoiceField(Users.objects.filter(group=USER_GROUP_TECHNICIAN_ID), required=False,
+                                      widget=forms.Select(attrs={'class': 'imp-50'}), label='Support 4')
+    support5 = forms.ModelChoiceField(Users.objects.filter(group=USER_GROUP_TECHNICIAN_ID), required=False,
+                                      widget=forms.Select(attrs={'class': 'imp-50'}), label='Support 5')
+
+    def for_hotwire(self):
+        del self.fields['leader']
+        del self.fields['support1']
+        del self.fields['support2']
+        del self.fields['support3']
+        del self.fields['support4']
+        del self.fields['support5']
+        del self.fields['customer']
+
+
+class NewLeaderForm(forms.Form):
+    leader = forms.ModelChoiceField(Users.objects.filter(group=USER_GROUP_TECHNICIAN_ID), required=False,
+                                    widget=forms.Select(attrs={'class': 'imp-50'}), label='Leader')
+    support1 = forms.ModelChoiceField(Users.objects.filter(group=USER_GROUP_TECHNICIAN_ID), required=False,
+                                    widget=forms.Select(attrs={'class': 'imp-50'}), label='Support 1')
+    support2 = forms.ModelChoiceField(Users.objects.filter(group=USER_GROUP_TECHNICIAN_ID), required=False,
+                                    widget=forms.Select(attrs={'class': 'imp-50'}), label='Support 2')
+    support3 = forms.ModelChoiceField(Users.objects.filter(group=USER_GROUP_TECHNICIAN_ID), required=False,
+                                    widget=forms.Select(attrs={'class': 'imp-50'}), label='Support 3')
+    support4 = forms.ModelChoiceField(Users.objects.filter(group=USER_GROUP_TECHNICIAN_ID), required=False,
+                                    widget=forms.Select(attrs={'class': 'imp-50'}), label='Support 4')
+    support5 = forms.ModelChoiceField(Users.objects.filter(group=USER_GROUP_TECHNICIAN_ID), required=False,
+                                    widget=forms.Select(attrs={'class': 'imp-50'}), label='Support 5')

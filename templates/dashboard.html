@@ -21,84 +21,75 @@
 {% block canvas %}
 
     <div class="container-fluid">
-{#        <div class="row margin-row">#}
-{#            <div class="col-sm-12 text-center">#}
-{#                <p class="myheading">#}
-{#                    <i class="fa fa-tachometer"></i> DASHBOARD#}
-{#                </p>#}
-{#            </div>#}
-{#        </div>#}
         <div class="row margin-row">
-{#            <div class="col-sm-12">#}
-                <div class="col-sm-4">
-                    <div class="panel panel-brown">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-files-o fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="myhuge">{{ number_projects }}</div>
-                                    <div class="mybig">Projects</div>
-                                </div>
+            <div class="col-sm-4">
+                <div class="panel panel-brown">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-files-o fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="myhuge">{{ number_projects }}</div>
+                                <div class="mybig">Projects</div>
                             </div>
                         </div>
-                        <a href="{% url 'projects' %}">
-                            <div class="panel-footer">
-                                <span class="pull-left">View Details</span>
-                                <span class="pull-right">
+                    </div>
+                    <a href="{% url 'projects' %}">
+                        <div class="panel-footer">
+                            <span class="pull-left">View Details</span>
+                            <span class="pull-right">
                                     <i class="fa fa-arrow-circle-right"></i>
                                 </span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
-                    </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
                 </div>
-                <div class="col-sm-4">
-                    <div class="panel panel-green">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-briefcase fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="myhuge">{{ number_works }}</div>
-                                    <div class="mybig">Works</div>
-                                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="panel panel-green">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-briefcase fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="myhuge">{{ number_works }}</div>
+                                <div class="mybig">Works</div>
                             </div>
                         </div>
-                        <a href="{% url 'works' %}">
-                            <div class="panel-footer">
-                                <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
                     </div>
+                    <a href="{% url 'works' %}">
+                        <div class="panel-footer">
+                            <span class="pull-left">View Details</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
                 </div>
-                <div class="col-sm-4">
-                    <div class="panel panel-yellow">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-users fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="myhuge">{{ number_customers }}</div>
-                                    <div class="mybig">Customers</div>
-                                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="panel panel-yellow">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-users fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="myhuge">{{ number_customers }}</div>
+                                <div class="mybig">Customers</div>
                             </div>
                         </div>
-                        <a href="{% url 'customers' %}">
-                            <div class="panel-footer">
-                                <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
                     </div>
+                    <a href="{% url 'customers' %}">
+                        <div class="panel-footer">
+                            <span class="pull-left">View Details</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
                 </div>
-{#            </div>#}
+            </div>
         </div> <!-- end first main row -->
 
         <div class="row margin-row">

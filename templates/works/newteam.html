@@ -1,0 +1,22 @@
+{% extends "forms.html" %}
+
+{% block extraheading %}
+    <style>
+        #id_leader {
+            height: 2.5em;
+        }
+    </style>
+    <script>
+        $("#works").addClass("active");
+    </script>
+{% endblock %}
+
+{% block form-title %}{{ title }}{% endblock %}
+{% block form-action %}{% url 'works' %}{% endblock %}
+{% block form-width %}form-m{% endblock %}
+
+{% block form-extra %}
+    <input type='hidden' name='action' value='newteam'/>
+    <input type='hidden' name='id' value='{{ work.id }}'/>
+{% endblock %}
+{% block form-back %}{% url 'works' %}{% endblock %}

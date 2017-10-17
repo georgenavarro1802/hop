@@ -33,8 +33,9 @@ admin.site.register(Works, WorksAdmin)
 
 
 class UsersAdmin(admin.ModelAdmin):
-    list_display = ('user', 'phone', 'color_hoe_header', 'color_hoe_right_header', 'color_hoeapp_container', 'avatar')
+    list_display = ('user', 'group', 'phone', 'color_hoe_header', 'color_hoe_right_header', 'color_hoeapp_container')
     search_fields = ('user__username', 'user__first_name', 'phone')
+    list_filter = ('group', )
 
 admin.site.register(Users, UsersAdmin)
 

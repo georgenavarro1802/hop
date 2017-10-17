@@ -12,6 +12,9 @@ def views(request):
     data = {'title': 'PROJECTS'}
     adduserdata(request, data)
 
+    if data['is_hotwire']:
+        return HttpResponseRedirect('/works')
+
     if request.method == 'POST':
         if 'action' in request.POST:
             action = request.POST['action']

@@ -65,6 +65,9 @@
                                     {% if not w.is_completed %}
                                         <li><hr class="margin-10"/></li>
                                         <li>
+                                            <a href="{% url 'works' %}?action=newteam&id={{ w.id }}"><i class="fa fa-user"></i> Reasign Leader</a>
+                                        </li>
+                                        <li>
                                             <a href="{% url 'works' %}?action=edit&id={{ w.id }}"><i class="fa fa-edit"></i> Edit</a>
                                         </li>
                                         <li>

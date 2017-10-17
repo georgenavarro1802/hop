@@ -13,7 +13,6 @@ from app.models import Users, Projects, Works, Customers, JobRequests
 def adduserdata(request, data):
 
     data['user'] = user = request.user
-
     if not Users.objects.filter(user=user).exists():
         myuser = Users(user=user)
         myuser.save()
@@ -25,16 +24,25 @@ def adduserdata(request, data):
     data['nombreinstitucion'] = NOMBRE_INSTITUCION
     data['remoteaddr'] = request.META['REMOTE_ADDR']
 
+    data['is_administrator'] = myuser.is_admin()
+    data['is_technician'] = myuser.is_technician()
+    data['is_hotwire'] = myuser.is_hotwire()
+
 
 @login_required(redirect_field_name='ret', login_url='/login')
 def index(request):
     data = {'title': 'Hop Platform'}
     adduserdata(request, data)
-    works = Works.objects.all().order_by('-created_at')
+
+    works = Works.objects.order_by('-created_at')
     data['number_projects'] = Projects.objects.count()
     data['number_customers'] = Customers.objects.count()
     data['number_works'] = works.count()
     data['last_five_works'] = works[:5]
+
+    if data['is_hotwire']:
+        return HttpResponseRedirect('/works?h=true')
+
     return render_to_response("dashboard.html", data)
 
 
