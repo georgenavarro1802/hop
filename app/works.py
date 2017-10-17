@@ -32,16 +32,15 @@ def views(request):
                                          address=f.cleaned_data['address'],
                                          date=convertir_fecha_month_first(f.cleaned_data['date']),
                                          initial_time=f.cleaned_data['initial_time'],
-                                         notes=f.cleaned_data['notes'])
+                                         notes=f.cleaned_data['notes'],
+                                         leader=f.cleaned_data['leader'],
+                                         support1=f.cleaned_data['support1'],
+                                         support2=f.cleaned_data['support2'],
+                                         support3=f.cleaned_data['support3'],
+                                         support4=f.cleaned_data['support4'],
+                                         support5=f.cleaned_data['support5'])
                             work.save()
 
-                            work.leader = f.cleaned_data['leader']
-                            work.support1 = f.cleaned_data['support1'],
-                            work.support2 = f.cleaned_data['support2'],
-                            work.support3 = f.cleaned_data['support3'],
-                            work.support4 = f.cleaned_data['support4'],
-                            work.support5 = f.cleaned_data['support5']
-                            work.save()
                             return ok_json(data={'redirect_url': '/works',
                                                  'msg': 'You have successfully created a new WORK.'})
                     except Exception as ex:
