@@ -2,7 +2,8 @@ import os
 from django import forms
 from django.contrib.auth.models import Group
 
-from app.functions import USER_GROUP_ADMINISTRATOR_ID, USER_GROUP_HOTWIRE_ID, USER_GROUP_TECHNICIAN_ID, USERS_GROUPS
+from app.functions import USER_GROUP_ADMINISTRATOR_ID, USER_GROUP_HOTWIRE_ID, USER_GROUP_TECHNICIAN_ID, USERS_GROUPS, \
+    PROJECTS_GROUPS, PROJECT_GROUP_HOTWIRE
 from app.models import Projects, Customers, Users
 
 
@@ -42,6 +43,8 @@ class ExtFileField(forms.FileField):
 
 class ProjectsForm(forms.Form):
     name = forms.CharField(max_length=200, required=True, label='Name')
+    group = forms.ChoiceField(choices=PROJECTS_GROUPS, label='Group', required=True,
+                              widget=forms.Select(attrs={'class': 'imp-50'}))
 
 
 class JobTypesForm(forms.Form):
@@ -92,6 +95,7 @@ class WorksForm(forms.Form):
                                       widget=forms.Select(attrs={'class': 'imp-50'}), label='Support 5')
 
     def for_hotwire(self):
+        self.fields['project'].queryset = Projects.objects.filter(group=PROJECT_GROUP_HOTWIRE)
         del self.fields['leader']
         del self.fields['support1']
         del self.fields['support2']

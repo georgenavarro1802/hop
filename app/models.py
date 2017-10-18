@@ -5,7 +5,7 @@ from django.db.models import Q
 from django.db.models.deletion import Collector
 
 from app.functions import (USER_GROUP_ADMINISTRATOR_ID, USER_GROUP_TECHNICIAN_ID, USER_GROUP_HOTWIRE_ID,
-                           EVALUATION_TYPES, USERS_GROUPS, DEFAULT_DISPATCH_ID)
+                           EVALUATION_TYPES, USERS_GROUPS, DEFAULT_DISPATCH_ID, PROJECTS_GROUPS, PROJECT_GROUP_HOP)
 
 
 class BaseModel(models.Model):
@@ -42,6 +42,7 @@ class BaseModel(models.Model):
 
 class Projects(BaseModel):
     name = models.CharField(max_length=200)
+    group = models.IntegerField(choices=PROJECTS_GROUPS, default=PROJECT_GROUP_HOP)
 
     def __str__(self):
         return "{}".format(self.name)

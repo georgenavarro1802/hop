@@ -28,7 +28,8 @@ def views(request):
                             if Projects.objects.filter(name=f.cleaned_data['name']).exists():
                                 return bad_json(message="Project already exists. "
                                                         "Please change the name of the project and try again. ")
-                            project = Projects(name=f.cleaned_data['name'])
+                            project = Projects(name=f.cleaned_data['name'],
+                                               group=f.cleaned_data['group'])
                             project.save()
                             return ok_json(data={'redirect_url': '/projects',
                                                  'msg': 'You have successfully created a new PROJECT.'})
@@ -48,6 +49,7 @@ def views(request):
                                 return bad_json(message="Project already exists. "
                                                         "Please change the name of the project and try again. ")
                             project.name = f.cleaned_data['name']
+                            project.group = f.cleaned_data['group']
                             project.save()
                             return ok_json(data={'redirect_url': '/projects',
                                                  'msg': 'You have successfully edited the PROJECT.'})
@@ -88,7 +90,8 @@ def views(request):
                     try:
                         data['title'] = 'Edit Project'
                         data['project'] = project = Projects.objects.get(pk=request.GET['id'])
-                        data['form'] = ProjectsForm(initial={'name': project.name})
+                        data['form'] = ProjectsForm(initial={'name': project.name,
+                                                             'group': project.group})
                         return render(request, 'projects/edit.html', data)
                     except Exception:
                         pass
