@@ -1,4 +1,5 @@
 from django.db import transaction
+from django.db.models import Q
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 
@@ -233,7 +234,7 @@ def views(request):
                 search = request.GET['s']
 
             if search:
-                works = works.filter(address__icontains=search)
+                works = works.filter(Q(address__icontains=search) | Q(id__icontains=search))
 
             paging = MiPaginator(works, 25)
 
