@@ -43,7 +43,7 @@ class ExtFileField(forms.FileField):
 
 class ProjectsForm(forms.Form):
     name = forms.CharField(max_length=200, required=True, label='Name')
-    group = forms.ChoiceField(choices=PROJECTS_GROUPS, label='Group', required=True,
+    grupo = forms.ChoiceField(choices=PROJECTS_GROUPS, label='Group', required=True,
                               widget=forms.Select(attrs={'class': 'imp-50'}))
 
 
