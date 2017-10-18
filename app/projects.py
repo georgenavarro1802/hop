@@ -91,7 +91,7 @@ def views(request):
                         data['title'] = 'Edit Project'
                         data['project'] = project = Projects.objects.get(pk=request.GET['id'])
                         data['form'] = ProjectsForm(initial={'name': project.name,
-                                                             'group': project.group})
+                                                             'grupo': project.grupo})
                         return render(request, 'projects/edit.html', data)
                     except Exception:
                         pass

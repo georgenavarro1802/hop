@@ -4,8 +4,9 @@ from app.models import Projects, JobTypes, Customers, Works, Users, WorksTypes, 
 
 
 class ProjectsAdmin(admin.ModelAdmin):
-    list_display = ('name', )
-    search_fields = ('name', )
+    list_display = ('name', 'grupo')
+    search_fields = ('name', 'grupo')
+    list_filter = ('grupo', )
 
 admin.site.register(Projects, ProjectsAdmin)
 
