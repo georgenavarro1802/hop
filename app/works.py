@@ -226,7 +226,7 @@ def views(request):
             works = Works.objects.order_by('-created_at')
 
             if 'h' in request.GET and request.GET['h'] != '':
-                works = works.filter(customer__id=2)    # then change by hotwire customer real id
+                works = works.filter(customer__id=CUSTOMER_HOTWIRE_ID)    # then change by hotwire customer real id
 
             search = None
             if 's' in request.GET and request.GET['s'] != '':

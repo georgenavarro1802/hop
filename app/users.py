@@ -13,7 +13,7 @@ def views(request):
     data = {'title': 'USERS'}
     adduserdata(request, data)
 
-    if data['is_hotwire']:
+    if data['is_hotwire'] or data['is_dispatch']:
         return HttpResponseRedirect('/works')
 
     if request.method == 'POST':
