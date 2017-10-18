@@ -246,5 +246,6 @@ def views(request):
             data['ranges_paging'] = paging.pages_range(p)
             data['page'] = page
             data['works'] = page.object_list
+            data['search'] = search if search else ''
 
             return render(request, 'works/view.html', data)
