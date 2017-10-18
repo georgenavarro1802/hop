@@ -35,7 +35,7 @@
                     <div class="form-group">
                         <label class="sr-only" for="search"></label>
                         <div class="input-group">
-                            <input class="form-control" id="input-search" placeholder="Search by address" value="{% if search %}{{ search }}{% endif %}">
+                            <input class="form-control" style="width: 300px; border-radius: 10px" id="input-search" placeholder="Search by address" value="{% if search %}{{ search }}{% endif %}">
                         </div>
                     </div>
                     <a id="btn-search" class="btn btn-success" title="Search"><i class="fa fa-search"></i></a>
@@ -49,6 +49,7 @@
             <table class="table table-bordered table-hover">
                 <thead>
                 <tr style="font-weight: bold; font-size: 1em; background-color: #043b8a; color: white">
+                    <th style="width: 60px">Cod.</th>
                     <th style="width: 140px">Project</th>
                     <th>Address</th>
                     <th style="width: 170px">Customer</th>
@@ -64,6 +65,7 @@
                 <tbody>
                 {% for w in works %}
                     <tr>
+                        <td class="font12">{{ w.repr_id }}</td>
                         <td class="font12">{{ w.project }}</td>
                         <td class="font12">{{ w.address }}</td>
                         <td class="font12">{{ w.customer.name }}</td>

@@ -266,6 +266,9 @@ class Works(BaseModel):
         db_table = 'works'
         unique_together = ('project', 'address')
 
+    def repr_id(self):
+        return str(self.id).zfill(4)
+
     def download_photo1(self):
         if self.photo1:
             return self.photo1.url
