@@ -41,7 +41,7 @@ def index(request):
     data['number_works'] = works.count()
     data['last_five_works'] = works[:5]
 
-    if data['is_hotwire']:
+    if data['is_hotwire'] or data['is_dispatch']:
         return HttpResponseRedirect('/works?h=true')
 
     return render_to_response("dashboard.html", data)
