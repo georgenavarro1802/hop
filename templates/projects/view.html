@@ -26,7 +26,7 @@
                 {% for p in projects %}
                     <tr>
                         <td class="font14">{{ p }}</td>
-                        <td class="text-center font14">{{ p.get_group_display }}</td>
+                        <td class="text-center font14">{{ p.get_grupo_display }}</td>
                         <td class="text-center font14">{{ p.get_number_works|floatformat:0 }}</td>
                         <td class="text-center font14">{{ p.get_number_works_completed|floatformat:0 }}</td>
                         <td class="text-center font14">{{ p.get_number_works_incompleted|floatformat:0 }}</td>

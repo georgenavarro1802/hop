@@ -42,7 +42,7 @@ class BaseModel(models.Model):
 
 class Projects(BaseModel):
     name = models.CharField(max_length=200)
-    group = models.IntegerField(choices=PROJECTS_GROUPS, default=PROJECT_GROUP_HOP)
+    grupo = models.IntegerField(choices=PROJECTS_GROUPS, default=PROJECT_GROUP_HOP)
 
     def __str__(self):
         return "{}".format(self.name)

@@ -29,7 +29,7 @@ def views(request):
                                 return bad_json(message="Project already exists. "
                                                         "Please change the name of the project and try again. ")
                             project = Projects(name=f.cleaned_data['name'],
-                                               group=f.cleaned_data['group'])
+                                               grupo=f.cleaned_data['grupo'])
                             project.save()
                             return ok_json(data={'redirect_url': '/projects',
                                                  'msg': 'You have successfully created a new PROJECT.'})
@@ -49,7 +49,7 @@ def views(request):
                                 return bad_json(message="Project already exists. "
                                                         "Please change the name of the project and try again. ")
                             project.name = f.cleaned_data['name']
-                            project.group = f.cleaned_data['group']
+                            project.grupo = f.cleaned_data['grupo']
                             project.save()
                             return ok_json(data={'redirect_url': '/projects',
                                                  'msg': 'You have successfully edited the PROJECT.'})

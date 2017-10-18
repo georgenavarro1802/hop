@@ -95,7 +95,7 @@ class WorksForm(forms.Form):
                                       widget=forms.Select(attrs={'class': 'imp-50'}), label='Support 5')
 
     def for_hotwire(self):
-        self.fields['project'].queryset = Projects.objects.filter(group=PROJECT_GROUP_HOTWIRE)
+        self.fields['project'].queryset = Projects.objects.filter(grupo=PROJECT_GROUP_HOTWIRE)
         del self.fields['leader']
         del self.fields['support1']
         del self.fields['support2']
