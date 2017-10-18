@@ -24,7 +24,7 @@ class ProjectsViewSet(mixins.ListModelMixin, generics.GenericAPIView):
 
 class JobTypesViewSet(mixins.ListModelMixin, generics.GenericAPIView):
 
-    queryset = JobTypes.objects.all()
+    queryset = JobTypes.objects.all().order_by('name')
     serializer_class = JobTypesSerializer
     permission_classes = (AllowAny, )
 
