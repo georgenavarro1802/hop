@@ -3,8 +3,8 @@ from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 
 from app.forms import WorksForm, NewLeaderForm
-from app.functions import bad_json, MiPaginator, ok_json, convertir_fecha_month_first, CUSTOMER_HOTWIRE_ID, \
-    DEFAULT_LEADER_ID
+from app.functions import (bad_json, MiPaginator, ok_json, convertir_fecha_month_first, CUSTOMER_HOTWIRE_ID,
+                           DEFAULT_DISPATCH_ID)
 from app.models import Works, Customers, Users
 from app.views import adduserdata
 
@@ -35,7 +35,7 @@ def views(request):
                             initial_time = f.cleaned_data['initial_time']
                             notes = f.cleaned_data['notes']
 
-                            leader = Users.objects.get(pk=DEFAULT_LEADER_ID) if data['is_hotwire'] else f.cleaned_data['leader']
+                            leader = Users.objects.get(pk=DEFAULT_DISPATCH_ID) if data['is_hotwire'] else f.cleaned_data['leader']
                             support1 = f.cleaned_data['support1']
                             support2 = f.cleaned_data['support2']
                             support3 = f.cleaned_data['support3']
@@ -82,7 +82,7 @@ def views(request):
                             initial_time = f.cleaned_data['initial_time']
                             notes = f.cleaned_data['notes']
 
-                            leader = Users.objects.get(pk=DEFAULT_LEADER_ID) if data['is_hotwire'] else f.cleaned_data['leader']
+                            leader = Users.objects.get(pk=DEFAULT_DISPATCH_ID) if data['is_hotwire'] else f.cleaned_data['leader']
                             support1 = f.cleaned_data['support1']
                             support2 = f.cleaned_data['support2']
                             support3 = f.cleaned_data['support3']

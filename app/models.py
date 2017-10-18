@@ -5,7 +5,7 @@ from django.db.models import Q
 from django.db.models.deletion import Collector
 
 from app.functions import (USER_GROUP_ADMINISTRATOR_ID, USER_GROUP_TECHNICIAN_ID, USER_GROUP_HOTWIRE_ID,
-                           EVALUATION_TYPES, USERS_GROUPS)
+                           EVALUATION_TYPES, USERS_GROUPS, DEFAULT_DISPATCH_ID)
 
 
 class BaseModel(models.Model):
@@ -179,6 +179,9 @@ class Users(BaseModel):
 
     def is_hotwire(self):
         return self.group == USER_GROUP_HOTWIRE_ID
+
+    def is_distpach(self):
+        return self.group == USER_GROUP_TECHNICIAN_ID and self.id == DEFAULT_DISPATCH_ID
 
     def has_relations(self):
         return self.leader.exists() or \

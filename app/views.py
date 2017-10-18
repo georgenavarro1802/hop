@@ -26,6 +26,7 @@ def adduserdata(request, data):
 
     data['is_administrator'] = myuser.is_admin()
     data['is_technician'] = myuser.is_technician()
+    data['is_dispatch'] = myuser.is_distpach()
     data['is_hotwire'] = myuser.is_hotwire()
 
 

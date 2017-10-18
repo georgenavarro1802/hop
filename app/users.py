@@ -54,7 +54,8 @@ def views(request):
                                 myuser.avatar = nfile
                                 myuser.save()
 
-                            return ok_json(data={'redirect_url': '/users', 'msg': 'Successfully created a new USER ({})'.format(myuser.user_group_name())})
+                            return ok_json(data={'redirect_url': '/users',
+                                                 'msg': 'Successfully created a new USER ({})'.format(myuser.user_group_name())})
 
                     except Exception:
                         return bad_json(error=1)
