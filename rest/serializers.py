@@ -56,6 +56,7 @@ class WorksSerializer(serializers.HyperlinkedModelSerializer):
     def get_initial_time(self, obj):
         if 'pm' in obj.initial_time or 'am' in obj.initial_time:
             return obj.initial_time.replace('am', '').replace('pm', '')
+        return obj.initial_time
 
 
 class WorksTypesSerializer(serializers.HyperlinkedModelSerializer):
