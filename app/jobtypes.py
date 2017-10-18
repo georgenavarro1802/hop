@@ -113,7 +113,7 @@ def views(request):
             if search:
                 job_types = job_types.filter(name__icontains=search).order_by('name')
 
-            paging = MiPaginator(job_types, 20)
+            paging = MiPaginator(job_types, 25)
 
             p = 1
             if 'page' in request.GET:
@@ -124,5 +124,5 @@ def views(request):
             data['ranges_paging'] = paging.pages_range(p)
             data['page'] = page
             data['jobtypes'] = page.object_list
-
+            data['search'] = search if search else ''
             return render(request, 'jobtypes/view.html', data)

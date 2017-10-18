@@ -235,7 +235,7 @@ def views(request):
             if search:
                 works = works.filter(address__icontains=search)
 
-            paging = MiPaginator(works, 10)
+            paging = MiPaginator(works, 25)
 
             p = 1
             if 'page' in request.GET:
