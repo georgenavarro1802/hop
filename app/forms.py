@@ -63,7 +63,7 @@ class UsersForm(forms.Form):
     phone = forms.CharField(max_length=100, required=False, label='Phone',
                             widget=forms.TextInput(attrs={'class': 'imp-50'}))
     avatar = ExtFileField(label='Avatar', help_text='Max size allowed 5Mb in jpeg, jpg, gif, png format',
-                          required=True, ext_whitelist=(".jpeg", ".jpg", ".gif", ".png"), max_upload_size=5242880)
+                          required=False, ext_whitelist=(".jpeg", ".jpg", ".gif", ".png"), max_upload_size=5242880)
 
 
 class WorksForm(forms.Form):
