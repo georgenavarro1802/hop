@@ -37,6 +37,7 @@ class WorksSerializer(serializers.HyperlinkedModelSerializer):
 
     project = serializers.ReadOnlyField(source='project.id')
     leader = serializers.ReadOnlyField(source='leader.id')
+    initial_time = serializers.SerializerMethodField()
     support1 = serializers.ReadOnlyField(source='support1.id')
     support2 = serializers.ReadOnlyField(source='support2.id')
     support3 = serializers.ReadOnlyField(source='support3.id')
@@ -51,6 +52,10 @@ class WorksSerializer(serializers.HyperlinkedModelSerializer):
                   'register_time', 'latitude_register', 'longitude_register', 'end_time',
                   'report', 'photo1', 'photo2', 'photo3', 'photo4', 'is_completed', 'notes',
                   'customer', 'evaluation', 'sign')
+
+    def get_inital_time(self, obj):
+        if 'pm' in obj.initial_time or 'am' in obj.initial_time:
+            return obj.initial_time.replace('am', '').replace('pm', '').replace(':', '')
 
 
 class WorksTypesSerializer(serializers.HyperlinkedModelSerializer):
