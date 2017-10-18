@@ -53,7 +53,7 @@ class WorksSerializer(serializers.HyperlinkedModelSerializer):
                   'report', 'photo1', 'photo2', 'photo3', 'photo4', 'is_completed', 'notes',
                   'customer', 'evaluation', 'sign')
 
-    def get_inital_time(self, obj):
+    def get_initial_time(self, obj):
         if 'pm' in obj.initial_time or 'am' in obj.initial_time:
             return obj.initial_time.replace('am', '').replace('pm', '')
 
