@@ -104,16 +104,16 @@ def views(request):
 
         else:
 
-            job_types = JobTypes.objects.order_by('-created_at')
+            job_types = JobTypes.objects.order_by('name')
 
             search = None
             if 's' in request.GET and request.GET['s'] != '':
                 search = request.GET['s']
 
             if search:
-                job_types = job_types.filter(name__icontains=search)
+                job_types = job_types.filter(name__icontains=search).order_by('name')
 
-            paging = MiPaginator(job_types, 10)
+            paging = MiPaginator(job_types, 20)
 
             p = 1
             if 'page' in request.GET:
