@@ -4,7 +4,7 @@ from django.contrib.auth.models import Group
 
 from app.functions import USER_GROUP_ADMINISTRATOR_ID, USER_GROUP_HOTWIRE_ID, USER_GROUP_TECHNICIAN_ID, USERS_GROUPS, \
     PROJECTS_GROUPS, PROJECT_GROUP_HOTWIRE
-from app.models import Projects, Customers, Users
+from app.models import Projects, Customers, Users, Properties
 
 
 class ExtFileField(forms.FileField):
@@ -47,6 +47,11 @@ class ProjectsForm(forms.Form):
                               widget=forms.Select(attrs={'class': 'imp-50'}))
 
 
+class PropertiesForm(forms.Form):
+    project = forms.ModelChoiceField(Projects.objects, label='Project', required=False)
+    name = forms.CharField(max_length=300, label='Name')
+
+
 class JobTypesForm(forms.Form):
     name = forms.CharField(max_length=200, required=True, label='Name')
 
@@ -70,10 +75,12 @@ class UsersForm(forms.Form):
 
 
 class WorksForm(forms.Form):
-    project = forms.ModelChoiceField(Projects.objects.all().order_by('name'), label='Project',
-                                     required=True, widget=forms.Select(attrs={'class': 'imp-50'}))
+    project = forms.ModelChoiceField(Projects.objects.order_by('name'), label='Project',
+                                     required=True, widget=forms.Select(attrs={'class': 'imp-75'}))
+    property = forms.ModelChoiceField(Properties.objects.order_by('name'), label='Property',
+                                      required=False, widget=forms.Select(attrs={'class': 'imp-75'}))
     customer = forms.ModelChoiceField(Customers.objects.order_by('name'), label='Customer',
-                                      required=False, widget=forms.Select(attrs={'class': 'imp-50'}))
+                                      required=False, widget=forms.Select(attrs={'class': 'imp-75'}))
     address = forms.CharField(required=False, label='Address')
     date = forms.CharField(required=False, label='Date', widget=forms.TextInput(attrs={'class': 'imp-20',
                                                                                        'placeholder': 'mm-dd-yyyy'}))

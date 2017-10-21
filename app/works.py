@@ -6,7 +6,7 @@ from django.shortcuts import render
 from app.forms import WorksForm, NewLeaderForm
 from app.functions import (bad_json, MiPaginator, ok_json, convertir_fecha_month_first, CUSTOMER_HOTWIRE_ID,
                            DEFAULT_DISPATCH_ID)
-from app.models import Works, Customers, Users
+from app.models import Works, Customers, Users, Projects
 from app.views import adduserdata
 
 
@@ -30,6 +30,7 @@ def views(request):
                                                         "Please change the project or address and try again. ")
 
                             project = f.cleaned_data['project']
+                            property = f.cleaned_data['property']
                             customer = Customers.objects.get(pk=CUSTOMER_HOTWIRE_ID) if data['is_hotwire'] else f.cleaned_data['customer']
                             address = f.cleaned_data['address']
                             date = convertir_fecha_month_first(f.cleaned_data['date'])
@@ -44,6 +45,7 @@ def views(request):
                             support5 = f.cleaned_data['support5']
 
                             work = Works(project=project,
+                                         property=property,
                                          customer=customer,
                                          address=address,
                                          date=date,
@@ -77,6 +79,7 @@ def views(request):
                                                         "Please change the project or address and try again. ")
 
                             project = f.cleaned_data['project']
+                            property = f.cleaned_data['property']
                             customer = Customers.objects.get(pk=CUSTOMER_HOTWIRE_ID) if data['is_hotwire'] else f.cleaned_data['customer']
                             address = f.cleaned_data['address']
                             date = convertir_fecha_month_first(f.cleaned_data['date'])
@@ -91,6 +94,7 @@ def views(request):
                             support5 = f.cleaned_data['support5']
 
                             work.project = project
+                            work.property = property
                             work.customer = customer
                             work.address = address
                             work.date = date
@@ -147,6 +151,14 @@ def views(request):
                 else:
                     return bad_json(message='Form is not valid')
 
+            if action == 'get_properties_from_project':
+                try:
+                    project = Projects.objects.get(pk=int(request.POST['pid']))
+                    return ok_json(data={'lista': [(property.id, property.name) for property in project.get_my_properties()]})
+
+                except Exception:
+                    return bad_json(error=1)
+
         return bad_json(error=0)
 
     else:
@@ -171,6 +183,7 @@ def views(request):
                         data['title'] = 'Edit Work'
                         data['work'] = work = Works.objects.get(pk=request.GET['id'])
                         form = WorksForm(initial={'project': work.project,
+                                                  'property': work.property,
                                                   'customer': work.customer,
                                                   'address': work.address,
                                                   'date': work.date.strftime("%m-%d-%Y"),

@@ -19,7 +19,7 @@ from django.conf.urls.static import static
 from django.conf.urls import url, include
 
 
-from app import views, projects, jobtypes, customers, users, reports, works
+from app import views, projects, jobtypes, customers, users, reports, works, properties
 
 urlpatterns = [
 
@@ -37,6 +37,9 @@ urlpatterns = [
 
     # PROJECTS
     url(r'^projects$', projects.views, name='projects'),
+
+    # PROPERTIES
+    url(r'^properties$', properties.views, name='properties'),
 
     # JOB TYPES
     url(r'^jobtypes$', jobtypes.views, name='jobtypes'),

@@ -54,6 +54,40 @@ class Projects(BaseModel):
         unique_together = ('name', )
 
     def has_relations(self):
+        return self.works_set.exists() or self.properties_set.exists()
+
+    def get_number_works(self):
+        if self.has_relations():
+            return self.works_set.count()
+        return 0
+
+    def get_number_works_completed(self):
+        if self.has_relations():
+            return self.works_set.filter(is_completed=True).count()
+        return 0
+
+    def get_number_works_incompleted(self):
+        if self.has_relations():
+            return self.works_set.filter(is_completed=False).count()
+        return 0
+
+    def get_my_properties(self):
+        return self.properties_set.order_by('name')
+
+
+class Properties(BaseModel):
+    project = models.ForeignKey(Projects)
+    name = models.CharField(max_length=300)
+
+    def __str__(self):
+        return "{}".format(self.name)
+
+    class Meta:
+        verbose_name = 'Project Property'
+        verbose_name_plural = 'Project Properties'
+        db_table = 'properties'
+
+    def has_relations(self):
         return self.works_set.exists()
 
     def get_number_works(self):
@@ -100,6 +134,11 @@ class JobTypes(BaseModel):
     def get_number_works_incompleted(self):
         if self.has_relations():
             return self.workstypes_set.filter(work__is_completed=False).count()
+        return 0
+
+    def get_percentage_works_completed(self):
+        if self.get_number_works():
+            return round(self.get_number_works_completed() / self.get_number_works() * 100)
         return 0
 
 
@@ -225,6 +264,7 @@ class Users(BaseModel):
 
 class Works(BaseModel):
     project = models.ForeignKey(Projects)
+    property = models.ForeignKey(Properties, blank=True, null=True)
     address = models.TextField()
     date = models.DateField(blank=True, null=True)
     initial_time = models.CharField(max_length=10, blank=True, null=True)
@@ -265,7 +305,6 @@ class Works(BaseModel):
         verbose_name = u'Work'
         verbose_name_plural = u'Works'
         db_table = 'works'
-        unique_together = ('project', 'address')
 
     def repr_id(self):
         return str(self.id).zfill(4)

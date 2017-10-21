@@ -50,25 +50,34 @@
                 <thead>
                 <tr style="font-weight: bold; font-size: 1em; background-color: #043b8a; color: white">
                     <th style="width: 60px">Cod.</th>
-                    <th style="width: 140px">Project</th>
+                    <th style="width: 220px">Project</th>
                     <th>Address</th>
-                    <th style="width: 170px">Customer</th>
+                    {% if not is_hotwire %}
+                        <th style="width: 120px">Customer</th>
+                    {% endif %}
                     <th style="width: 100px" class="text-center">Date</th>
                     <th style="width: 70px" class="text-center">Start</th>
                     <th style="width: 70px" class="text-center">Register</th>
                     <th style="width: 70px" class="text-center">End</th>
-                    <th style="width: 70px" class="text-center">Lead</th>
-                    <th style="width: 30px" class="text-center">Status</th>
-                    <th style="width: 30px"></th>
+                    <th style="width: 80px" class="text-center">Lead</th>
+                    <th style="width: 40px" class="text-center">Status</th>
+                    <th style="width: 20px"></th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for w in works %}
                     <tr>
                         <td class="font12">{{ w.repr_id }}</td>
-                        <td class="font12">{{ w.project }}</td>
+                        <td class="font12">
+                            {{ w.project }}
+                            {% if w.property %}
+                                <br/><span class="font10">{{ w.property }}</span>
+                            {% endif %}
+                        </td>
                         <td class="font12">{{ w.address }}</td>
-                        <td class="font12">{{ w.customer.name }}</td>
+                        {% if not is_hotwire %}
+                            <td class="font12">{{ w.customer.name }}</td>
+                        {% endif %}
                         <td class="text-center font12">{{ w.date|date:'m-d-Y' }}</td>
                         <td class="text-center font12">{{ w.initial_time }}</td>
                         <td class="text-center font12">{{ w.register_time|default_if_none:'' }}</td>

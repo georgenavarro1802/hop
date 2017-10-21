@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block heading %}
+    <script>
+        $("#properties").addClass("active");
+    </script>
+{% endblock %}
+
+{% block canvas %}
+    <div class="container-fluid">
+        <div class="row margin-row">
+            <p class="myheading"> <i class="fa fa-files-o"></i> {{ title }}</p>
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr style="font-weight: bold; font-size: 1.1em; background-color: #043b8a; color: white">
+                    <th style="width: 250px">Project</th>
+                    <th>Name</th>
+                    <th style="width: 100px" class="text-center">Works</th>
+                    <th style="width: 100px" class="text-center">Complete</th>
+                    <th style="width: 100px" class="text-center">Incomplete</th>
+                    <th style="width: 100px" class="text-center">Created</th>
+                    <th style="width: 80px"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for p in properties %}
+                    <tr>
+                        <td class="font14">{{ p.project }}</td>
+                        <td class="font14">{{ p }}</td>
+                        <td class="text-center font14">{{ p.get_number_works|floatformat:0 }}</td>
+                        <td class="text-center font14">{{ p.get_number_works_completed|floatformat:0 }}</td>
+                        <td class="text-center font14">{{ p.get_number_works_incompleted|floatformat:0 }}</td>
+                        <td class="text-center font12">{{ p.created_at|date:'m-d-Y' }}</td>
+                        <td>
+                            <a class="btn btn-xs btn-info tu" href="{% url 'properties' %}?action=edit&id={{ p.id }}" title="Edit"><i class="fa fa-edit"></i></a>
+                            {% if not p.has_relations %}
+                                <a class="btn btn-xs btn-danger tu" href="{% url 'properties' %}?action=delete&id={{ p.id }}" title="Delete" style="margin-left: 0.3em"><i class="fa fa-times"></i></a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="10" class="alert alert-info">
+                            <i>There are not properties in the system. Click in the <strong>+ Add Property</strong> button to add your first project</i>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <a class="btn btn-success" href="{% url 'properties' %}?action=add"><i class="fa fa-plus"></i> Add Property</a>
+                </div>
+                <div class="col-sm-6 text-right">
+                    {% if paging.num_pages > 20 %}
+                        <ul class="pagination">
+                            {% if paging.first_page %}
+                                <li><a href="{%  url 'properties' %}?page=1{% if search %}&s={{ search }}{% endif %}">1</a></li>
+                                <li><a href="{%  url 'properties' %}?page={{ paging.ellipsis_left}}{% if search %}&s={{ search }}{% endif %}"
+                                       class="active">...</a></li>
+                            {% endif %}
+                            {% for pagenumber in paging.pages %}
+                                <li {% ifequal pagenumber page.number %}class='active'{% endifequal %}>
+                                    <a href="{%  url 'properties' %}?page={{ pagenumber }}{% if search %}&s={{ search }}{% endif %}">
+                                        {{ pagenumber }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                            {% if paging.last_page %}
+                                <li>
+                                    <a href="{%  url 'properties' %}?page={{ paging.ellipsis_right }}{% if search %}&s={{ search }}{% endif %}"
+                                       class="active">
+                                        ...
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{%  url 'properties' %}?page={{ paging.num_pages }}{% if search %}&s={{ search }}{% endif %}">
+                                        {{ paging.num_pages }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    {% else %}
+                        <ul class='pagination pagination-sm'>
+                            {% for pagenumber in paging.page_range %}
+                                <li {% ifequal pagenumber page.number %}class='active'{% endifequal %}>
+                                    <a href="{%  url 'properties' %}?page={{ pagenumber }}{% if search %}&s={{ search }}{% endif %}">
+                                        {{ pagenumber }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

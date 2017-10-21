@@ -3,11 +3,14 @@ from datetime import datetime
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
+from django.db.models import Count
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, render
 
 from app.functions import (NOMBRE_INSTITUCION, bad_json, ok_json, MiPaginator)
-from app.models import Users, Projects, Works, Customers, JobRequests
+from app.models import Users, Projects, Works, Customers, JobRequests, JobTypes
+
+import operator
 
 
 def adduserdata(request, data):
@@ -38,8 +41,30 @@ def index(request):
     works = Works.objects.order_by('-created_at')
     data['number_projects'] = Projects.objects.count()
     data['number_customers'] = Customers.objects.count()
-    data['number_works'] = works.count()
+    data['number_works'] = number_total_works = works.count()
+
     data['last_five_works'] = works[:5]
+
+    # Top 5 Job Types mos used in projects
+    list = []
+    for j in JobTypes.objects.filter(workstypes__isnull=False, workstypes__work__is_completed=True).distinct():
+        list.append((j.get_number_works_completed(), j.name))
+
+    list_jobtypes_used_projects = sorted(list, reverse=True)[:6]
+
+    data['jobtype_name_1'] = list_jobtypes_used_projects[0][1]
+    data['jobtype_name_2'] = list_jobtypes_used_projects[1][1]
+    data['jobtype_name_3'] = list_jobtypes_used_projects[2][1]
+    data['jobtype_name_4'] = list_jobtypes_used_projects[3][1]
+    data['jobtype_name_5'] = list_jobtypes_used_projects[4][1]
+    data['jobtype_name_6'] = list_jobtypes_used_projects[5][1]
+
+    data['jobtype_value_1'] = round(list_jobtypes_used_projects[0][0] / number_total_works * 100) if number_total_works else 0
+    data['jobtype_value_2'] = round(list_jobtypes_used_projects[1][0] / number_total_works * 100) if number_total_works else 0
+    data['jobtype_value_3'] = round(list_jobtypes_used_projects[2][0] / number_total_works * 100) if number_total_works else 0
+    data['jobtype_value_4'] = round(list_jobtypes_used_projects[3][0] / number_total_works * 100) if number_total_works else 0
+    data['jobtype_value_5'] = round(list_jobtypes_used_projects[4][0] / number_total_works * 100) if number_total_works else 0
+    data['jobtype_value_6'] = round(list_jobtypes_used_projects[5][0] / number_total_works * 100) if number_total_works else 0
 
     if data['is_hotwire']:
         return HttpResponseRedirect('/works?h=true')

@@ -8,9 +8,43 @@
         }
     </style>
     <script>
+
         $("#works").addClass("active");
-        $("#id_name").focus();
-        $("#id_date").datepicker({format:"mm-dd-yyyy"}).on('changeDate', function(ev){ $(this).datepicker('hide');});
+
+        $("#id_date").mask('00-00-0000').datepicker({format:"mm-dd-yyyy"}).on('changeDate', function(ev){ $(this).datepicker('hide');});
+
+        $('#id_initial_time').mask('00:00');
+
+        $('#id_property').empty();
+
+        $("#id_project").change(function () {
+
+            var elem = $('#id_property');
+            var projectid = $(this).val();
+
+            elem.empty().append('<option value="">---------</option>').val(0);
+            if (projectid){
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'works' %}",
+                    data: {'action': 'get_properties_from_project', 'pid': projectid},
+                    success: function (data) {
+                        if (data.result === 'ok') {
+                            for (var i in data.lista) {
+                                elem.append('<option value="' + data.lista[i][0] + '">' + data.lista[i][1] + '</option>');
+                            }
+                        } else {
+                            alert(data.message);
+                        }
+                    },
+                    error: function () {
+                        alert("Server error");
+                    },
+                    dataType: "json"
+                });
+            }
+
+        });
 
     </script>
 {% endblock %}

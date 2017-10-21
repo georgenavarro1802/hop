@@ -41,7 +41,7 @@
                         <td class="my-vertical-align font14">{{ u.user_group_name }}</td>
                         <td class="my-vertical-align font14">{{ u.user.first_name }} {{ u.user.last_name }}</td>
                         <td class="my-vertical-align font12">{{ u.user.email }}</td>
-                        <td class="my-vertical-align font12">{{ u.phone }}</td>
+                        <td class="my-vertical-align font12">{{ u.phone|default_if_none:'' }}</td>
                         <td class="my-vertical-align text-center font14">{{ u.get_number_works|floatformat:0 }}</td>
                         <td class="my-vertical-align text-center font14">{{ u.get_number_works_completed|floatformat:0 }}</td>
                         <td class="my-vertical-align text-center font14">{{ u.get_number_works_incompleted|floatformat:0 }}</td>
