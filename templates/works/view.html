@@ -26,11 +26,11 @@
 
         <div class="row margin-row">
 
-            <div class="col-sm-7">
+            <div class="col-sm-4">
                 <p class="myheading"> <i class="fa fa-briefcase"></i> {{ title }}</p>
             </div>
 
-            <div class="col-sm-5 text-right">
+            <div class="col-sm-4">
                 <form class="form-inline">
                     <div class="form-group">
                         <label class="sr-only" for="search"></label>
@@ -43,6 +43,12 @@
                 </form>
             </div>
 
+            {% if is_hotwire %}
+                <div class="col-sm-4 text-right">
+                    <a href="{% url 'works' %}?action=customer_reports" class="btn btn-warning" title="Chart"><i class="fa fa-bar-chart"></i> View Reports</a>
+                </div>
+            {% endif %}
+
         </div>
 
         <div class="row margin-row">
@@ -52,9 +58,9 @@
                     <th style="width: 60px">Cod.</th>
                     <th style="width: 220px">Project</th>
                     <th>Address</th>
-                    {% if not is_hotwire %}
+{#                    {% if not is_hotwire %}#}
                         <th style="width: 120px">Customer</th>
-                    {% endif %}
+{#                    {% endif %}#}
                     <th style="width: 100px" class="text-center">Date</th>
                     <th style="width: 70px" class="text-center">Start</th>
                     <th style="width: 70px" class="text-center">Register</th>
@@ -75,9 +81,9 @@
                             {% endif %}
                         </td>
                         <td class="font12">{{ w.address }}</td>
-                        {% if not is_hotwire %}
+{#                        {% if not is_hotwire %}#}
                             <td class="font12">{{ w.customer.name }}</td>
-                        {% endif %}
+{#                        {% endif %}#}
                         <td class="text-center font12">{{ w.date|date:'m-d-Y' }}</td>
                         <td class="text-center font12">{{ w.initial_time }}</td>
                         <td class="text-center font12">{{ w.register_time|default_if_none:'' }}</td>

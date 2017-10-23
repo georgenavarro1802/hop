@@ -5,9 +5,13 @@ from django.shortcuts import render
 
 from app.forms import WorksForm, NewLeaderForm
 from app.functions import (bad_json, MiPaginator, ok_json, convertir_fecha_month_first, CUSTOMER_HOTWIRE_ID,
-                           DEFAULT_DISPATCH_ID)
-from app.models import Works, Customers, Users, Projects
+                           DEFAULT_DISPATCH_ID, USER_GROUP_TECHNICIAN_ID)
+from app.models import Works, Customers, Users, Projects, JobTypes
 from app.views import adduserdata
+
+
+def get_number_works_completed_by_weekday_customer(weekday, customerID):
+    return Works.objects.filter(is_completed=True, date__week_day=weekday, customer__id=customerID).count()
 
 
 def views(request):
@@ -233,6 +237,31 @@ def views(request):
                     except Exception:
                         pass
 
+                if action == 'customer_reports':
+                    data['title'] = 'Reports and Charts - HOTWIRE'
+                    data['report1_title'] = 'Job Types - Completed Works - HOTWIRE'
+                    data['report2_title'] = 'Top 5 HOP Technicians - HOTWIRE'
+                    data['report3_title'] = 'Complete Works by Weekdays - HOTWIRE'
+                    data['jobtypes'] = JobTypes.objects.filter(workstypes__work__is_completed=True,
+                                                               workstypes__isnull=False,
+                                                               workstypes__work__customer__id=CUSTOMER_HOTWIRE_ID).distinct()
+
+                    user_list = []
+                    for u in Users.objects.filter(group=USER_GROUP_TECHNICIAN_ID, leader__is_completed=True).distinct():
+                        user_list.append((u.get_number_works_completed(),
+                                          u.average_rating_works_completed(),
+                                          u.user.username))
+
+                    data['user_list'] = sorted(user_list, reverse=True)[:5]
+
+                    weekdays_works = []
+                    # Weeks days in Django -> 1(Sunday) to 7(Saturday)
+                    for i in range(2, 7):
+                        weekdays_works.append(get_number_works_completed_by_weekday_customer(i, CUSTOMER_HOTWIRE_ID))
+
+                    data['weekdays_works'] = weekdays_works
+                    return render(request, 'reports/customer_reports.html', data)
+
             return HttpResponseRedirect('/works')
 
         else:
@@ -240,7 +269,7 @@ def views(request):
             works = Works.objects.order_by('-created_at')
 
             if 'h' in request.GET and request.GET['h'] != '':
-                works = works.filter(customer__id=CUSTOMER_HOTWIRE_ID)    # then change by hotwire customer real id
+                works = works.filter(customer__id=CUSTOMER_HOTWIRE_ID)
 
             search = None
             if 's' in request.GET and request.GET['s'] != '':
@@ -249,7 +278,7 @@ def views(request):
             if search:
                 works = works.filter(Q(address__icontains=search) | Q(id__icontains=search))
 
-            paging = MiPaginator(works, 25)
+            paging = MiPaginator(works, 20)
 
             p = 1
             if 'page' in request.GET:

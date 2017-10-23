@@ -6,8 +6,6 @@ from django.http import HttpResponse
 from django.utils.translation import get_language
 
 
-# Global Variables
-
 NOMBRE_INSTITUCION = 'HOP Contracting'
 
 DEFAULT_PASSWORD = 'hop'
@@ -237,4 +235,3 @@ def system_error(lang='en'):
     else:
         message = ""
     return message
-

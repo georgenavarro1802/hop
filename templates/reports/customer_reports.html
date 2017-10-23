@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block heading %}
+
+    <script src="{% static 'js/amcharts/amcharts.js' %}"></script>
+    <script src="{% static 'js/amcharts/pie.js' %}"></script>
+    <script src="{% static 'js/amcharts/export.min.js' %}"></script>
+    <script src="{% static 'js/amcharts/fabric.min.js' %}"></script>
+    <script src="{% static 'js/amcharts/FileSaver.min.js' %}"></script>
+    <script src="{% static 'js/amcharts/jszip.min.js' %}"></script>
+    <script src="{% static 'js/amcharts/pdfmake.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/amcharts/export.css' %}" type="text/css" media="all" />
+    <script src="{% static 'js/amcharts/light.js' %}"></script>
+
+    <script>
+
+        $(function () {
+
+            $(".highcharts-credits").hide();
+
+            var chart = AmCharts.makeChart("chartdiv", {
+                "type": "pie",
+                "theme": "light",
+                "innerRadius": "40%",
+                "gradientRatio": [-0.4, -0.4, -0.4, -0.4, -0.4, -0.4, 0, 0.1, 0.2, 0.1, 0, -0.2, -0.5],
+                "dataProvider": [{% for jt in jobtypes %}{"jobtype": "{{ jt }}", "count": {{ jt.get_number_works }} }{% if not forloop.last %},{% endif %}{% endfor %}],
+                "balloonText": "[[value]]",
+                "valueField": "count",
+                "titleField": "jobtype",
+                "balloon": {
+                    "drop": true,
+                    "adjustBorderColor": false,
+                    "color": "#FFFFFF",
+                    "fontSize": 17
+                },
+                "export": {
+                    "enabled": true
+                }
+            });
+
+        });
+
+    </script>
+
+    <script src="{% static 'js/highcharts/highcharts.js' %}"></script>
+    <script src="{% static 'js/highcharts/exporting.js' %}"></script>
+
+    <script>
+
+        Highcharts.chart('my_container', {
+            title: {
+                text: ''
+            },
+            xAxis: {
+                categories: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+            },
+            series: [{
+                type: 'column',
+                color: '#2acc06',
+                name: 'complete works',
+                data: [{% for work_count in weekdays_works %}{{ work_count }}{% if not forloop.last %},{% endif %}{% endfor %}]
+            }]
+        });
+
+    </script>
+{% endblock %}
+
+{% block canvas %}
+    <div class="container-fluid">
+
+        <div class="row margin-row">
+
+            <div class="col-sm-5">
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <i class="fa fa-bar-chart"></i> {{ report3_title }}
+                    </div>
+                    <div class="panel-body">
+                        <div id="my_container" style="min-width: 230px; height: 300px; margin: 0 auto"></div>
+                    </div>
+                </div>
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <i class="fa fa-bar-chart"></i> {{ report2_title }}
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                            <tr>
+                                <th>Team Leader</th>
+                                <th style="width: 20%" class="text-center">Works</th>
+                                <th style="width: 40%" class="text-center">Rating (AVG)</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for l in user_list %}
+                                <tr>
+                                    <td>{{ l.2 }}</td>
+                                    <td class="text-center">{{ l.0 }}</td>
+                                    <td class="text-center">
+                                        {% if l.1 == 1 %}
+                                            <img src="{% static 'images/star1.png' %}" style="width: 10%; height:10%">
+                                            <img src="{% static 'images/star0.png' %}" style="width: 10%; height:10%">
+                                            <img src="{% static 'images/star0.png' %}" style="width: 10%; height:10%">
+                                            <img src="{% static 'images/star0.png' %}" style="width: 10%; height:10%">
+                                            <img src="{% static 'images/star0.png' %}" style="width: 10%; height:10%">
+                                        {% elif l.1 == 2 %}
+                                            <img src="{% static 'images/star1.png' %}" style="width: 10%; height:10%">
+                                            <img src="{% static 'images/star1.png' %}" style="width: 10%; height:10%">
+                                            <img src="{% static 'images/star0.png' %}" style="width: 10%; height:10%">
+                                            <img src="{% static 'images/star0.png' %}" style="width: 10%; height:10%">
+                                            <img src="{% static 'images/star0.png' %}" style="width: 10%; height:10%">
+                                        {% elif l.1 == 3 %}
+                                            <img src="{% static 'images/star1.png' %}" style="width: 10%; height:10%">
+                                            <img src="{% static 'images/star1.png' %}" style="width: 10%; height:10%">
+                                            <img src="{% static 'images/star1.png' %}" style="width: 10%; height:10%">
+                                            <img src="{% static 'images/star0.png' %}" style="width: 10%; height:10%">
+                                            <img src="{% static 'images/star0.png' %}" style="width: 10%; height:10%">
+                                        {% elif l.1 == 4 %}
+                                            <img src="{% static 'images/star1.png' %}" style="width: 10%; height:10%">
+                                            <img src="{% static 'images/star1.png' %}" style="width: 10%; height:10%">
+                                            <img src="{% static 'images/star1.png' %}" style="width: 10%; height:10%">
+                                            <img src="{% static 'images/star1.png' %}" style="width: 10%; height:10%">
+                                            <img src="{% static 'images/star0.png' %}" style="width: 10%; height:10%">
+                                        {% elif l.1 == 5 %}
+                                            <img src="{% static 'images/star1.png' %}" style="width: 10%; height:10%">
+                                            <img src="{% static 'images/star1.png' %}" style="width: 10%; height:10%">
+                                            <img src="{% static 'images/star1.png' %}" style="width: 10%; height:10%">
+                                            <img src="{% static 'images/star1.png' %}" style="width: 10%; height:10%">
+                                            <img src="{% static 'images/star1.png' %}" style="width: 10%; height:10%">
+                                        {% else %}
+                                            <img src="{% static 'images/star0.png' %}" style="width: 10%; height:10%">
+                                            <img src="{% static 'images/star0.png' %}" style="width: 10%; height:10%">
+                                            <img src="{% static 'images/star0.png' %}" style="width: 10%; height:10%">
+                                            <img src="{% static 'images/star0.png' %}" style="width: 10%; height:10%">
+                                            <img src="{% static 'images/star0.png' %}" style="width: 10%; height:10%">
+                                        {% endif %}
+
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-sm-7 text-right">
+                <a href="{% url 'works' %}" class="btn btn-info" style="margin-bottom: 1em">
+                    <i class="fa fa-briefcase"></i> Back to Works
+                </a>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <i class="fa fa-bar-chart"></i> {{ report1_title }}
+                    </div>
+                    <div class="panel-body">
+                        <div id="chartdiv"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+{% endblock %}

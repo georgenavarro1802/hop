@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models, router
-from django.db.models import Q
+from django.db.models import Q, Avg
 from django.db.models.deletion import Collector
 
 from app.functions import (USER_GROUP_ADMINISTRATOR_ID, USER_GROUP_TECHNICIAN_ID, USER_GROUP_HOTWIRE_ID,
@@ -259,6 +259,11 @@ class Users(BaseModel):
                                         Q(support3=self) |
                                         Q(support4=self) |
                                         Q(support5=self), is_completed=False).count()
+        return 0
+
+    def average_rating_works_completed(self):
+        if self.has_relations():
+            return round(self.leader.filter(is_completed=True).aggregate(average=Avg('evaluation'))['average'])
         return 0
 
 
