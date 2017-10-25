@@ -46,7 +46,7 @@
 
         {% endif %}
 
-        <div class="hoe-right-header" hoe-position-type="relative" hoe-color-type="header-bg{{ myuser.color_hoe_right_header }}">
+        <div class="hoe-right-header {% if not administrator %}hoe-right-header-for-customers{% endif %}" hoe-position-type="relative" hoe-color-type="header-bg{{ myuser.color_hoe_right_header }}">
 
             {% if is_administrator %}
                 <span class="hoe-sidebar-toggle">
@@ -199,7 +199,7 @@
         {% endif %}
 
         <!-- Main CONTENT CANVAS -->
-        <section id="main-content" style="background-color: white">
+        <section id="main-content" style="background-color: white; {% if not is_administrator %}margin-left: 0px!important;{% endif %} ">
             {% block canvas %}{% endblock %}
         </section>
 
@@ -288,6 +288,9 @@
 </script>
 
 {% block heading %}
+{% endblock %}
+
+{% block moreblock %}
 {% endblock %}
 
 </body>

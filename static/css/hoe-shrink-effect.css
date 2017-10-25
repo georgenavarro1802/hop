@@ -7,6 +7,11 @@
   margin-left: 50px;
   padding-right: 0;
 }
+
+.hoe-right-header-for-customers {
+    margin-left: 0px!important;
+}
+
 #hoe-header[hoe-lpanel-effect="shrink"] .hoe-right-header[hoe-position-type="fixed"] {
 	padding-right: 230px;
 	margin-left: 230px;

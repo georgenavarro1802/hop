@@ -18,6 +18,23 @@
             }
         });
 
+        $(".btn-notes").click(function () {
+            var elem = $("#modal-notes");
+            var code = $(this).attr('code');
+            var notes = $(this).attr('notes');
+            $('#modal-code').html("Code: " + code);
+            $('#modal-text').html(notes);
+            elem.modal('show');
+            return false;
+        });
+
+        $("#modal-notes").find(".btn-close").click(function () {
+           $("#modal-notes").modal('hide');
+           return false;
+        });
+
+
+
     </script>
 {% endblock %}
 
@@ -58,9 +75,9 @@
                     <th style="width: 60px">Cod.</th>
                     <th style="width: 220px">Project</th>
                     <th>Address</th>
-{#                    {% if not is_hotwire %}#}
-                        <th style="width: 120px">Customer</th>
-{#                    {% endif %}#}
+                    {#                    {% if not is_hotwire %}#}
+                    <th style="width: 120px">Customer</th>
+                    {#                    {% endif %}#}
                     <th style="width: 100px" class="text-center">Date</th>
                     <th style="width: 70px" class="text-center">Start</th>
                     <th style="width: 70px" class="text-center">Register</th>
@@ -73,7 +90,14 @@
                 <tbody>
                 {% for w in works %}
                     <tr>
-                        <td class="font12">{{ w.repr_id }}</td>
+                        <td class="font12">
+                            {{ w.repr_id }}
+                            {% if w.notes %}
+                                <a href="#" class="btn-notes btn btn-xs tr" title="Notes" notes="{{ w.notes }}" code="{{ w.repr_id }}">
+                                    <i class="fa fa-sticky-note"></i>
+                                </a>
+                            {% endif %}
+                        </td>
                         <td class="font12">
                             {{ w.project }}
                             {% if w.property %}
@@ -81,9 +105,9 @@
                             {% endif %}
                         </td>
                         <td class="font12">{{ w.address }}</td>
-{#                        {% if not is_hotwire %}#}
-                            <td class="font12">{{ w.customer.name }}</td>
-{#                        {% endif %}#}
+                        {#                        {% if not is_hotwire %}#}
+                        <td class="font12">{{ w.customer.name }}</td>
+                        {#                        {% endif %}#}
                         <td class="text-center font12">{{ w.date|date:'m-d-Y' }}</td>
                         <td class="text-center font12">{{ w.initial_time }}</td>
                         <td class="text-center font12">{{ w.register_time|default_if_none:'' }}</td>
@@ -189,6 +213,29 @@
                 </div>
             </div>
 
+        </div>
+    </div>
+{% endblock %}
+
+{% block moreblock %}
+    <div class="modal fade in" id="modal-notes" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #3498db; color: white">
+                    <h3 class="modal-title">
+                        Work Notes
+                        <span style="float: right; font-size: 1em" id="modal-code"></span>
+                    </h3>
+                </div>
+                <div class="modal-body">
+                    <p style="font-size: 1.2em; font-weight: 900">
+                        Notes: <span id="modal-text" style="font-size: 0.8em; font-weight: normal"></span>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-info btn-close" data-dismiss="modal"><i class="fa fa-close"></i> Close</a>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
