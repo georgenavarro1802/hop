@@ -60,7 +60,8 @@ def views(request):
                                          support2=support2,
                                          support3=support3,
                                          support4=support4,
-                                         support5=support5)
+                                         support5=support5,
+                                         created_by=data['myuser'])
                             work.save()
 
                             return ok_json(data={'redirect_url': '/works',

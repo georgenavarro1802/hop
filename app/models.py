@@ -303,6 +303,9 @@ class Works(BaseModel):
     evaluation = models.IntegerField(default=0, choices=EVALUATION_TYPES)
     sign = models.FileField(upload_to='signs/', blank=True, null=True)
 
+    # Creator
+    created_by = models.ForeignKey(Users, related_name='created_by', blank=True, null=True)
+
     def __str__(self):
         return "{} - {}".format(self.project, self.address)
 

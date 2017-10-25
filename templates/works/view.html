@@ -18,6 +18,7 @@
             }
         });
 
+        // Modal for Notes
         $(".btn-notes").click(function () {
             var elem = $("#modal-notes");
             var code = $(this).attr('code');
@@ -29,11 +30,15 @@
         });
 
         $("#modal-notes").find(".btn-close").click(function () {
-           $("#modal-notes").modal('hide');
-           return false;
+            $("#modal-notes").modal('hide');
+            return false;
         });
+        // End Modal for Notes
 
-
+        // Toggle for Search div
+        $("#show-search").click(function() {
+            $("#filters-search").slideToggle('2000');
+        });
 
     </script>
 {% endblock %}
@@ -42,12 +47,40 @@
     <div class="container-fluid">
 
         <div class="row margin-row">
-
-            <div class="col-sm-4">
-                <p class="myheading"> <i class="fa fa-briefcase"></i> {{ title }}</p>
+            <div class="col-sm-7">
+                <p class="myheading" style="vertical-align: middle">
+                    <i class="fa fa-briefcase"></i> {{ title }}
+                </p>
             </div>
 
-            <div class="col-sm-4">
+            <div class="col-sm-5 text-right">
+                <a class="btn btn-success btn-lg" id="show-search" style="border-radius: 5px 5px">
+                    <i class="fa fa-search"></i> Apply Filters
+                </a>
+                {% if is_hotwire %}
+                    <a href="{% url 'works' %}?action=customer_reports" class="btn btn-warning btn-lg" title="Chart" style="margin-left: 1em">
+                        <i class="fa fa-bar-chart"></i> View Reports
+                    </a>
+                {% endif %}
+            </div>
+
+            <div id="filters-search" class="col-sm-12" style="display: none; margin-top: 1em">
+
+                <p>
+                    This is the paragraph to end all paragraphs.  You
+                    should feel <em>lucky</em> to have seen such a paragraph in
+                    your life.  Congratulations!
+                    This is the paragraph to end all paragraphs.  You
+                    should feel <em>lucky</em> to have seen such a paragraph in
+                    your life.  Congratulations!
+                    This is the paragraph to end all paragraphs.  You
+                    should feel <em>lucky</em> to have seen such a paragraph in
+                    your life.  Congratulations!
+                    This is the paragraph to end all paragraphs.  You
+                    should feel <em>lucky</em> to have seen such a paragraph in
+                    your life.  Congratulations!
+                </p>
+
                 <form class="form-inline">
                     <div class="form-group">
                         <label class="sr-only" for="search"></label>
@@ -58,13 +91,8 @@
                     <a id="btn-search" class="btn btn-success" title="Search"><i class="fa fa-search"></i></a>
                     {% if search %}<a href="{% url 'works' %}" class="btn btn-info" title="All"><i class="fa fa-list-alt"></i></a>{% endif %}
                 </form>
-            </div>
 
-            {% if is_hotwire %}
-                <div class="col-sm-4 text-right">
-                    <a href="{% url 'works' %}?action=customer_reports" class="btn btn-warning" title="Chart"><i class="fa fa-bar-chart"></i> View Reports</a>
-                </div>
-            {% endif %}
+            </div>
 
         </div>
 

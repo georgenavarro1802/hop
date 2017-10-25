@@ -1070,7 +1070,9 @@ form input, form select, form textarea {
 .myheading {
     font-weight: bold;
     color: darkblue;
-    font-size: 1.7em
+    font-size: 2em;
+    margin-top: 10px;
+
 }
 
 .mysubheading {
