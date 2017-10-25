@@ -86,7 +86,7 @@ class WorksForm(forms.Form):
                                                                                        'placeholder': 'mm-dd-yyyy'}))
     initial_time = forms.CharField(required=False, label='Start Time', widget=forms.TextInput(attrs={'class': 'imp-20',
                                                                                                      'placeholder': 'hh:mm'}))
-    notes = forms.CharField(required=False, label='Notes')
+    notes = forms.CharField(required=False, label='Notes', widget=forms.Textarea(attrs={'rows': '3', 'cols': '2'}))
     # Asign Lead and Support Team
     leader = forms.ModelChoiceField(Users.objects.filter(group=USER_GROUP_TECHNICIAN_ID), required=False,
                                     widget=forms.Select(attrs={'class': 'imp-50'}), label='Leader')

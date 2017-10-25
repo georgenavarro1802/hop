@@ -6,7 +6,7 @@ from django.shortcuts import render
 from app.forms import WorksForm, NewLeaderForm
 from app.functions import (bad_json, MiPaginator, ok_json, convertir_fecha_month_first, CUSTOMER_HOTWIRE_ID,
                            DEFAULT_DISPATCH_ID, USER_GROUP_TECHNICIAN_ID)
-from app.models import Works, Customers, Users, Projects, JobTypes
+from app.models import Works, Customers, Users, Projects, JobTypes, Properties
 from app.views import adduserdata
 
 
@@ -272,14 +272,58 @@ def views(request):
             if 'h' in request.GET and request.GET['h'] != '':
                 works = works.filter(customer__id=CUSTOMER_HOTWIRE_ID)
 
+            # Filters
+            project_id = None
+            if 'project' in request.GET and int(request.GET['project']) > 0:
+                project_id = int(request.GET['project'])
+
+            property_id = None
+            if 'property' in request.GET and int(request.GET['property']) > 0:
+                property_id = int(request.GET['property'])
+
+            jobtype_id = None
+            if 'jobtype' in request.GET and int(request.GET['jobtype']) > 0:
+                jobtype_id = int(request.GET['jobtype'])
+
+            team_id = None
+            if 'team' in request.GET and int(request.GET['team']) > 0:
+                team_id = int(request.GET['team'])
+
+            status_id = None
+            if 'status' in request.GET and int(request.GET['status']) > 0:
+                status_id = int(request.GET['status'])
+
             search = None
-            if 's' in request.GET and request.GET['s'] != '':
-                search = request.GET['s']
+            if 'search' in request.GET and request.GET['search'] != '':
+                search = request.GET['search']
+
+            if project_id:
+                works = works.filter(project_id=project_id)
+
+            if property_id:
+                works = works.filter(property_id=property_id)
+
+            if jobtype_id:
+                works = works.filter(workstypes__isnull=False, workstypes__type__id=jobtype_id).distinct()
+
+            if team_id:
+                works = works.filter(Q(leader__id=team_id) |
+                                     Q(support1__id=team_id) |
+                                     Q(support2__id=team_id) |
+                                     Q(support3__id=team_id) |
+                                     Q(support4__id=team_id) |
+                                     Q(support5__id=team_id)).distinct()
+
+            if status_id:
+                if status_id == 1:
+                    works = works.filter(is_completed=True)
+                else:
+                    works = works.filter(is_completed=False)
 
             if search:
                 works = works.filter(Q(address__icontains=search) | Q(id__icontains=search))
 
-            paging = MiPaginator(works, 20)
+            paging = MiPaginator(works, 17)
 
             p = 1
             if 'page' in request.GET:
@@ -292,4 +336,17 @@ def views(request):
             data['works'] = page.object_list
             data['search'] = search if search else ''
 
+            data['projects'] = Projects.objects.all().order_by('name') if not data['is_hotwire'] else Projects.objects.filter(works__customer__id=CUSTOMER_HOTWIRE_ID).distinct().order_by('name')
+            data['properties'] = Properties.objects.all().order_by('name') if not data['is_hotwire'] else Properties.objects.filter(works__customer__id=CUSTOMER_HOTWIRE_ID).distinct().order_by('name')
+            data['jobtypes'] = JobTypes.objects.all().order_by('name')
+            data['teams'] = Users.objects.filter(group=USER_GROUP_TECHNICIAN_ID)
+
+            data['projectid'] = project_id if project_id else 0
+            data['propertyid'] = property_id if property_id else 0
+            data['jobtypeid'] = jobtype_id if jobtype_id else 0
+            data['teamid'] = team_id if team_id else 0
+            data['statusid'] = str(status_id) if status_id else 0
+            data['search'] = search if search else ''
+
+            data['is_search'] = True if project_id or property_id or jobtype_id or team_id or status_id or search else False
             return render(request, 'works/view.html', data)

@@ -3,16 +3,49 @@
 
 {% block heading %}
     <script>
+
         $("#works").addClass("active");
 
-        $("#btn-search").click(function () {
-            var search = $('#input-search').val();
-            if (search){
-                location.href = "{% url 'works' %}?s="+search;
-            }
+        show_loading = function () {
+
+             $.blockUI({
+                message: '<img src="/static/images/loading.gif" style="width:170px; height:170px" />',
+                css: {
+                    border:     'none',
+                    backgroundColor:'transparent'
+                }
+            });
+
+        };
+
+        $("#btn-clean-search").click(function () {
+
+            show_loading();
+
+            setTimeout(function () {
+                location.href = "{% url 'works' %}";
+            }, 2000);
+
         });
 
-        $('#input-search').keyup(function(e) {
+        $("#btn-search").click(function () {
+
+            show_loading();
+
+            var sel_project = $('#search-projects').val();
+            var sel_property = $('#search-properties').val();
+            var sel_jobtype = $('#search-jobtypes').val();
+            var sel_team = $('#search-teams').val();
+            var sel_status = $('#search-statuses').val();
+            var input_code_address = $('#search-code-address').val();
+
+            setTimeout(function () {
+                location.href = "{% url 'works' %}?project="+sel_project+'&property='+sel_property+'&jobtype='+sel_jobtype+'&team='+sel_team+'&status='+sel_status+'&search='+input_code_address;
+            }, 2000);
+
+        });
+
+        $('#search-code-address').keyup(function(e) {
             if(e.keyCode === 13) {
                 $("#btn-search").trigger("click");
             }
@@ -40,6 +73,7 @@
             $("#filters-search").slideToggle('2000');
         });
 
+
     </script>
 {% endblock %}
 
@@ -48,52 +82,122 @@
 
         <div class="row margin-row">
             <div class="col-sm-7">
-                <p class="myheading" style="vertical-align: middle">
+                <p class="myheading">
                     <i class="fa fa-briefcase"></i> {{ title }}
                 </p>
             </div>
 
-            <div class="col-sm-5 text-right">
-                <a class="btn btn-success btn-lg" id="show-search" style="border-radius: 5px 5px">
-                    <i class="fa fa-search"></i> Apply Filters
+            <div class="col-sm-5 text-right" style="margin-top: 17px">
+                <a id="show-search" style="font-size: 1.2em; cursor: pointer; text-decoration: none">
+                    <i class="fa fa-search"></i> Advanced Search
                 </a>
                 {% if is_hotwire %}
-                    <a href="{% url 'works' %}?action=customer_reports" class="btn btn-warning btn-lg" title="Chart" style="margin-left: 1em">
-                        <i class="fa fa-bar-chart"></i> View Reports
+                    <a href="{% url 'works' %}?action=customer_reports" title="Chart" style="margin-left: 1em; font-size: 1.2em; cursor: pointer; text-decoration: none">
+                        <i class="fa fa-bar-chart"></i> Reports
                     </a>
                 {% endif %}
             </div>
 
-            <div id="filters-search" class="col-sm-12" style="display: none; margin-top: 1em">
+            <div id="filters-search" style="display: none; margin-top: 5em">
 
-                <p>
-                    This is the paragraph to end all paragraphs.  You
-                    should feel <em>lucky</em> to have seen such a paragraph in
-                    your life.  Congratulations!
-                    This is the paragraph to end all paragraphs.  You
-                    should feel <em>lucky</em> to have seen such a paragraph in
-                    your life.  Congratulations!
-                    This is the paragraph to end all paragraphs.  You
-                    should feel <em>lucky</em> to have seen such a paragraph in
-                    your life.  Congratulations!
-                    This is the paragraph to end all paragraphs.  You
-                    should feel <em>lucky</em> to have seen such a paragraph in
-                    your life.  Congratulations!
-                </p>
+                <div class="row">
 
-                <form class="form-inline">
-                    <div class="form-group">
-                        <label class="sr-only" for="search"></label>
-                        <div class="input-group">
-                            <input class="form-control" style="width: 300px; border-radius: 10px" id="input-search" placeholder="Search by code or address" value="{% if search %}{{ search }}{% endif %}">
+                    <div class="col-sm-12">
+
+                        <div class="col-sm-4">
+                            <label for="search-projects">By Projects</label>
+                            <select class="form-control" id="search-projects" style="width: 100%; height: 2.5em">
+                                <option value="0">All Projects</option>
+                                {% for project in projects %}
+                                    <option value="{{ project.id }}" {% ifequal projectid project.id %}selected{% endifequal %}>{{ project }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
+
+                        <div class="col-sm-4">
+                            <label for="search-properties">By Properties</label>
+                            <select class="form-control" id="search-properties" style="width: 100%; height: 2.5em">
+                                <option value="0">All Properties</option>
+                                {% for property in properties %}
+                                    <option value="{{ property.id }}" {% ifequal propertyid property.id %}selected{% endifequal %}>{{ property }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <label for="search-jobtypes">By JobTypes</label>
+                            <select class="form-control" id="search-jobtypes" style="width: 100%; height: 2.5em">
+                                <option value="0">All Job Types</option>
+                                {% for jobtype in jobtypes %}
+                                    <option value="{{ jobtype.id }}" {% ifequal jobtypeid jobtype.id %}selected{% endifequal %}>{{ jobtype }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
                     </div>
-                    <a id="btn-search" class="btn btn-success" title="Search"><i class="fa fa-search"></i></a>
-                    {% if search %}<a href="{% url 'works' %}" class="btn btn-info" title="All"><i class="fa fa-list-alt"></i></a>{% endif %}
-                </form>
 
-            </div>
+                </div>
 
+                <div class="row" style="margin-top: 1em">
+
+                    <div class="col-sm-12">
+
+                        <div class="col-sm-3">
+                            <label for="search-teams">By Team</label>
+                            <select class="form-control" id="search-teams" style="width: 100%; height: 2.5em">
+                                <option value="0">All Technicians</option>
+                                {% for team in teams %}
+                                    <option value="{{ team.id }}" {% ifequal teamid team.id %}selected{% endifequal %}>{{ team }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <label for="search-statuses">By Status</label>
+                            <select class="form-control" id="search-statuses" style="width: 100%; height: 2.5em">
+                                <option value="0" {% ifequal statusid '0' %}selected{% endifequal %}>All Status</option>
+                                <option value="1" {% ifequal statusid '1' %}selected{% endifequal %}>Complete</option>
+                                <option value="2" {% ifequal statusid '2' %}selected{% endifequal %}>Pending</option>
+                            </select>
+                        </div>
+
+                        {#                        <div class="col-sm-2">#}
+                        {#                            <label for="search-initial-date"> Initial Date:#}
+                        {#                                <input class="form-control" value="2017-10-09" id="search-initial-date" style="height: 2.5em"/>#}
+                        {#                            </label>#}
+                        {#                        </div>#}
+                        {#                        <div class="col-sm-2" style="margin-left: -1em">#}
+                        {#                            <label for="search-end-date">End Date:#}
+                        {#                                <input class="form-control" value="2017-10-09" id="search-end-date" style="height: 2.5em"/>#}
+                        {#                            </label>#}
+                        {#                        </div>#}
+
+                        <div class="col-sm-6">
+                            <label for="search-code-address"> By Code or Address:
+                                <input class="form-control" style="width: 600px; border-radius: 10px; margin-top: 0.4em" id="search-code-address" value="{% if search %}{{ search }}{% endif %}">
+                            </label>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="row" style="margin-top: 1.3em">
+
+                    <div class="col-sm-12 text-center">
+                        <a id="btn-search" href="javascript:void(0);" class="btn btn-success btn-lg">
+                            <i class="fa fa-search"></i> Apply Filters
+                        </a>
+                        {% if is_search %}
+                            <a id="btn-clean-search" href="javascript:void(0);" class="btn btn-info btn-lg" style="margin-left: 1em">
+                                <i class="fa fa-refresh"></i> Clean Filters
+                            </a>
+                        {% endif %}
+                    </div>
+
+                </div>
+
+            </div> <!-- End of row filters-search -->
         </div>
 
         <div class="row margin-row">
@@ -187,7 +291,12 @@
                 {% empty %}
                     <tr>
                         <td colspan="10" class="alert alert-info">
-                            <i>There are not works in the system. Click in the <strong>+ Add Work</strong> button to add your first work</i>
+                            {% if is_search %}
+                                <i><b>Results Not Found.</b> We couldn't find any work based on your search filters. Please Try again with another search combination.</i>
+                            {% else %}
+                                <i>There are not works in the system. Click in the <strong>+ Add Work</strong> button to add your first work</i>
+                            {% endif %}
+
                         </td>
                     </tr>
                 {% endfor %}
@@ -202,26 +311,27 @@
                     {% if paging.num_pages > 20 %}
                         <ul class="pagination">
                             {% if paging.first_page %}
-                                <li><a href="{%  url 'works' %}?page=1{% if search %}&s={{ search }}{% endif %}">1</a></li>
-                                <li><a href="{%  url 'works' %}?page={{ paging.ellipsis_left}}{% if search %}&s={{ search }}{% endif %}"
-                                       class="active">...</a></li>
+                                <li>
+                                    <a href="{%  url 'works' %}?page=1{% if projectid %}&project={{ projectid }}{% endif %}{% if propertyid %}&property={{ propertyid }}{% endif %}{% if jobtypeid %}&jobtype={{ jobtypeid }}{% endif %}{% if teamid %}&team={{ teamid }}{% endif %}{% if statusid %}&status={{ statusid }}{% endif %}{% if search %}&search={{ search }}{% endif %}">1</a>
+                                </li>
+                                <li><a href="{%  url 'works' %}?page={{ paging.ellipsis_left}}{% if projectid %}&project={{ projectid }}{% endif %}{% if propertyid %}&property={{ propertyid }}{% endif %}{% if jobtypeid %}&jobtype={{ jobtypeid }}{% endif %}{% if teamid %}&team={{ teamid }}{% endif %}{% if statusid %}&status={{ statusid }}{% endif %}{% if search %}&search={{ search }}{% endif %}" class="active">...</a></li>
                             {% endif %}
                             {% for pagenumber in paging.pages %}
                                 <li {% ifequal pagenumber page.number %}class='active'{% endifequal %}>
-                                    <a href="{%  url 'works' %}?page={{ pagenumber }}{% if search %}&s={{ search }}{% endif %}">
+                                    <a href="{%  url 'works' %}?page={{ pagenumber }}{% if projectid %}&project={{ projectid }}{% endif %}{% if propertyid %}&property={{ propertyid }}{% endif %}{% if jobtypeid %}&jobtype={{ jobtypeid }}{% endif %}{% if teamid %}&team={{ teamid }}{% endif %}{% if statusid %}&status={{ statusid }}{% endif %}{% if search %}&search={{ search }}{% endif %}">
                                         {{ pagenumber }}
                                     </a>
                                 </li>
                             {% endfor %}
                             {% if paging.last_page %}
                                 <li>
-                                    <a href="{%  url 'works' %}?page={{ paging.ellipsis_right }}{% if search %}&s={{ search }}{% endif %}"
+                                    <a href="{%  url 'works' %}?page={{ paging.ellipsis_right }}{% if projectid %}&project={{ projectid }}{% endif %}{% if propertyid %}&property={{ propertyid }}{% endif %}{% if jobtypeid %}&jobtype={{ jobtypeid }}{% endif %}{% if teamid %}&team={{ teamid }}{% endif %}{% if statusid %}&status={{ statusid }}{% endif %}{% if search %}&search={{ search }}{% endif %}"
                                        class="active">
                                         ...
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{%  url 'works' %}?page={{ paging.num_pages }}{% if search %}&s={{ search }}{% endif %}">
+                                    <a href="{%  url 'works' %}?page={{ paging.num_pages }}{% if projectid %}&project={{ projectid }}{% endif %}{% if propertyid %}&property={{ propertyid }}{% endif %}{% if jobtypeid %}&jobtype={{ jobtypeid }}{% endif %}{% if teamid %}&team={{ teamid }}{% endif %}{% if statusid %}&status={{ statusid }}{% endif %}{% if search %}&search={{ search }}{% endif %}">
                                         {{ paging.num_pages }}
                                     </a>
                                 </li>
@@ -231,7 +341,7 @@
                         <ul class='pagination pagination-sm'>
                             {% for pagenumber in paging.page_range %}
                                 <li {% ifequal pagenumber page.number %}class='active'{% endifequal %}>
-                                    <a href="{%  url 'works' %}?page={{ pagenumber }}{% if search %}&s={{ search }}{% endif %}">
+                                    <a href="{%  url 'works' %}?page={{ pagenumber }}{% if projectid %}&project={{ projectid }}{% endif %}{% if propertyid %}&property={{ propertyid }}{% endif %}{% if jobtypeid %}&jobtype={{ jobtypeid }}{% endif %}{% if teamid %}&team={{ teamid }}{% endif %}{% if statusid %}&status={{ statusid }}{% endif %}{% if search %}&search={{ search }}{% endif %}">
                                         {{ pagenumber }}
                                     </a>
                                 </li>
