@@ -26,7 +26,8 @@ admin.site.register(Customers, CustomersAdmin)
 
 
 class WorksAdmin(admin.ModelAdmin):
-    list_display = ('project', 'address', 'date', 'initial_time', 'end_time', 'is_completed', 'customer', 'evaluation')
+    list_display = ('project', 'address', 'date', 'initial_time', 'end_time',
+                    'is_completed', 'customer', 'evaluation', 'created_by')
     search_fields = ('project__name', 'address', 'customer__name')
     list_filter = ('is_completed', 'evaluation')
 
