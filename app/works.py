@@ -5,7 +5,8 @@ from django.shortcuts import render
 
 from app.forms import WorksForm, NewLeaderForm
 from app.functions import (bad_json, MiPaginator, ok_json, convertir_fecha_month_first, CUSTOMER_HOTWIRE_ID,
-                           DEFAULT_DISPATCH_ID, USER_GROUP_TECHNICIAN_ID)
+                           DEFAULT_DISPATCH_ID, USER_GROUP_TECHNICIAN_ID, USER_ADMIN_DEVELOPERS_IDS,
+                           USER_GROUP_HOTWIRE_ID)
 from app.models import Works, Customers, Users, Projects, JobTypes, Properties
 from app.views import adduserdata
 
@@ -267,7 +268,7 @@ def views(request):
 
         else:
 
-            works = Works.objects.order_by('-created_at')
+            works = Works.objects.order_by('-date')
 
             if 'h' in request.GET and request.GET['h'] != '':
                 works = works.filter(customer__id=CUSTOMER_HOTWIRE_ID)
@@ -293,9 +294,25 @@ def views(request):
             if 'status' in request.GET and int(request.GET['status']) > 0:
                 status_id = int(request.GET['status'])
 
-            search = None
-            if 'search' in request.GET and request.GET['search'] != '':
-                search = request.GET['search']
+            creator_id = None
+            if 'creator' in request.GET and int(request.GET['creator']) > 0:
+                creator_id = int(request.GET['creator'])
+
+            initial_date = None
+            if 'idate' in request.GET and request.GET['idate']:
+                initial_date = convertir_fecha_month_first(request.GET['idate'])
+
+            end_date = None
+            if 'edate' in request.GET and request.GET['edate']:
+                end_date = convertir_fecha_month_first(request.GET['edate'])
+
+            code = ''
+            if 'code' in request.GET and request.GET['code'] != '':
+                code = request.GET['code']
+
+            address = ''
+            if 'address' in request.GET and request.GET['address'] != '':
+                address = request.GET['address']
 
             if project_id:
                 works = works.filter(project_id=project_id)
@@ -320,8 +337,23 @@ def views(request):
                 else:
                     works = works.filter(is_completed=False)
 
-            if search:
-                works = works.filter(Q(address__icontains=search) | Q(id__icontains=search))
+            if creator_id:
+                works = works.filter(created_by__id=creator_id)
+
+            if initial_date and end_date:
+                works = works.filter(date__range=(initial_date, end_date))
+
+            if initial_date and not end_date:
+                works = works.filter(date__gte=initial_date)
+
+            if not initial_date and end_date:
+                works = works.filter(date__lte=end_date)
+
+            if code:
+                works = works.filter(id__icontains=code)
+
+            if address:
+                works = works.filter(address__icontains=address)
 
             paging = MiPaginator(works, 17)
 
@@ -334,19 +366,27 @@ def views(request):
             data['ranges_paging'] = paging.pages_range(p)
             data['page'] = page
             data['works'] = page.object_list
-            data['search'] = search if search else ''
 
             data['projects'] = Projects.objects.all().order_by('name') if not data['is_hotwire'] else Projects.objects.filter(works__customer__id=CUSTOMER_HOTWIRE_ID).distinct().order_by('name')
             data['properties'] = Properties.objects.all().order_by('name') if not data['is_hotwire'] else Properties.objects.filter(works__customer__id=CUSTOMER_HOTWIRE_ID).distinct().order_by('name')
             data['jobtypes'] = JobTypes.objects.all().order_by('name')
             data['teams'] = Users.objects.filter(group=USER_GROUP_TECHNICIAN_ID)
+            creators = Users.objects.exclude(id__in=USER_ADMIN_DEVELOPERS_IDS).order_by('user__username')
+            data['creators'] = creators if not data['is_hotwire'] else creators.filter(group=USER_GROUP_HOTWIRE_ID)
 
             data['projectid'] = project_id if project_id else 0
             data['propertyid'] = property_id if property_id else 0
             data['jobtypeid'] = jobtype_id if jobtype_id else 0
             data['teamid'] = team_id if team_id else 0
+            data['creatorid'] = creator_id if creator_id else 0
             data['statusid'] = str(status_id) if status_id else 0
-            data['search'] = search if search else ''
+            data['code'] = code if code else ''
+            data['address'] = address if address else ''
+            data['initial_date'] = initial_date.strftime('%m-%d-%Y') if initial_date else ''
+            data['end_date'] = end_date.strftime('%m-%d-%Y') if end_date else ''
 
-            data['is_search'] = True if project_id or property_id or jobtype_id or team_id or status_id or search else False
+            if project_id or property_id or jobtype_id or team_id or creator_id or status_id or code or address or initial_date or end_date:
+                data['is_search'] = True
+                data['count_of_works'] = works.count()
+
             return render(request, 'works/view.html', data)

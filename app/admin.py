@@ -38,6 +38,7 @@ class UsersAdmin(admin.ModelAdmin):
     list_display = ('user', 'group', 'phone', 'color_hoe_header', 'color_hoe_right_header', 'color_hoeapp_container')
     search_fields = ('user__username', 'user__first_name', 'phone')
     list_filter = ('group', )
+    ordering = ('user', )
 
 admin.site.register(Users, UsersAdmin)
 

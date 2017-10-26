@@ -5,14 +5,32 @@
 <p>
     <b>Congratulations!!!</b>
     <br/>
-    We have received a notification that a job has been successfully completed.
+    Thank you for your request.
+    We received an automatic notification: Job Completed !!!.
 </p>
 
 <h4>WORK DETAILS</h4>
+<p>Internal Code:  <b>{{ work.repr_id }}</b></p>
 <p>Date:  {{ work.date|date:'m-d-Y' }} </p>
 <p>Initial Time: {{ work.initial_time }} | Register Time: {{ work.register_time }} | End Time: {{ work.end_time }}) </p>
 <p>Project:  {{ work.project }} </p>
 <p>Customer:  {{ work.customer }} </p>
 <p>Address:  {{ work.address }} </p>
 <p>Leader:  {{ work.leader }} </p>
-<p>Customer Evaluation: <b>{% if work.evaluation == 1 %} BAD {% elif work.evaluation == 2 %} REGULAR {% elif work.evaluation == 3 %} GOOD {% elif work.evaluation == 4 %} VERY GOOD {% elif work.evaluation == 5 %} EXCELLENT {% else%} NO EVALUATION {% endif %}</b></p>
+<p>
+    Customer Evaluation:
+    <b>
+        {% if work.evaluation == 1 %} BAD
+        {% elif work.evaluation == 2 %} REGULAR
+        {% elif work.evaluation == 3 %} GOOD
+        {% elif work.evaluation == 4 %} VERY GOOD
+        {% elif work.evaluation == 5 %} EXCELLENT
+        {% else%} NO EVALUATION
+        {% endif %}
+    </b>
+</p>
+
+<p>Thanks !!!</p>
+<br/>
+<p>Regards, <p>
+<p><b>HOP Team</b></p>

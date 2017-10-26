@@ -4,7 +4,7 @@ from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 
 from app.forms import UsersForm
-from app.functions import bad_json, ok_json, DEFAULT_PASSWORD, generate_file_name
+from app.functions import bad_json, ok_json, DEFAULT_PASSWORD, generate_file_name, USER_ADMIN_DEVELOPERS_IDS
 from app.models import Users
 from app.views import adduserdata
 
@@ -35,7 +35,7 @@ def views(request):
                                 return bad_json(message="Email already exists in other User. "
                                                         "Please change the email of the user and try again.")
 
-                            django_user = User(username=f.cleaned_data['username'],
+                            django_user = User(username=f.cleaned_data['username'].lower(),
                                                first_name=f.cleaned_data['first_name'],
                                                last_name=f.cleaned_data['last_name'],
                                                email=f.cleaned_data['email'])
@@ -158,5 +158,5 @@ def views(request):
 
         else:
 
-            data['users'] = Users.objects.exclude(user__id=1).order_by('-created_at')
+            data['users'] = Users.objects.exclude(id__in=USER_ADMIN_DEVELOPERS_IDS).order_by('user__username')
             return render(request, 'users/view.html', data)

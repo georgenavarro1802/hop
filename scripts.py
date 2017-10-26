@@ -17,10 +17,11 @@ from app.models import *
 
 if __name__ == '__main__':
 
-    # Delete examples works
-    for work in Works.objects.filter(id__in=[58, 80, 88, 87, 86, 85, 84]):
-        if work.workstypes_set.exists():
-            work.workstypes_set.all().delete()
+    for work in Works.objects.filter(created_by__isnull=True):
+        if work.id in [114, 115, 116, 133]:
+            work.created_by_id = 37     # victor_hotwire
+        else:
+            work.created_by_id = 25     # hop_dispatch
+        work.save()
 
-        print('Deleted work: {}'.format(work.id))
-        work.delete()
+        print('Update created by: {}'.format(work.id))

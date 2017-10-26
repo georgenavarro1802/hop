@@ -150,11 +150,15 @@ class WorksViewDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins
 
                 work.save()
 
+                contact_emails = [CONTACT_EMAILS]
+                if work.created_by and work.created_by.user and work.created_by.user.email:
+                    contact_emails = [work.created_by.user.email, CONTACT_EMAILS]
+
                 if EMAIL_ACTIVE and work.end_time:
                     send_html_mail("HOP App - Complete Works",
                                    "emails/work_complete.html",
                                    {'work': work},
-                                   CONTACT_EMAILS)
+                                   contact_emails)
 
                 return Response({"Message": "Success"})
 
@@ -225,7 +229,7 @@ class JobRequestsDetail(generics.GenericAPIView):
                             send_html_mail("HOP App - Job Requests",
                                            "emails/job_request.html",
                                            {'job_request': job_request},
-                                           CONTACT_EMAILS)
+                                           [CONTACT_EMAILS])
 
                         return Response({"message": "Success"})
 

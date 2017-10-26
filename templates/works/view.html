@@ -6,6 +6,8 @@
 
         $("#works").addClass("active");
 
+        $("#search-initial-date, #search-end-date").mask('00-00-0000').datepicker({format:"mm-dd-yyyy"}).on('changeDate', function(ev){ $(this).datepicker('hide');});
+
         show_loading = function () {
 
              $.blockUI({
@@ -24,7 +26,7 @@
 
             setTimeout(function () {
                 location.href = "{% url 'works' %}";
-            }, 2000);
+            }, 1000);
 
         });
 
@@ -36,11 +38,15 @@
             var sel_property = $('#search-properties').val();
             var sel_jobtype = $('#search-jobtypes').val();
             var sel_team = $('#search-teams').val();
+            var sel_creator = $('#search-creator').val();
             var sel_status = $('#search-statuses').val();
-            var input_code_address = $('#search-code-address').val();
+            var sel_initial_date = $('#search-initial-date').val();
+            var sel_end_date = $('#search-end-date').val();
+            var input_code = $('#search-code').val();
+            var input_address = $('#search-address').val();
 
             setTimeout(function () {
-                location.href = "{% url 'works' %}?project="+sel_project+'&property='+sel_property+'&jobtype='+sel_jobtype+'&team='+sel_team+'&status='+sel_status+'&search='+input_code_address;
+                location.href = "{% url 'works' %}?project="+sel_project+'&property='+sel_property+'&jobtype='+sel_jobtype+'&team='+sel_team+'&creator='+sel_creator+'&status='+sel_status+'&idate='+sel_initial_date+'&edate='+sel_end_date+'&code='+input_code+'&address='+input_address;
             }, 2000);
 
         });
@@ -98,13 +104,13 @@
                 {% endif %}
             </div>
 
-            <div id="filters-search" style="display: none; margin-top: 5em">
+            <div id="filters-search" style="display: none; margin-top: 5em" class="well">
 
                 <div class="row">
 
                     <div class="col-sm-12">
 
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <label for="search-projects">By Projects</label>
                             <select class="form-control" id="search-projects" style="width: 100%; height: 2.5em">
                                 <option value="0">All Projects</option>
@@ -114,7 +120,7 @@
                             </select>
                         </div>
 
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <label for="search-properties">By Properties</label>
                             <select class="form-control" id="search-properties" style="width: 100%; height: 2.5em">
                                 <option value="0">All Properties</option>
@@ -124,12 +130,22 @@
                             </select>
                         </div>
 
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <label for="search-jobtypes">By JobTypes</label>
                             <select class="form-control" id="search-jobtypes" style="width: 100%; height: 2.5em">
                                 <option value="0">All Job Types</option>
                                 {% for jobtype in jobtypes %}
                                     <option value="{{ jobtype.id }}" {% ifequal jobtypeid jobtype.id %}selected{% endifequal %}>{{ jobtype }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <label for="search-teams">By Technician</label>
+                            <select class="form-control" id="search-teams" style="width: 100%; height: 2.5em">
+                                <option value="0">All Technicians</option>
+                                {% for team in teams %}
+                                    <option value="{{ team.id }}" {% ifequal teamid team.id %}selected{% endifequal %}>{{ team }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -142,17 +158,7 @@
 
                     <div class="col-sm-12">
 
-                        <div class="col-sm-3">
-                            <label for="search-teams">By Team</label>
-                            <select class="form-control" id="search-teams" style="width: 100%; height: 2.5em">
-                                <option value="0">All Technicians</option>
-                                {% for team in teams %}
-                                    <option value="{{ team.id }}" {% ifequal teamid team.id %}selected{% endifequal %}>{{ team }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <label for="search-statuses">By Status</label>
                             <select class="form-control" id="search-statuses" style="width: 100%; height: 2.5em">
                                 <option value="0" {% ifequal statusid '0' %}selected{% endifequal %}>All Status</option>
@@ -161,20 +167,36 @@
                             </select>
                         </div>
 
-                        {#                        <div class="col-sm-2">#}
-                        {#                            <label for="search-initial-date"> Initial Date:#}
-                        {#                                <input class="form-control" value="2017-10-09" id="search-initial-date" style="height: 2.5em"/>#}
-                        {#                            </label>#}
-                        {#                        </div>#}
-                        {#                        <div class="col-sm-2" style="margin-left: -1em">#}
-                        {#                            <label for="search-end-date">End Date:#}
-                        {#                                <input class="form-control" value="2017-10-09" id="search-end-date" style="height: 2.5em"/>#}
-                        {#                            </label>#}
-                        {#                        </div>#}
+                        <div class="col-sm-2">
+                            <label for="search-creator">By Creator</label>
+                            <select class="form-control" id="search-creator" style="width: 100%; height: 2.5em">
+                                <option value="0">All Users</option>
+                                {% for creator in creators %}
+                                    <option value="{{ creator.id }}" {% ifequal creatorid creator.id %}selected{% endifequal %}>{{ creator }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
 
-                        <div class="col-sm-6">
-                            <label for="search-code-address"> By Code or Address:
-                                <input class="form-control" style="width: 600px; border-radius: 10px; margin-top: 0.4em" id="search-code-address" value="{% if search %}{{ search }}{% endif %}">
+                        <div class="col-sm-2">
+                            <label for="search-initial-date"> Initial Date:
+                                <input class="form-control" value="{% if initial_date %}{{ initial_date|date:'m-d-Y' }}{% endif %}" id="search-initial-date" style="height: 2.5em; margin-top: 5px"/>
+                            </label>
+                        </div>
+                        <div class="col-sm-2" style="margin-left: -1em">
+                            <label for="search-end-date">End Date:
+                                <input class="form-control" value="{% if end_date %}{{ end_date|date:'m-d-Y' }}{% endif %}" id="search-end-date" style="height: 2.5em; margin-top: 5px"/>
+                            </label>
+                        </div>
+
+                        <div class="col-sm-1">
+                            <label for="search-code"> By Code:
+                                <input class="form-control" style="border-radius: 10px; margin-top: 0.4em" id="search-code" value="{% if code %}{{ code }}{% endif %}">
+                            </label>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <label for="search-code"> By Address:
+                                <input class="form-control" style="width: 300px; border-radius: 10px; margin-top: 0.4em" id="search-address" value="{% if address %}{{ address }}{% endif %}">
                             </label>
                         </div>
 
@@ -200,22 +222,21 @@
             </div> <!-- End of row filters-search -->
         </div>
 
+        {% if is_search %}
+            <div class="label {% if count_of_works %}label-warning{% else %}label-danger{% endif %}" style="float: right">
+                <span style="font-size: 1.7em"><em>{{ count_of_works }} results found</em></span>
+            </div>
+        {% endif %}
         <div class="row margin-row">
             <table class="table table-bordered table-hover">
                 <thead>
                 <tr style="font-weight: bold; font-size: 1em; background-color: #043b8a; color: white">
                     <th style="width: 60px">Cod.</th>
-                    <th style="width: 220px">Project</th>
+                    <th style="width: 170px">Project</th>
                     <th>Address</th>
-                    {#                    {% if not is_hotwire %}#}
                     <th style="width: 120px">Customer</th>
-                    {#                    {% endif %}#}
-                    <th style="width: 100px" class="text-center">Date</th>
-                    <th style="width: 70px" class="text-center">Start</th>
-                    <th style="width: 70px" class="text-center">Register</th>
-                    <th style="width: 70px" class="text-center">End</th>
-                    <th style="width: 80px" class="text-center">Lead</th>
-                    <th style="width: 40px" class="text-center">Status</th>
+                    <th style="width: 120px" class="text-center">Team/Date</th>
+                    <th style="width: 100px" class="text-center">Created by</th>
                     <th style="width: 20px"></th>
                 </tr>
                 </thead>
@@ -235,24 +256,18 @@
                             {% if w.property %}
                                 <br/><span class="font10">{{ w.property }}</span>
                             {% endif %}
-                        </td>
-                        <td class="font12">{{ w.address }}</td>
-                        {#                        {% if not is_hotwire %}#}
-                        <td class="font12">{{ w.customer.name }}</td>
-                        {#                        {% endif %}#}
-                        <td class="text-center font12">{{ w.date|date:'m-d-Y' }}</td>
-                        <td class="text-center font12">{{ w.initial_time }}</td>
-                        <td class="text-center font12">{{ w.register_time|default_if_none:'' }}</td>
-                        <td class="text-center font12">{{ w.end_time|default_if_none:'' }}</td>
-                        <td class="text-center font12">{{ w.leader|default_if_none:'' }}</td>
-                        <td class="text-center font12">
                             {% if w.is_completed %}
-                                <span class="label label-success">Completed</span>
-                            {% else %}
-                                <span class="label label-warning">Pending</span>
+                                <br/><span class="label label-success">Completed</span>
                             {% endif %}
                         </td>
-
+                        <td class="font12">{{ w.address }}</td>
+                        <td class="font12">{{ w.customer.name }}</td>
+                        <td class="text-center font12">
+                            {{ w.leader }}<br/>
+                            {{ w.date|date:'m-d-Y' }}<br/>
+                            <span class="small">({{ w.initial_time }} {% if w.end_time %}- {{ w.end_time|default_if_none:'' }}{% endif %})</span>
+                        </td>
+                        <td class="font12 text-center">{{ w.created_by|default_if_none:'' }}</td>
                         <td>
                             <div class="btn-group">
                                 <a class="font12 btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#">
@@ -274,7 +289,7 @@
                                         <li><hr class="margin-10"/></li>
                                         {% if is_admin or is_dispatch %}
                                             <li>
-                                                <a href="{% url 'works' %}?action=newteam&id={{ w.id }}"><i class="fa fa-user"></i> Reasign Reponsable</a>
+                                                <a href="{% url 'works' %}?action=newteam&id={{ w.id }}"><i class="fa fa-recycle"></i> Reasign Team</a>
                                             </li>
                                         {% endif %}
                                         <li>
@@ -292,7 +307,7 @@
                     <tr>
                         <td colspan="10" class="alert alert-info">
                             {% if is_search %}
-                                <i><b>Results Not Found.</b> We couldn't find any work based on your search filters. Please Try again with another search combination.</i>
+                                <i><b>No Results Found.</b> We couldn't find any work based on your search filters. Please Try again with another search combination.</i>
                             {% else %}
                                 <i>There are not works in the system. Click in the <strong>+ Add Work</strong> button to add your first work</i>
                             {% endif %}
@@ -312,26 +327,26 @@
                         <ul class="pagination">
                             {% if paging.first_page %}
                                 <li>
-                                    <a href="{%  url 'works' %}?page=1{% if projectid %}&project={{ projectid }}{% endif %}{% if propertyid %}&property={{ propertyid }}{% endif %}{% if jobtypeid %}&jobtype={{ jobtypeid }}{% endif %}{% if teamid %}&team={{ teamid }}{% endif %}{% if statusid %}&status={{ statusid }}{% endif %}{% if search %}&search={{ search }}{% endif %}">1</a>
+                                    <a href="{%  url 'works' %}?page=1{% if projectid %}&project={{ projectid }}{% endif %}{% if propertyid %}&property={{ propertyid }}{% endif %}{% if jobtypeid %}&jobtype={{ jobtypeid }}{% endif %}{% if teamid %}&team={{ teamid }}{% endif %}{% if creatorid %}&creator={{ creatorid }}{% endif %}{% if statusid %}&status={{ statusid }}{% endif %}{% if initial_date %}&idate={{ initial_date }}{% endif %}{% if end_date %}&edate={{ end_date }}{% endif %}{% if code %}&code={{ code }}{% endif %}{% if address %}&address={{ address }}{% endif %}">1</a>
                                 </li>
-                                <li><a href="{%  url 'works' %}?page={{ paging.ellipsis_left}}{% if projectid %}&project={{ projectid }}{% endif %}{% if propertyid %}&property={{ propertyid }}{% endif %}{% if jobtypeid %}&jobtype={{ jobtypeid }}{% endif %}{% if teamid %}&team={{ teamid }}{% endif %}{% if statusid %}&status={{ statusid }}{% endif %}{% if search %}&search={{ search }}{% endif %}" class="active">...</a></li>
+                                <li><a href="{%  url 'works' %}?page={{ paging.ellipsis_left}}{% if projectid %}&project={{ projectid }}{% endif %}{% if propertyid %}&property={{ propertyid }}{% endif %}{% if jobtypeid %}&jobtype={{ jobtypeid }}{% endif %}{% if teamid %}&team={{ teamid }}{% endif %}{% if creatorid %}&creator={{ creatorid }}{% endif %}{% if statusid %}&status={{ statusid }}{% endif %}{% if initial_date %}&idate={{ initial_date }}{% endif %}{% if end_date %}&edate={{ end_date }}{% endif %}{% if code %}&code={{ code }}{% endif %}{% if address %}&address={{ address }}{% endif %}" class="active">...</a></li>
                             {% endif %}
                             {% for pagenumber in paging.pages %}
                                 <li {% ifequal pagenumber page.number %}class='active'{% endifequal %}>
-                                    <a href="{%  url 'works' %}?page={{ pagenumber }}{% if projectid %}&project={{ projectid }}{% endif %}{% if propertyid %}&property={{ propertyid }}{% endif %}{% if jobtypeid %}&jobtype={{ jobtypeid }}{% endif %}{% if teamid %}&team={{ teamid }}{% endif %}{% if statusid %}&status={{ statusid }}{% endif %}{% if search %}&search={{ search }}{% endif %}">
+                                    <a href="{%  url 'works' %}?page={{ pagenumber }}{% if projectid %}&project={{ projectid }}{% endif %}{% if propertyid %}&property={{ propertyid }}{% endif %}{% if jobtypeid %}&jobtype={{ jobtypeid }}{% endif %}{% if teamid %}&team={{ teamid }}{% endif %}{% if creatorid %}&creator={{ creatorid }}{% endif %}{% if statusid %}&status={{ statusid }}{% endif %}{% if initial_date %}&idate={{ initial_date }}{% endif %}{% if end_date %}&edate={{ end_date }}{% endif %}{% if code %}&code={{ code }}{% endif %}{% if address %}&address={{ address }}{% endif %}">
                                         {{ pagenumber }}
                                     </a>
                                 </li>
                             {% endfor %}
                             {% if paging.last_page %}
                                 <li>
-                                    <a href="{%  url 'works' %}?page={{ paging.ellipsis_right }}{% if projectid %}&project={{ projectid }}{% endif %}{% if propertyid %}&property={{ propertyid }}{% endif %}{% if jobtypeid %}&jobtype={{ jobtypeid }}{% endif %}{% if teamid %}&team={{ teamid }}{% endif %}{% if statusid %}&status={{ statusid }}{% endif %}{% if search %}&search={{ search }}{% endif %}"
+                                    <a href="{%  url 'works' %}?page={{ paging.ellipsis_right }}{% if projectid %}&project={{ projectid }}{% endif %}{% if propertyid %}&property={{ propertyid }}{% endif %}{% if jobtypeid %}&jobtype={{ jobtypeid }}{% endif %}{% if teamid %}&team={{ teamid }}{% endif %}{% if creatorid %}&creator={{ creatorid }}{% endif %}{% if statusid %}&status={{ statusid }}{% endif %}{% if initial_date %}&idate={{ initial_date }}{% endif %}{% if end_date %}&edate={{ end_date }}{% endif %}{% if code %}&code={{ code }}{% endif %}{% if address %}&address={{ address }}{% endif %}"
                                        class="active">
                                         ...
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{%  url 'works' %}?page={{ paging.num_pages }}{% if projectid %}&project={{ projectid }}{% endif %}{% if propertyid %}&property={{ propertyid }}{% endif %}{% if jobtypeid %}&jobtype={{ jobtypeid }}{% endif %}{% if teamid %}&team={{ teamid }}{% endif %}{% if statusid %}&status={{ statusid }}{% endif %}{% if search %}&search={{ search }}{% endif %}">
+                                    <a href="{%  url 'works' %}?page={{ paging.num_pages }}{% if projectid %}&project={{ projectid }}{% endif %}{% if propertyid %}&property={{ propertyid }}{% endif %}{% if jobtypeid %}&jobtype={{ jobtypeid }}{% endif %}{% if teamid %}&team={{ teamid }}{% endif %}{% if creatorid %}&creator={{ creatorid }}{% endif %}{% if statusid %}&status={{ statusid }}{% endif %}{% if initial_date %}&idate={{ initial_date }}{% endif %}{% if end_date %}&edate={{ end_date }}{% endif %}{% if code %}&code={{ code }}{% endif %}{% if address %}&address={{ address }}{% endif %}">
                                         {{ paging.num_pages }}
                                     </a>
                                 </li>
@@ -341,7 +356,7 @@
                         <ul class='pagination pagination-sm'>
                             {% for pagenumber in paging.page_range %}
                                 <li {% ifequal pagenumber page.number %}class='active'{% endifequal %}>
-                                    <a href="{%  url 'works' %}?page={{ pagenumber }}{% if projectid %}&project={{ projectid }}{% endif %}{% if propertyid %}&property={{ propertyid }}{% endif %}{% if jobtypeid %}&jobtype={{ jobtypeid }}{% endif %}{% if teamid %}&team={{ teamid }}{% endif %}{% if statusid %}&status={{ statusid }}{% endif %}{% if search %}&search={{ search }}{% endif %}">
+                                    <a href="{%  url 'works' %}?page={{ pagenumber }}{% if projectid %}&project={{ projectid }}{% endif %}{% if propertyid %}&property={{ propertyid }}{% endif %}{% if jobtypeid %}&jobtype={{ jobtypeid }}{% endif %}{% if teamid %}&team={{ teamid }}{% endif %}{% if creatorid %}&creator={{ creatorid }}{% endif %}{% if statusid %}&status={{ statusid }}{% endif %}{% if initial_date %}&idate={{ initial_date }}{% endif %}{% if end_date %}&edate={{ end_date }}{% endif %}{% if code %}&code={{ code }}{% endif %}{% if address %}&address={{ address }}{% endif %}">
                                         {{ pagenumber }}
                                     </a>
                                 </li>
