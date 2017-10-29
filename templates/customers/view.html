@@ -45,10 +45,12 @@
                         <td class="text-center font14">{{ c.get_number_works_incompleted|floatformat:0 }}</td>
                         <td class="text-center font11">{{ c.created_at|date:'m-d-Y' }}</td>
                         <td>
-                            <a class="btn btn-xs btn-info tu" href="{% url 'customers' %}?action=edit&id={{ c.id }}" title="Edit"><i class="fa fa-edit"></i></a>
-                            {% if not c.has_relations %}
-                                <a class="btn btn-xs btn-danger tu" href="{% url 'customers' %}?action=delete&id={{ c.id }}" title="Delete" style="margin-left: 0.3em"><i class="fa fa-times"></i></a>
-                            {% endif %}
+                            {% ifnotequal c.id customer_create_new_customer_id %}
+                                <a class="btn btn-xs btn-info tu" href="{% url 'customers' %}?action=edit&id={{ c.id }}" title="Edit"><i class="fa fa-edit"></i></a>
+                                {% if not c.has_relations %}
+                                    <a class="btn btn-xs btn-danger tu" href="{% url 'customers' %}?action=delete&id={{ c.id }}" title="Delete" style="margin-left: 0.3em"><i class="fa fa-times"></i></a>
+                                {% endif %}
+                            {% endifnotequal %}
                         </td>
                     </tr>
                 {% empty %}

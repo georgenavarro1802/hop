@@ -6,7 +6,7 @@ from django.db import transaction
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, render
 
-from app.functions import (NOMBRE_INSTITUCION, bad_json, ok_json, MiPaginator)
+from app.functions import (NOMBRE_INSTITUCION, bad_json, ok_json, MiPaginator, CUSTOMER_CREATE_NEW_CUSTOMER_ID)
 from app.models import Users, Projects, Works, Customers, JobRequests, JobTypes
 
 
@@ -28,6 +28,8 @@ def adduserdata(request, data):
     data['is_technician'] = myuser.is_technician()
     data['is_dispatch'] = myuser.is_distpach()
     data['is_hotwire'] = myuser.is_hotwire()
+
+    data['customer_create_new_customer_id'] = CUSTOMER_CREATE_NEW_CUSTOMER_ID
 
 
 @login_required(redirect_field_name='ret', login_url='/login')

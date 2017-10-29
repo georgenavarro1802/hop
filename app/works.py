@@ -19,8 +19,6 @@ def views(request):
     data = {'title': 'WORKS'}
     adduserdata(request, data)
 
-    data['customer_create_new_customer_id'] = CUSTOMER_CREATE_NEW_CUSTOMER_ID
-
     if request.method == 'POST':
         if 'action' in request.POST:
             action = request.POST['action']
