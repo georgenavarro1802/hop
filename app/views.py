@@ -3,14 +3,11 @@ from datetime import datetime
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
-from django.db.models import Count
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, render
 
 from app.functions import (NOMBRE_INSTITUCION, bad_json, ok_json, MiPaginator)
 from app.models import Users, Projects, Works, Customers, JobRequests, JobTypes
-
-import operator
 
 
 def adduserdata(request, data):

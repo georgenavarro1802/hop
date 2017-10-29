@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
 
 {% block heading %}
+
     <script>
+
         $("#customers").addClass("active");
+
     </script>
 {% endblock %}
 
@@ -13,26 +16,34 @@
             <table class="table table-bordered table-hover">
                 <thead>
                 <tr style="font-weight: bold; font-size: 1.1em; background-color: #043b8a; color: white">
+                    <th style="width: 50px">Type</th>
                     <th>Name</th>
                     <th style="width: 250px">Email</th>
-                    <th style="width: 100px">Phone</th>
-                    <th style="width: 80px" class="text-center">Works</th>
-                    <th style="width: 80px" class="text-center">Complete</th>
-                    <th style="width: 80px" class="text-center">Incomplete</th>
-                    <th style="width: 80px" class="text-center">Created</th>
+                    <th style="width: 150px">Phone</th>
+                    <th style="width: 60px" class="text-center">Works</th>
+                    <th style="width: 60px" class="text-center">Comp.</th>
+                    <th style="width: 60px" class="text-center">Incom.</th>
+                    <th style="width: 60px" class="text-center">Created</th>
                     <th style="width: 80px"></th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for c in customers %}
                     <tr>
+                        <td class="font11">
+                            {% if c.is_company %}
+                                <label class="label label-success">Company</label>
+                            {% else %}
+                                <label class="label label-info">Customer</label>
+                            {% endif %}
+                        </td>
                         <td class="font14">{{ c.name }}</td>
                         <td class="font12">{{ c.email }}</td>
                         <td class="font12">{{ c.phone }}</td>
                         <td class="text-center font14">{{ c.get_number_works|floatformat:0 }}</td>
                         <td class="text-center font14">{{ c.get_number_works_completed|floatformat:0 }}</td>
                         <td class="text-center font14">{{ c.get_number_works_incompleted|floatformat:0 }}</td>
-                        <td class="text-center font12">{{ c.created_at|date:'m-d-Y' }}</td>
+                        <td class="text-center font11">{{ c.created_at|date:'m-d-Y' }}</td>
                         <td>
                             <a class="btn btn-xs btn-info tu" href="{% url 'customers' %}?action=edit&id={{ c.id }}" title="Edit"><i class="fa fa-edit"></i></a>
                             {% if not c.has_relations %}

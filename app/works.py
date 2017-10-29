@@ -6,7 +6,7 @@ from django.shortcuts import render
 from app.forms import WorksForm, NewLeaderForm
 from app.functions import (bad_json, MiPaginator, ok_json, convertir_fecha_month_first, CUSTOMER_HOTWIRE_ID,
                            DEFAULT_DISPATCH_ID, USER_GROUP_TECHNICIAN_ID, USER_ADMIN_DEVELOPERS_IDS,
-                           USER_GROUP_HOTWIRE_ID)
+                           USER_GROUP_HOTWIRE_ID, CUSTOMER_CREATE_NEW_CUSTOMER_ID, PROJECT_GROUP_HOTWIRE)
 from app.models import Works, Customers, Users, Projects, JobTypes, Properties
 from app.views import adduserdata
 
@@ -19,6 +19,8 @@ def views(request):
     data = {'title': 'WORKS'}
     adduserdata(request, data)
 
+    data['customer_create_new_customer_id'] = CUSTOMER_CREATE_NEW_CUSTOMER_ID
+
     if request.method == 'POST':
         if 'action' in request.POST:
             action = request.POST['action']
@@ -29,19 +31,35 @@ def views(request):
                     try:
                         with transaction.atomic():
 
-                            if Works.objects.filter(project=f.cleaned_data['project'],
-                                                    address=f.cleaned_data['address']).exists():
-                                return bad_json(message="Work already exists with that Project and Address. "
-                                                        "Please change the project or address and try again. ")
+                            customer = f.cleaned_data['customer']
 
+                            if not customer:
+                                return bad_json(message='Please select one of the Customers options menu')
+
+                            new_customer = None
+                            if customer.id == CUSTOMER_CREATE_NEW_CUSTOMER_ID:      # New customer
+                                customer_name = f.cleaned_data['customer_name']
+                                customer_email = f.cleaned_data['customer_email']
+                                customer_phone = f.cleaned_data['customer_phone']
+
+                                new_customer = Customers(name=customer_name,
+                                                         email=customer_email,
+                                                         phone=customer_phone,
+                                                         is_company=False)
+                                new_customer.save()
+
+                            if new_customer:
+                                customer = new_customer
+
+                            # Work details
                             project = f.cleaned_data['project']
                             property = f.cleaned_data['property']
-                            customer = Customers.objects.get(pk=CUSTOMER_HOTWIRE_ID) if data['is_hotwire'] else f.cleaned_data['customer']
                             address = f.cleaned_data['address']
                             date = convertir_fecha_month_first(f.cleaned_data['date'])
                             initial_time = f.cleaned_data['initial_time']
                             notes = f.cleaned_data['notes']
 
+                            # Work Team
                             leader = Users.objects.get(pk=DEFAULT_DISPATCH_ID) if data['is_hotwire'] else f.cleaned_data['leader']
                             support1 = f.cleaned_data['support1']
                             support2 = f.cleaned_data['support2']
@@ -271,7 +289,9 @@ def views(request):
             works = Works.objects.order_by('-date')
 
             if 'h' in request.GET and request.GET['h'] != '':
-                works = works.filter(customer__id=CUSTOMER_HOTWIRE_ID)
+                works = works.filter(Q(customer__id=CUSTOMER_HOTWIRE_ID) |
+                                     Q(created_by__group=USER_GROUP_HOTWIRE_ID) |
+                                     Q(project__grupo=PROJECT_GROUP_HOTWIRE)).distinct()
 
             # Filters
             project_id = None

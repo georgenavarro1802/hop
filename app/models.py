@@ -146,15 +146,17 @@ class Customers(BaseModel):
     name = models.CharField(max_length=300)
     phone = models.CharField(max_length=100, blank=True, null=True)
     email = models.CharField(max_length=300, blank=True, null=True)
+    is_company = models.NullBooleanField(default=False, blank=True, null=True)
 
     def __str__(self):
-        return "{} ({})".format(self.name, self.email)
+        if self.email:
+            return "{} ({})".format(self.name, self.email)
+        return "{}".format(self.name)
 
     class Meta:
         verbose_name = 'Customer'
         verbose_name_plural = 'Customers'
         db_table = 'customers'
-        unique_together = ('email', )
 
     def has_relations(self):
         return self.works_set.exists()
@@ -268,9 +270,10 @@ class Users(BaseModel):
 
 
 class Works(BaseModel):
+    customer = models.ForeignKey(Customers, blank=True, null=True)
     project = models.ForeignKey(Projects)
     property = models.ForeignKey(Properties, blank=True, null=True)
-    address = models.TextField()
+    address = models.TextField(blank=True, null=True)
     date = models.DateField(blank=True, null=True)
     initial_time = models.CharField(max_length=10, blank=True, null=True)
 
@@ -298,8 +301,7 @@ class Works(BaseModel):
     is_completed = models.BooleanField(default=False)
     notes = models.TextField(blank=True, null=True)
 
-    # Customer
-    customer = models.ForeignKey(Customers, blank=True, null=True)
+    # Customer Evaluation
     evaluation = models.IntegerField(default=0, choices=EVALUATION_TYPES)
     sign = models.FileField(upload_to='signs/', blank=True, null=True)
 

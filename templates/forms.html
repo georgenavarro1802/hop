@@ -94,10 +94,8 @@
 
                         {% for field in form %}
                             {% if field.field.widget.attrs.separator %}
-                                <div style="width: 100%; height: 50px;">
-                                    <div class="alert alert-info" style="background-color: aliceblue; border-color: lightskyblue;">
-                                        <b>{{ field.field.widget.attrs.separator|upper }}</b>
-                                    </div>
+                                <div class="label label-info">
+                                    <b>{{ field.field.widget.attrs.separator }}</b>
                                 </div>
                             {% endif %}
 

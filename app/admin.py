@@ -19,8 +19,9 @@ admin.site.register(JobTypes, JobTypesAdmin)
 
 
 class CustomersAdmin(admin.ModelAdmin):
-    list_display = ('name', 'phone', 'email')
+    list_display = ('name', 'phone', 'email', 'is_company')
     search_fields = ('name', 'phone', 'email')
+    list_filter = ('is_company', )
 
 admin.site.register(Customers, CustomersAdmin)
 

@@ -232,10 +232,10 @@
                 <thead>
                 <tr style="font-weight: bold; font-size: 1em; background-color: #043b8a; color: white">
                     <th style="width: 60px">Cod.</th>
-                    <th style="width: 170px">Project</th>
+                    <th style="width: 200px">Project</th>
                     <th>Address</th>
-                    <th style="width: 120px">Customer</th>
-                    <th style="width: 120px" class="text-center">Team/Date</th>
+                    <th style="width: 250px">Customer</th>
+                    <th style="width: 120px">Team/Date</th>
                     <th style="width: 100px" class="text-center">Created by</th>
                     <th style="width: 20px"></th>
                 </tr>
@@ -261,8 +261,12 @@
                             {% endif %}
                         </td>
                         <td class="font12">{{ w.address }}</td>
-                        <td class="font12">{{ w.customer.name }}</td>
-                        <td class="text-center font12">
+                        <td class="font12">
+                            {{ w.customer.name }} <br/>
+                            {{ w.customer.email }}<br/>
+                            {{ w.customer.phone }}
+                        </td>
+                        <td class="font12">
                             {{ w.leader }}<br/>
                             {{ w.date|date:'m-d-Y' }}<br/>
                             <span class="small">({{ w.initial_time }} {% if w.end_time %}- {{ w.end_time|default_if_none:'' }}{% endif %})</span>

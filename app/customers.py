@@ -25,12 +25,14 @@ def views(request):
                     try:
                         with transaction.atomic():
 
-                            if Customers.objects.filter(email=f.cleaned_data['email']).exists():
+                            email = f.cleaned_data['email']
+                            if email and Customers.objects.filter(email=email).exists():
                                 return bad_json(message="Email already exists in other Customer. "
                                                         "Please change the email of the customer and try again.")
                             customer = Customers(name=f.cleaned_data['name'],
                                                  phone=f.cleaned_data['phone'],
-                                                 email=f.cleaned_data['email'])
+                                                 email=email,
+                                                 is_company=f.cleaned_data['is_company'])
                             customer.save()
                             return ok_json(data={'redirect_url': '/customers',
                                                  'msg': 'You have successfully created a new CUSTOMER.'})
@@ -46,12 +48,14 @@ def views(request):
                     try:
                         with transaction.atomic():
 
-                            if Customers.objects.filter(email=f.cleaned_data['email']).exclude(id=customer.id).exists():
+                            email = f.cleaned_data['email']
+                            if email and Customers.objects.filter(email=email).exclude(id=customer.id).exists():
                                 return bad_json(message="Email already exists in other Customer. "
                                                         "Please change the email of the customer and try again.")
                             customer.name = f.cleaned_data['name']
                             customer.phone = f.cleaned_data['phone']
-                            customer.email = f.cleaned_data['email']
+                            customer.email = email
+                            customer.is_company = f.cleaned_data['is_company']
                             customer.save()
                             return ok_json(data={'redirect_url': '/customers',
                                                  'msg': 'You have successfully edited the CUSTOMER.'})
@@ -92,7 +96,8 @@ def views(request):
                         data['customer'] = customer = Customers.objects.get(pk=request.GET['id'])
                         data['form'] = CustomersForm(initial={'name': customer.name,
                                                               'phone': customer.phone,
-                                                              'email': customer.email})
+                                                              'email': customer.email,
+                                                              'is_company': True if customer.is_company else False})
                         return render(request, 'customers/edit.html', data)
                     except Exception:
                         pass
@@ -110,7 +115,7 @@ def views(request):
 
         else:
 
-            customers = Customers.objects.order_by('-created_at')
+            customers = Customers.objects.order_by('name')
 
             search = None
             if 's' in request.GET and request.GET['s'] != '':

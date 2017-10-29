@@ -1,9 +1,7 @@
 import os
 from django import forms
-from django.contrib.auth.models import Group
 
-from app.functions import USER_GROUP_ADMINISTRATOR_ID, USER_GROUP_HOTWIRE_ID, USER_GROUP_TECHNICIAN_ID, USERS_GROUPS, \
-    PROJECTS_GROUPS, PROJECT_GROUP_HOTWIRE
+from app.functions import USER_GROUP_TECHNICIAN_ID, USERS_GROUPS, PROJECTS_GROUPS, PROJECT_GROUP_HOTWIRE
 from app.models import Projects, Customers, Users, Properties
 
 
@@ -57,6 +55,9 @@ class JobTypesForm(forms.Form):
 
 
 class CustomersForm(forms.Form):
+    is_company = forms.BooleanField(required=False, initial=True,
+                                    label='Is Company? (checked = Company. no checked = Customer)',
+                                    widget=forms.CheckboxInput(attrs={'class': 'form-control'}))
     name = forms.CharField(max_length=300, required=True, label='Name')
     phone = forms.CharField(max_length=100, required=False, label='Phone')
     email = forms.CharField(max_length=300, required=False, label='Email')
@@ -75,31 +76,45 @@ class UsersForm(forms.Form):
 
 
 class WorksForm(forms.Form):
-    project = forms.ModelChoiceField(Projects.objects.order_by('name'), label='Project',
-                                     required=True, widget=forms.Select(attrs={'class': 'imp-75'}))
-    property = forms.ModelChoiceField(Properties.objects.order_by('name'), label='Property',
-                                      required=False, widget=forms.Select(attrs={'class': 'imp-75'}))
+    # Customer Data
     customer = forms.ModelChoiceField(Customers.objects.order_by('name'), label='Customer',
-                                      required=False, widget=forms.Select(attrs={'class': 'imp-75'}))
-    address = forms.CharField(required=False, label='Address')
+                                      required=False, widget=forms.Select(attrs={'class': 'imp-75 myselect2',
+                                                                                 'separator': 'Select Customer or Create New Customer'}))
+    customer_name = forms.CharField(max_length=300, required=True, label='Customer Name',
+                                    widget=forms.TextInput(attrs={'class': 'form-control imp-75'}))
+    customer_email = forms.CharField(max_length=300, required=False, label='Customer Email',
+                                     widget=forms.TextInput(attrs={'class': 'form-control imp-75'}))
+    customer_phone = forms.CharField(max_length=100, required=False, label='Customer Phone',
+                                     widget=forms.TextInput(attrs={'class': 'form-control imp-30'}))
+
+    # Works Details
+    project = forms.ModelChoiceField(Projects.objects.order_by('name'), label='Project',
+                                     required=True, widget=forms.Select(attrs={'class': 'imp-75 myselect2',
+                                                                               'separator': 'Work Details'}))
+    property = forms.ModelChoiceField(Properties.objects.order_by('name'), label='Property',
+                                      required=False, widget=forms.Select(attrs={'class': 'imp-75 myselect2'}))
+    address = forms.CharField(required=False, label='Address', widget=forms.Textarea(attrs={'rows': '2', 'cols': '2',
+                                                                                            'class': 'form-control'}))
     date = forms.CharField(required=False, label='Date', widget=forms.TextInput(attrs={'class': 'imp-20',
                                                                                        'placeholder': 'mm-dd-yyyy'}))
     initial_time = forms.CharField(required=False, label='Start Time', widget=forms.TextInput(attrs={'class': 'imp-20',
                                                                                                      'placeholder': 'hh:mm'}))
-    notes = forms.CharField(required=False, label='Notes', widget=forms.Textarea(attrs={'rows': '3', 'cols': '2'}))
-    # Asign Lead and Support Team
+    notes = forms.CharField(required=False, label='Notes', widget=forms.Textarea(attrs={'rows': '3', 'cols': '2',
+                                                                                        'class': 'form-control'}))
+    # Wor Team
     leader = forms.ModelChoiceField(Users.objects.filter(group=USER_GROUP_TECHNICIAN_ID), required=False,
-                                    widget=forms.Select(attrs={'class': 'imp-50'}), label='Leader')
+                                    widget=forms.Select(attrs={'class': 'imp-50 myselect2',
+                                                               'separator': 'Work Team'}), label='Leader')
     support1 = forms.ModelChoiceField(Users.objects.filter(group=USER_GROUP_TECHNICIAN_ID), required=False,
-                                      widget=forms.Select(attrs={'class': 'imp-50'}), label='Support 1')
+                                      widget=forms.Select(attrs={'class': 'imp-50 myselect2'}), label='Support 1')
     support2 = forms.ModelChoiceField(Users.objects.filter(group=USER_GROUP_TECHNICIAN_ID), required=False,
-                                      widget=forms.Select(attrs={'class': 'imp-50'}), label='Support 2')
+                                      widget=forms.Select(attrs={'class': 'imp-50 myselect2'}), label='Support 2')
     support3 = forms.ModelChoiceField(Users.objects.filter(group=USER_GROUP_TECHNICIAN_ID), required=False,
-                                      widget=forms.Select(attrs={'class': 'imp-50'}), label='Support 3')
+                                      widget=forms.Select(attrs={'class': 'imp-50 myselect2'}), label='Support 3')
     support4 = forms.ModelChoiceField(Users.objects.filter(group=USER_GROUP_TECHNICIAN_ID), required=False,
-                                      widget=forms.Select(attrs={'class': 'imp-50'}), label='Support 4')
+                                      widget=forms.Select(attrs={'class': 'imp-50 myselect2'}), label='Support 4')
     support5 = forms.ModelChoiceField(Users.objects.filter(group=USER_GROUP_TECHNICIAN_ID), required=False,
-                                      widget=forms.Select(attrs={'class': 'imp-50'}), label='Support 5')
+                                      widget=forms.Select(attrs={'class': 'imp-50 myselect2'}), label='Support 5')
 
     def for_hotwire(self):
         self.fields['project'].queryset = Projects.objects.filter(grupo=PROJECT_GROUP_HOTWIRE)
@@ -109,7 +124,6 @@ class WorksForm(forms.Form):
         del self.fields['support3']
         del self.fields['support4']
         del self.fields['support5']
-        del self.fields['customer']
 
 
 class NewLeaderForm(forms.Form):

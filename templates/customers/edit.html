@@ -1,9 +1,27 @@
 {% extends "forms.html" %}
 
 {% block extraheading %}
+
+    <style>
+
+        .checkbox-company{
+            float: left;
+            width: 25px;
+            margin-right: 1em!important;
+            margin-top: -5px!important;
+        }
+
+    </style>
+
     <script>
+
         $("#customers").addClass("active");
+        $("#id_name").focus();
+
+        $("#id_is_company").parent().addClass('checkbox-company');
+
     </script>
+
 {% endblock %}
 
 {% block form-title %}{{ title }}{% endblock %}
