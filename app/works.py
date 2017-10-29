@@ -30,7 +30,6 @@ def views(request):
                         with transaction.atomic():
 
                             customer = f.cleaned_data['customer']
-
                             if not customer:
                                 return bad_json(message='Please select one of the Customers options menu')
 
@@ -95,40 +94,43 @@ def views(request):
                     try:
                         with transaction.atomic():
 
-                            if Works.objects.filter(project=f.cleaned_data['project'],
-                                                    address=f.cleaned_data['address']).exclude(id=work.id).exists():
-                                return bad_json(message="Work already exists with that Project and Address. "
-                                                        "Please change the project or address and try again. ")
+                            customer = f.cleaned_data['customer']
+                            if not customer:
+                                return bad_json(message='Please select one of the Customers options menu')
 
-                            project = f.cleaned_data['project']
-                            property = f.cleaned_data['property']
-                            customer = Customers.objects.get(pk=CUSTOMER_HOTWIRE_ID) if data['is_hotwire'] else f.cleaned_data['customer']
-                            address = f.cleaned_data['address']
-                            date = convertir_fecha_month_first(f.cleaned_data['date'])
-                            initial_time = f.cleaned_data['initial_time']
-                            notes = f.cleaned_data['notes']
+                            new_customer = None
+                            if customer.id == CUSTOMER_CREATE_NEW_CUSTOMER_ID:  # New customer
+                                customer_name = f.cleaned_data['customer_name']
+                                customer_email = f.cleaned_data['customer_email']
+                                customer_phone = f.cleaned_data['customer_phone']
 
-                            leader = Users.objects.get(pk=DEFAULT_DISPATCH_ID) if data['is_hotwire'] else f.cleaned_data['leader']
-                            support1 = f.cleaned_data['support1']
-                            support2 = f.cleaned_data['support2']
-                            support3 = f.cleaned_data['support3']
-                            support4 = f.cleaned_data['support4']
-                            support5 = f.cleaned_data['support5']
+                                new_customer = Customers(name=customer_name,
+                                                         email=customer_email,
+                                                         phone=customer_phone,
+                                                         is_company=False)
+                                new_customer.save()
 
-                            work.project = project
-                            work.property = property
+                            if new_customer:
+                                customer = new_customer
+
                             work.customer = customer
-                            work.address = address
-                            work.date = date
-                            work.initial_time = initial_time
-                            work.notes = notes
 
-                            work.leader = leader
-                            work.support1 = support1
-                            work.support2 = support2
-                            work.support3 = support3
-                            work.support4 = support4
-                            work.support5 = support5
+                            # Update Work detail
+                            work.project = f.cleaned_data['project']
+                            work.property = f.cleaned_data['property']
+                            work.address = f.cleaned_data['address']
+                            work.date = convertir_fecha_month_first(f.cleaned_data['date'])
+                            work.initial_time = f.cleaned_data['initial_time']
+                            work.notes = f.cleaned_data['notes']
+
+                            # Update Word Team
+                            work.leader = Users.objects.get(pk=DEFAULT_DISPATCH_ID) if data['is_hotwire'] else f.cleaned_data['leader']
+                            work.support1 = f.cleaned_data['support1']
+                            work.support2 = f.cleaned_data['support2']
+                            work.support3 = f.cleaned_data['support3']
+                            work.support4 = f.cleaned_data['support4']
+                            work.support5 = f.cleaned_data['support5']
+
                             work.save()
 
                             return ok_json(data={'redirect_url': '/works',

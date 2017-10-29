@@ -80,7 +80,7 @@ class WorksForm(forms.Form):
     customer = forms.ModelChoiceField(Customers.objects.order_by('name'), label='Customer',
                                       required=False, widget=forms.Select(attrs={'class': 'imp-75 myselect2',
                                                                                  'separator': 'Select Customer or Create New Customer'}))
-    customer_name = forms.CharField(max_length=300, required=True, label='Customer Name',
+    customer_name = forms.CharField(max_length=300, required=False, label='Customer Name',
                                     widget=forms.TextInput(attrs={'class': 'form-control imp-75'}))
     customer_email = forms.CharField(max_length=300, required=False, label='Customer Email',
                                      widget=forms.TextInput(attrs={'class': 'form-control imp-75'}))

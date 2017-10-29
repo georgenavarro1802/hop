@@ -10,7 +10,6 @@
         textarea {
             resize: none;
         }
-
     </style>
     <script>
 
@@ -19,6 +18,8 @@
         $("#id_date").mask('00-00-0000').datepicker({format:"mm-dd-yyyy"}).on('changeDate', function(ev){ $(this).datepicker('hide');});
 
         $('#id_initial_time').mask('00:00');
+
+        $('#id_property').empty();
 
         $("#id_project").change(function () {
 
@@ -47,7 +48,36 @@
                 });
             }
 
-         });
+        });
+
+        show_new_customers_elements = function () {
+            $("#id_customer_name").parent().parent().show();
+            $("#id_customer_email").parent().parent().show();
+            $("#id_customer_phone").parent().parent().show();
+        };
+
+        hide_new_customers_elements = function () {
+            $("#id_customer_name").parent().parent().hide();
+            $("#id_customer_email").parent().parent().hide();
+            $("#id_customer_phone").parent().parent().hide();
+        };
+
+        // Inicialization of new customers data (by default)
+        hide_new_customers_elements();
+
+        $("#id_customer").change(function () {
+           var customer_id = $(this).val();
+           if (customer_id){
+               if (customer_id === '{{ customer_create_new_customer_id }}'){
+                   show_new_customers_elements();
+               }else{
+                   hide_new_customers_elements();
+               }
+           }else{
+               alert('Please Select one of the customer options');
+               hide_new_customers_elements();
+           }
+        });
 
     </script>
 {% endblock %}
