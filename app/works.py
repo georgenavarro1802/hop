@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 
-from app.forms import WorksForm, NewLeaderForm
+from app.forms import WorksForm, NewLeaderForm, ChangeAddressForm
 from app.functions import (bad_json, MiPaginator, ok_json, convertir_fecha_month_first, CUSTOMER_HOTWIRE_ID,
                            DEFAULT_DISPATCH_ID, USER_GROUP_TECHNICIAN_ID, USER_ADMIN_DEVELOPERS_IDS,
                            USER_GROUP_HOTWIRE_ID, CUSTOMER_CREATE_NEW_CUSTOMER_ID, PROJECT_GROUP_HOTWIRE)
@@ -138,6 +138,23 @@ def views(request):
                 else:
                     return bad_json(message="Form is not valid.")
 
+            if action == 'change_address':
+                work = Works.objects.get(pk=int(request.POST['id']))
+                f = ChangeAddressForm(request.POST)
+                if f.is_valid():
+                    try:
+                        with transaction.atomic():
+
+                            work.address = f.cleaned_data['address']
+                            work.save()
+
+                            return ok_json(data={'redirect_url': '/works',
+                                                 'msg': 'You have successfully changed the address of the WORK.'})
+                    except Exception:
+                        return bad_json(error=2)
+                else:
+                    return bad_json(message="Form is not valid.")
+
             if action == 'delete':
                 work = Works.objects.get(pk=int(request.POST['id']))
                 try:
@@ -221,6 +238,15 @@ def views(request):
                             form.for_hotwire()
                         data['form'] = form
                         return render(request, 'works/edit.html', data)
+                    except Exception:
+                        pass
+
+                if action == 'change_address':
+                    try:
+                        data['title'] = 'Change Address'
+                        data['work'] = work = Works.objects.get(pk=request.GET['id'])
+                        data['form'] = ChangeAddressForm(initial={'address': work.address})
+                        return render(request, 'works/change_address.html', data)
                     except Exception:
                         pass
 

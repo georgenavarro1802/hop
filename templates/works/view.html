@@ -279,8 +279,17 @@
                                     <span class="caret"></span>
                                 </a>
                                 <ul class="font12 dropdown-menu pull-right list-group">
+                                    {% if is_administrator %}
+                                        <li>
+                                            <a href="{% url 'works' %}?action=change_address&id={{ w.id }}">
+                                                <i class="fa fa-home"></i> Change Address
+                                            </a>
+                                        </li>
+                                    {% endif %}
                                     <li>
-                                        <a href="{% url 'works' %}?action=details&id={{ w.id }}"><i class="fa fa-list"></i> Details</a>
+                                        <a href="{% url 'works' %}?action=details&id={{ w.id }}">
+                                            <i class="fa fa-list"></i> Details
+                                        </a>
                                     </li>
                                     {% if w.register_time and w.latitude_register and w.longitude_register %}
                                         <li>
@@ -291,16 +300,22 @@
                                     {% endif %}
                                     {% if not w.is_completed %}
                                         <li><hr class="margin-10"/></li>
-                                        {% if is_admin or is_dispatch %}
+                                        {% if is_administrator or is_dispatch %}
                                             <li>
-                                                <a href="{% url 'works' %}?action=newteam&id={{ w.id }}"><i class="fa fa-recycle"></i> Reasign Team</a>
+                                                <a href="{% url 'works' %}?action=newteam&id={{ w.id }}">
+                                                    <i class="fa fa-recycle"></i> Reasign Team
+                                                </a>
                                             </li>
                                         {% endif %}
                                         <li>
-                                            <a href="{% url 'works' %}?action=edit&id={{ w.id }}"><i class="fa fa-edit"></i> Edit</a>
+                                            <a href="{% url 'works' %}?action=edit&id={{ w.id }}">
+                                                <i class="fa fa-edit"></i> Edit
+                                            </a>
                                         </li>
                                         <li>
-                                            <a href="{% url 'works' %}?action=delete&id={{ w.id }}"><i class="fa fa-times"></i> Delete</a>
+                                            <a href="{% url 'works' %}?action=delete&id={{ w.id }}">
+                                                <i class="fa fa-times"></i> Delete
+                                            </a>
                                         </li>
                                     {% endif %}
                                 </ul>

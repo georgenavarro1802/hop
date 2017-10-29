@@ -126,6 +126,11 @@ class WorksForm(forms.Form):
         del self.fields['support5']
 
 
+class ChangeAddressForm(forms.Form):
+    address = forms.CharField(required=False, label='Address',
+                              widget=forms.Textarea(attrs={'rows': '2', 'cols': '2', 'class': 'form-control'}))
+
+
 class NewLeaderForm(forms.Form):
     leader = forms.ModelChoiceField(Users.objects.filter(group=USER_GROUP_TECHNICIAN_ID), required=False,
                                     widget=forms.Select(attrs={'class': 'imp-50'}), label='Leader')
