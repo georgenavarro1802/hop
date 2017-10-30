@@ -312,7 +312,7 @@ def views(request):
 
         else:
 
-            works = Works.objects.order_by('-date')
+            works = Works.objects.order_by('-id')
 
             if 'h' in request.GET and request.GET['h'] != '':
                 works = works.filter(Q(customer__id=CUSTOMER_HOTWIRE_ID) |
