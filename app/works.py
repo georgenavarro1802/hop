@@ -319,6 +319,9 @@ def views(request):
                                      Q(created_by__group=USER_GROUP_HOTWIRE_ID) |
                                      Q(project__grupo=PROJECT_GROUP_HOTWIRE)).distinct()
 
+            if data['is_hotwire']:
+                works = works.filter(customer__id=CUSTOMER_HOTWIRE_ID).distinct()
+
             # Filters
             project_id = None
             if 'project' in request.GET and int(request.GET['project']) > 0:
