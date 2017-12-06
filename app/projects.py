@@ -118,7 +118,7 @@ def views(request):
             if search:
                 projects = projects.filter(name__icontains=search)
 
-            paging = MiPaginator(projects, 10)
+            paging = MiPaginator(projects, 25)
 
             p = 1
             if 'page' in request.GET:

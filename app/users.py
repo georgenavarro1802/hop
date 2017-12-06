@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import transaction
+from django.db.models import Q
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 
@@ -151,12 +152,25 @@ def views(request):
                         data['myuser'] = Users.objects.get(pk=request.GET['id'])
                         data['is_delete'] = True
                         return render(request, 'users/delete.html', data)
-                    except Exception as ex:
+
+                    except Exception:
                         pass
 
             return HttpResponseRedirect('/users')
 
         else:
 
-            data['users'] = Users.objects.exclude(id__in=USER_ADMIN_DEVELOPERS_IDS).order_by('user__username')
+            users = Users.objects.exclude(id__in=USER_ADMIN_DEVELOPERS_IDS).order_by('user__username')
+
+            search = None
+            if 's' in request.GET and request.GET['s'] != '':
+                search = request.GET['s']
+
+            if search:
+                users = users.filter(Q(user__username__icontains=search) |
+                                     Q(user__first_name__icontains=search) |
+                                     Q(user__last_name__icontains=search))
+
+            data['users'] = users
+            data['search'] = search if search else ''
             return render(request, 'users/view.html', data)

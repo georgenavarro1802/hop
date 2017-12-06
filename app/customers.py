@@ -124,7 +124,7 @@ def views(request):
             if search:
                 customers = customers.filter(name__icontains=search)
 
-            paging = MiPaginator(customers, 10)
+            paging = MiPaginator(customers, 25)
 
             p = 1
             if 'page' in request.GET:

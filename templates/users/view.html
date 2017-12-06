@@ -3,14 +3,48 @@
 
 {% block heading %}
     <script>
+        $(".menu-principal").removeClass("active");
         $("#users").addClass("active");
+
+        $("#btn-search").click(function () {
+            var search = $('#input-search').val();
+            if (search){
+                location.href = "{% url 'users' %}?s="+search;
+            }
+        });
+
+        $('#input-search').keyup(function(e) {
+            if(e.keyCode === 13) {
+                $("#btn-search").trigger("click");
+            }
+        });
+
     </script>
 {% endblock %}
 
 {% block canvas %}
     <div class="container-fluid">
         <div class="row margin-row">
-            <p class="myheading"> <i class="fa fa-user"></i> {{ title }}</p>
+
+            <div class="col-sm-8">
+                <p class="myheading"> <i class="fa fa-user"></i> {{ title }}</p>
+            </div>
+
+            <div class="col-sm-4 text-right">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label class="sr-only" for="search"></label>
+                        <div class="input-group">
+                            <input class="form-control" id="input-search" placeholder="Search users" value="{% if search %}{{ search }}{% endif %}">
+                        </div>
+                    </div>
+                    <a id="btn-search" class="btn btn-success" title="Search"><i class="fa fa-search"></i></a>
+                    {% if search %}<a href="{% url 'users' %}" class="btn btn-info" title="All"><i class="fa fa-list-alt"></i></a>{% endif %}
+                </form>
+            </div>
+        </div>
+
+        <div class="row margin-row">
             <table class="table table-bordered table-hover">
                 <thead>
                 <tr style="font-weight: bold; font-size: 1em; background-color: #043b8a; color: white">
