@@ -47,6 +47,12 @@
                             <p class="label label-info" style="position: relative; top: 10px">Report</p>
                             <div class="roundedBorder">
                                 {{ work.report|default_if_none:'NO REPORT' }}
+                                {% if work.is_completed and work.get_installation_code_by_report %}
+                                    <br/>
+                                    <p style="font-size: 1.1em; color: #0e0e19; margin-top: 1em">
+                                        For Invoice: <span style="font-size: 1em; color: grey">{{ work.get_installation_code_by_report.representation_work_details }}</span>
+                                    </p>
+                                {% endif %}
                             </div>
                         </div>
 

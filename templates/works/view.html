@@ -231,7 +231,7 @@
             <table class="table table-bordered table-hover">
                 <thead>
                 <tr style="font-weight: bold; font-size: 1em; background-color: #043b8a; color: white">
-                    <th style="width: 60px">Cod.</th>
+                    <th style="width: 80px">Cod.</th>
                     <th style="width: 200px">Project</th>
                     <th>Address</th>
                     <th style="width: 250px">Customer</th>
@@ -244,10 +244,15 @@
                 {% for w in works %}
                     <tr>
                         <td class="font12">
-                            {{ w.repr_id }}
+                            {{ w.repr_id }}<br/>
                             {% if w.notes %}
-                                <a href="#" class="btn-notes btn btn-xs tr" title="Notes" notes="{{ w.notes }}" code="{{ w.repr_id }}">
+                                <a href="#" class="btn-notes btn btn-xs tu" title="Notes" notes="{{ w.notes }}" code="{{ w.repr_id }}">
                                     <i class="fa fa-sticky-note"></i>
+                                </a>
+                            {% endif %}
+                             {% if w.excel_file %}
+                                <a href="{{ w.get_my_excel_file  }}" class="btn btn-xs tu" title="Excel" style="margin-left: -0.5em">
+                                    <i class="fa fa-file-excel-o"></i>
                                 </a>
                             {% endif %}
                         </td>
@@ -255,6 +260,9 @@
                             {{ w.project }}
                             {% if w.property %}
                                 <br/><span class="font10">{{ w.property }}</span>
+                            {% endif %}
+                            {% if w.property_text %}
+                                <br/><span class="font10">{{ w.property_text }}</span>
                             {% endif %}
                             {% if w.is_completed %}
                                 <br/><span class="label label-success">Completed</span>
@@ -339,7 +347,8 @@
 
             <div class="row">
                 <div class="col-sm-6">
-                    <a class="btn btn-success" href="{% url 'works' %}?action=add"><i class="fa fa-plus"></i> Add Work</a>
+                    <a class="btn btn-success" href="{% url 'works' %}?action=add"><i class="fa fa-plus"></i> Add New Work</a>
+                    <a class="btn btn-success" href="{% url 'works' %}?action=import" style="margin-left: 1em"><i class="fa fa-upload"></i> Import from Excel</a>
                 </div>
                 <div class="col-sm-6 text-right">
                     {% if paging.num_pages > 20 %}

@@ -7,3 +7,4 @@ django-easy-pdf==0.1.0
 xhtml2pdf==0.2b1
 reportlab==3.3.0
 django-logentry-admin==1.0.2
+xlrd==1.1.0

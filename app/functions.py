@@ -57,6 +57,16 @@ USER_ADMIN_DEVELOPERS_IDS = [1, 2, 3, 39]
 # DEFAULT USER TO SUPPORT DISPATCH
 DEFAULT_DISPATCH_ID = 25
 
+# INSTALLATIINSTALLATIONSONS CODES
+INSTALLATION_CODE_DWT01 = 'DWT01'
+INSTALLATION_CODE_DWT02 = 'DWT02'
+INSTALLATION_CODE_WT02 = 'WT02'
+INSTALLATION_CODE_SPT03 = 'SPT03'
+INSTALLATION_CODE_ELT04 = 'ELT04'
+INSTALLATION_CODE_DC_DWT01 = 'DC-DWT01'
+INSTALLATION_CODE_DC_DWT02 = 'DC-DWT02'
+INSTALLATION_CODE_DC_ELT03 = 'DC-ELT03'
+
 
 def generate_file_name(nombre, original):
     ext = ""
@@ -106,6 +116,13 @@ def convertir_fecha_month_first(s):
         return datetime(int(s[-4:]), int(s[:2]), int(s[3:5]))
     except:
         return datetime.now()
+
+
+def convert_fecha_month_first_two_digits_year(s):
+    try:
+        return datetime(int(s[-2:]), int(s[:2]), int(s[3:5])).date()
+    except:
+        return datetime.now().date()
 
 
 def convertir_time(time):

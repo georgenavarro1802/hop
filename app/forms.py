@@ -144,3 +144,9 @@ class NewLeaderForm(forms.Form):
                                     widget=forms.Select(attrs={'class': 'imp-50'}), label='Support 4')
     support5 = forms.ModelChoiceField(Users.objects.filter(group=USER_GROUP_TECHNICIAN_ID), required=False,
                                     widget=forms.Select(attrs={'class': 'imp-50'}), label='Support 5')
+
+
+class ImportXLSForm(forms.Form):
+    project = forms.ModelChoiceField(Projects.objects.filter(grupo=PROJECT_GROUP_HOTWIRE), label='Project', required=False)
+    file = ExtFileField(label='Select Excel File', help_text='Max size allowed 4Mb (extensions: xls, xlsx)',
+                        ext_whitelist=(".xls", ".xlsx"), max_upload_size=4194304, required=False)

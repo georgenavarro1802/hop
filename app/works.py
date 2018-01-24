@@ -1,13 +1,15 @@
+import xlrd
 from django.db import transaction
 from django.db.models import Q
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 
-from app.forms import WorksForm, NewLeaderForm, ChangeAddressForm
+from app.forms import WorksForm, NewLeaderForm, ChangeAddressForm, ImportXLSForm
 from app.functions import (bad_json, MiPaginator, ok_json, convertir_fecha_month_first, CUSTOMER_HOTWIRE_ID,
                            DEFAULT_DISPATCH_ID, USER_GROUP_TECHNICIAN_ID, USER_ADMIN_DEVELOPERS_IDS,
-                           USER_GROUP_HOTWIRE_ID, CUSTOMER_CREATE_NEW_CUSTOMER_ID, PROJECT_GROUP_HOTWIRE)
-from app.models import Works, Customers, Users, Projects, JobTypes, Properties
+                           USER_GROUP_HOTWIRE_ID, CUSTOMER_CREATE_NEW_CUSTOMER_ID, PROJECT_GROUP_HOTWIRE,
+                           generate_file_name, convert_fecha_month_first_two_digits_year)
+from app.models import Works, Customers, Users, Projects, JobTypes, Properties, ExcelFiles
 from app.views import adduserdata
 
 
@@ -200,6 +202,81 @@ def views(request):
                 except Exception:
                     return bad_json(error=1)
 
+            elif action == 'import':
+                f = ImportXLSForm(request.POST, request.FILES)
+                if f.is_valid():
+                    try:
+                        with transaction.atomic():
+                            project = f.cleaned_data['project']
+                            has_file = 'file' in request.FILES and request.FILES['file']
+
+                            if project and has_file:
+                                nfile = request.FILES['file']
+                                nfile._name = generate_file_name("import_", nfile._name)
+
+                                excel_file = ExcelFiles(file=nfile)
+                                excel_file.save()
+
+                                workbook = xlrd.open_workbook(excel_file.file.file.name)
+                                sheet = workbook.sheet_by_index(0)
+                                line = 1
+                                for rowx in range(sheet.nrows):
+                                    try:
+
+                                        if line <= 1:
+                                            line += 1
+                                            continue
+
+                                        else:
+                                            cols = sheet.row_values(rowx)
+
+                                            # 0 - Property
+                                            # 1 - Address
+                                            # 2 - Date (MM/DD/YY)
+                                            # 3 - Time (HH:MM militar time)
+                                            # 4 - Requested (how many people)
+                                            # 5 - Type of the work
+                                            # 6 - Contact Info
+
+                                            property = cols[0] if cols[0] else ''
+                                            address = cols[1] if cols[1] else ''
+                                            date = convert_fecha_month_first_two_digits_year(cols[2]) if cols[2] else ''
+                                            initial_time = cols[3] if cols[3] else ''
+                                            requested = int(cols[4]) if cols[4] else ''
+                                            type = cols[5] if cols[5] else ''
+                                            contact = cols[6] if cols[6] else ''
+                                            notes = ''
+                                            if requested:
+                                                notes += 'Personal Requested: {} | '.format(requested)
+                                            if type:
+                                                notes += 'Work Type: {} | '.format(type)
+                                            if contact:
+                                                notes += 'Contact Info: {}'.format(contact)
+
+                                            work = Works(project=project,
+                                                         property_text=property,
+                                                         customer_id=CUSTOMER_HOTWIRE_ID,
+                                                         address=address,
+                                                         date=date,
+                                                         initial_time=initial_time,
+                                                         notes=notes,
+                                                         leader_id=DEFAULT_DISPATCH_ID,
+                                                         created_by=data['myuser'],
+                                                         excel_file=excel_file)
+                                            work.save()
+
+                                            line += 1
+
+                                    except Exception as ex:
+                                        return bad_json(message='Error in line: {}'.format(line))
+
+                                return ok_json(data={'redirect_url': '/works', 'msg': 'You have successfully imported works.'})
+
+                            return bad_json(message='You must to select a project and upload an excel file')
+
+                    except Exception:
+                        return bad_json(error=1)
+
         return bad_json(error=0)
 
     else:
@@ -307,6 +384,14 @@ def views(request):
 
                     data['weekdays_works'] = weekdays_works
                     return render(request, 'reports/customer_reports.html', data)
+
+                if action == 'import':
+                    try:
+                        data['title'] = 'Works Imports'
+                        data['form'] = ImportXLSForm()
+                        return render(request, "works/import.html", data)
+                    except Exception as ex:
+                        pass
 
             return HttpResponseRedirect('/works')
 

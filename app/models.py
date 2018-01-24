@@ -1,3 +1,4 @@
+import os
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models, router
@@ -5,7 +6,10 @@ from django.db.models import Q, Avg
 from django.db.models.deletion import Collector
 
 from app.functions import (USER_GROUP_ADMINISTRATOR_ID, USER_GROUP_TECHNICIAN_ID, USER_GROUP_HOTWIRE_ID,
-                           EVALUATION_TYPES, USERS_GROUPS, DEFAULT_DISPATCH_ID, PROJECTS_GROUPS, PROJECT_GROUP_HOP)
+                           EVALUATION_TYPES, USERS_GROUPS, DEFAULT_DISPATCH_ID, PROJECTS_GROUPS, PROJECT_GROUP_HOP,
+                           INSTALLATION_CODE_DWT01, INSTALLATION_CODE_DWT02, INSTALLATION_CODE_WT02,
+                           INSTALLATION_CODE_SPT03, INSTALLATION_CODE_ELT04, INSTALLATION_CODE_DC_DWT01,
+                           INSTALLATION_CODE_DC_DWT02, INSTALLATION_CODE_DC_ELT03)
 
 
 class BaseModel(models.Model):
@@ -52,6 +56,7 @@ class Projects(BaseModel):
         verbose_name_plural = 'Projects'
         db_table = 'projects'
         unique_together = ('name', )
+        ordering = ('name', )
 
     def has_relations(self):
         return self.works_set.exists() or self.properties_set.exists()
@@ -269,10 +274,29 @@ class Users(BaseModel):
         return 0
 
 
+class ExcelFiles(BaseModel):
+    file = models.FileField(upload_to='files/%Y/%m/%d', verbose_name='Excel File')
+
+    def __str__(self):
+        return 'Excel Files'
+
+    class Meta:
+        verbose_name = 'Excel File'
+        verbose_name_plural = "Excel Files"
+        db_table = "excel_files"
+
+    def file_name(self):
+        return os.path.split(str(self.file.name))[1]
+
+    def download_link(self):
+        return self.file.url
+
+
 class Works(BaseModel):
     customer = models.ForeignKey(Customers, blank=True, null=True)
     project = models.ForeignKey(Projects)
     property = models.ForeignKey(Properties, blank=True, null=True)
+    property_text = models.CharField(max_length=300, blank=True, null=True)
     address = models.TextField(blank=True, null=True)
     date = models.DateField(blank=True, null=True)
     initial_time = models.CharField(max_length=10, blank=True, null=True)
@@ -307,6 +331,9 @@ class Works(BaseModel):
 
     # Creator
     created_by = models.ForeignKey(Users, related_name='created_by', blank=True, null=True)
+
+    # if is created from import, lets save the file related with
+    excel_file = models.ForeignKey(ExcelFiles, blank=True, null=True)
 
     def __str__(self):
         return "{} - {}".format(self.project, self.address)
@@ -348,6 +375,30 @@ class Works(BaseModel):
         if self.workstypes_set.exists():
             return [x.type for x in self.workstypes_set.all().order_by('type__name')]
         return None
+
+    def get_my_excel_file(self):
+        return self.excel_file.download_link() if self.excel_file else ""
+
+    def get_installation_code_by_report(self):
+        code = ""
+        if INSTALLATION_CODE_DWT01 in self.report:
+            code = INSTALLATION_CODE_DWT01
+        if INSTALLATION_CODE_DWT02 in self.report:
+            code = INSTALLATION_CODE_DWT02
+        if INSTALLATION_CODE_WT02 in self.report:
+            code = INSTALLATION_CODE_WT02
+        if INSTALLATION_CODE_SPT03 in self.report:
+            code = INSTALLATION_CODE_SPT03
+        if INSTALLATION_CODE_ELT04 in self.report:
+            code = INSTALLATION_CODE_ELT04
+        if INSTALLATION_CODE_DC_DWT01 in self.report:
+            code = INSTALLATION_CODE_DC_DWT01
+        if INSTALLATION_CODE_DC_DWT02 in self.report:
+            code = INSTALLATION_CODE_DC_DWT02
+        if INSTALLATION_CODE_DC_ELT03 in self.report:
+            code = INSTALLATION_CODE_DC_ELT03
+
+        return InstallationsCodes.objects.get(code=code) if code else None
 
 
 class WorksTypes(BaseModel):
@@ -393,3 +444,27 @@ class JobRequestsTypes(BaseModel):
         verbose_name_plural = 'Job Requests - Types '
         db_table = 'job_requests_types'
         unique_together = ('job_request', 'type')
+
+
+class InstallationsCodes(BaseModel):
+    code = models.CharField(max_length=10)
+    description = models.CharField(max_length=200, blank=True, null=True)
+    price = models.FloatField(default=0)
+    scope = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return "{} - {} ({})".format(self.code, self.description, self.price)
+
+    class Meta:
+        verbose_name = 'Installation Code'
+        verbose_name_plural = 'Installations Codes'
+        db_table = 'installations_codes'
+        unique_together = ('code', )
+        ordering = ('code', )
+
+    def save(self, *args, **kwargs):
+        self.code = self.code.upper()
+        models.Model.save(self)
+
+    def representation_work_details(self):
+        return "Code: {} | Description: {} | Price: ${:.2f}".format(self.code, self.description, self.price)

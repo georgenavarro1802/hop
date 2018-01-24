@@ -1,0 +1,16 @@
+{% extends "forms.html" %}
+{% block extraheading %}
+    <script>
+        $(function(){
+            $("#id_file").addClass("validate[required]");
+        });
+    </script>
+{% endblock %}
+
+{% block form-title %}{{ title }}{% endblock %}
+{% block form-action %}{% url 'works' %}{% endblock %}
+{% block form-width %}form-s{% endblock %}
+{% block form-extra %}
+    <input type='hidden' name='action' value='import'/>
+{% endblock %}
+{% block form-back %}{% url 'works' %}{% endblock %}
