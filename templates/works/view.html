@@ -268,7 +268,13 @@
                                 <br/><span class="label label-success">Completed</span>
                             {% endif %}
                         </td>
-                        <td class="font12">{{ w.address }}</td>
+                        <td class="font12">
+                            {{ w.address }}
+                            {% if w.is_completed and w.get_installation_code_by_report %}
+                                <br/>
+                                <span class="label label-info tr" title="{{ w.get_installation_code_by_report.representation_work_details }}">{{ w.get_installation_code_by_report.code }}</span>
+                            {% endif %}
+                        </td>
                         <td class="font12">
                             {{ w.customer.name }} <br/>
                             {{ w.customer.email }}<br/>
