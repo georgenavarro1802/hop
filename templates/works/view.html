@@ -325,6 +325,14 @@
                                                 <i class="fa fa-times"></i> Delete
                                             </a>
                                         </li>
+                                    {% else %}
+                                        {% if w.get_installation_code_by_report %}
+                                            <li>
+                                                <a href="{% url 'works' %}?action=invoice&id={{ w.id }}">
+                                                    <i class="fa fa-file-word-o"></i> Generate Invoice
+                                                </a>
+                                            </li>
+                                        {% endif %}
                                     {% endif %}
                                 </ul>
                             </div>

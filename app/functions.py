@@ -1,8 +1,8 @@
 import json
+
 from datetime import datetime
 from django.core.paginator import Paginator
 from django.http import HttpResponse
-
 from django.utils.translation import get_language
 
 

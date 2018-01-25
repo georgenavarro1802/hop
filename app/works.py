@@ -1,4 +1,6 @@
 import xlrd
+
+from datetime import datetime
 from django.db import transaction
 from django.db.models import Q
 from django.http.response import HttpResponseRedirect
@@ -11,6 +13,7 @@ from app.functions import (bad_json, MiPaginator, ok_json, convertir_fecha_month
                            generate_file_name, convert_fecha_month_first_two_digits_year)
 from app.models import Works, Customers, Users, Projects, JobTypes, Properties, ExcelFiles
 from app.views import adduserdata
+from easy_pdf.rendering import render_to_pdf_response, fetch_resources
 
 
 def get_number_works_completed_by_weekday_customer(weekday, customerID):
@@ -390,6 +393,17 @@ def views(request):
                         data['title'] = 'Works Imports'
                         data['form'] = ImportXLSForm()
                         return render(request, "works/import.html", data)
+                    except Exception as ex:
+                        pass
+
+                if action == 'invoice':
+                    try:
+                        data['title'] = 'Work Invoice'
+                        data['work'] = Works.objects.get(pk=int(request.GET['id']))
+                        data['today'] = datetime.now().date()
+                        data['logo_invoice'] = fetch_resources('/static/images/logo_hop_invoice.png', '')
+                        return render_to_pdf_response(request, 'works/invoice.html', data)
+
                     except Exception as ex:
                         pass
 

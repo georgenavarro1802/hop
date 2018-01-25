@@ -1,4 +1,5 @@
 {% extends "forms.html" %}
+{% load static %}
 {% block extraheading %}
     <script>
         $(function(){
@@ -7,7 +8,16 @@
     </script>
 {% endblock %}
 
-{% block form-title %}{{ title }}{% endblock %}
+{% block form-title %}
+    {{ title }}
+    <div style="text-align: right">
+        <a href="{% static 'images/hotwire_template.xlsx' %}"
+           class="btn btn-success btn-sm tr"
+           title="Download the excel template with the required fields you need to import your works to the hop system automatically">
+            <i class="fa fa-download"></i> Download Template
+        </a>
+    </div>
+{% endblock %}
 {% block form-action %}{% url 'works' %}{% endblock %}
 {% block form-width %}form-s{% endblock %}
 {% block form-extra %}

@@ -1,0 +1,272 @@
+{% extends "easy_pdf/base.html" %}
+{% load static %}
+
+{% block layout_style %}
+    <style type="text/css" xmlns:pdf="http://www.w3.org/1999/html">
+        @page {
+            margin-left: 1cm;
+            margin-right: 1cm;
+            margin-top: 1cm;
+            margin-bottom: 1cm;
+        }
+
+        .page-break{
+            page-break-after: always;
+        }
+
+        .table-border-gray {
+            border: 2px solid lightgrey;
+        }
+
+        .tr-header {
+            height: 30px;
+            text-align: center;
+        }
+
+        .td-header {
+            background-color: red;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .td-info {
+            font-size: 1.2em;
+        }
+
+        .td-info-value {
+            font-size: 1.4em;
+        }
+
+        .td-bold {
+            font-weight: bold;
+        }
+
+        .tr-for-text-500 {
+            height: 500px;
+        }
+
+        .tr-for-text-60 {
+            height: 60px;
+        }
+
+        .tr-for-text-30 {
+            height: 30px;
+        }
+
+    </style>
+
+{% endblock %}
+
+{% block content %}
+
+    <table>
+
+        <tr>
+            <td style="width: 60%">
+                <img src="{{ logo_invoice }}" width="400px" height="230px" />
+            </td>
+            <td style="width: 40%">
+
+                <table class="table-border-gray">
+                    <tr class="tr-header">
+                        <td class="td-header">Date</td>
+                        <td class="td-header">Invoice</td>
+                    </tr>
+
+                    <tr class="tr-header">
+                        <td class="td-info">01-25-2018</td>
+                        <td class="td-info">3456789</td>
+                    </tr>
+                </table>
+
+            </td>
+        </tr>
+
+    </table>
+
+    <br/>
+
+    <table>
+
+        <tr>
+
+            <td style="width: 45%;">
+                <table class="table-border-gray">
+                    <tr class="tr-header">
+                        <td class="td-header">Bill To</td>
+                    </tr>
+
+                    <tr class="tr-for-text-60">
+                        <td class="td-info"></td>
+                    </tr>
+                </table>
+            </td>
+
+            <td style="width: 10%"></td>
+
+            <td style="width: 45%">
+
+                <table class="table-border-gray">
+                    <tr class="tr-header">
+                        <td class="td-header">Pay To</td>
+                    </tr>
+
+                    <tr class="tr-for-text-60">
+                        <td class="td-info"></td>
+                    </tr>
+                </table>
+
+            </td>
+        </tr>
+
+    </table>
+
+    <br/>
+
+    <table>
+
+        <tr>
+
+            <td style="width: 25%;">
+                <table class="table-border-gray">
+                    <tr class="tr-header">
+                        <td class="td-header">Project</td>
+                    </tr>
+                    <tr class="tr-for-text-30">
+                        <td class="td-info"></td>
+                    </tr>
+                </table>
+            </td>
+
+            <td style="width: 5%"></td>
+
+            <td style="width: 20%">
+
+                <table class="table-border-gray">
+                    <tr class="tr-header">
+                        <td class="td-header">Terms</td>
+                    </tr>
+                    <tr class="tr-for-text-30">
+                        <td class="td-info"></td>
+                    </tr>
+                </table>
+
+            </td>
+
+            <td style="width: 5%"></td>
+
+            <td style="width: 20%">
+
+                <table class="table-border-gray">
+                    <tr class="tr-header">
+                        <td class="td-header">Type</td>
+                    </tr>
+                    <tr class="tr-for-text-30">
+                        <td class="td-info"></td>
+                    </tr>
+                </table>
+
+            </td>
+
+            <td style="width: 5%"></td>
+
+            <td style="width: 25%">
+
+                <table class="table-border-gray">
+                    <tr class="tr-header">
+                        <td class="td-header">Purchasing Contact</td>
+                    </tr>
+                    <tr class="tr-for-text-30">
+                        <td class="td-info"></td>
+                    </tr>
+                </table>
+
+            </td>
+
+        </tr>
+
+    </table>
+
+    <br/>
+
+    <table>
+
+        <tr>
+
+            <td style="width: 20%;">
+                <table class="table-border-gray">
+                    <tr class="tr-header">
+                        <td class="td-header">Items</td>
+                    </tr>
+                    <tr class="tr-for-text-500">
+                        <td class="td-info"></td>
+                    </tr>
+                </table>
+            </td>
+
+            <td style="width: 35%">
+                <table class="table-border-gray">
+                    <tr class="tr-header">
+                        <td class="td-header">Description</td>
+                    </tr>
+                    <tr class="tr-for-text-500">
+                        <td class="td-info"></td>
+                    </tr>
+                </table>
+            </td>
+
+            <td style="width: 15%">
+                <table class="table-border-gray">
+                    <tr class="tr-header">
+                        <td class="td-header">Qty</td>
+                    </tr>
+                    <tr class="tr-for-text-500">
+                        <td class="td-info"></td>
+                    </tr>
+                </table>
+            </td>
+
+            <td style="width: 15%">
+                <table class="table-border-gray">
+                    <tr class="tr-header">
+                        <td class="td-header">Rate</td>
+                    </tr>
+                    <tr class="tr-for-text-500">
+                        <td class="td-info"></td>
+                    </tr>
+                </table>
+            </td>
+
+            <td style="width: 15%">
+                <table class="table-border-gray">
+                    <tr class="tr-header">
+                        <td class="td-header">Amount</td>
+                    </tr>
+                    <tr class="tr-for-text-500">
+                        <td class="td-info"></td>
+                    </tr>
+                </table>
+            </td>
+
+        </tr>
+
+        <tr style="border: 2px solid lightgrey" class="tr-header">
+
+            <td colspan="4"></td>
+            <td class="td-info-value td-bold">$ 0.00</td>
+
+        </tr>
+
+    </table>
+
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+
+    <p style="text-align: center">
+        <a href="https://www.hopcontracting.net" style="text-decoration: none; color: #0e0e19"> www.hopcontracting.net</a>
+    </p>
+
+{% endblock %}
