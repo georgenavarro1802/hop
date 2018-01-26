@@ -99,6 +99,7 @@ class WorksForm(forms.Form):
                                                                                        'placeholder': 'mm-dd-yyyy'}))
     initial_time = forms.CharField(required=False, label='Start Time', widget=forms.TextInput(attrs={'class': 'imp-20',
                                                                                                      'placeholder': 'hh:mm'}))
+    feedback_email = forms.CharField(required=False, label='Feedback Email', widget=forms.TextInput(attrs={'class': 'imp-50'}))
     notes = forms.CharField(required=False, label='Notes', widget=forms.Textarea(attrs={'rows': '3', 'cols': '2',
                                                                                         'class': 'form-control'}))
     # Wor Team
@@ -147,6 +148,5 @@ class NewLeaderForm(forms.Form):
 
 
 class ImportXLSForm(forms.Form):
-    project = forms.ModelChoiceField(Projects.objects.filter(grupo=PROJECT_GROUP_HOTWIRE), label='Project', required=False)
     file = ExtFileField(label='Select Excel File', help_text='Max size allowed 4Mb (extensions: xls, xlsx)',
                         ext_whitelist=(".xls", ".xlsx"), max_upload_size=4194304, required=False)

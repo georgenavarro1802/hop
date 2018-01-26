@@ -69,6 +69,9 @@ def views(request):
                             support4 = f.cleaned_data['support4']
                             support5 = f.cleaned_data['support5']
 
+                            # Work Feedback Email
+                            feedback_email = f.cleaned_data['feedback_email']
+
                             work = Works(project=project,
                                          property=property,
                                          customer=customer,
@@ -82,7 +85,8 @@ def views(request):
                                          support3=support3,
                                          support4=support4,
                                          support5=support5,
-                                         created_by=data['myuser'])
+                                         created_by=data['myuser'],
+                                         feedback_email=feedback_email)
                             work.save()
 
                             return ok_json(data={'redirect_url': '/works',
@@ -135,6 +139,9 @@ def views(request):
                             work.support3 = f.cleaned_data['support3']
                             work.support4 = f.cleaned_data['support4']
                             work.support5 = f.cleaned_data['support5']
+
+                            # Work Feedback Email
+                            work.feedback_email = f.cleaned_data['feedback_email']
 
                             work.save()
 
@@ -210,10 +217,10 @@ def views(request):
                 if f.is_valid():
                     try:
                         with transaction.atomic():
-                            project = f.cleaned_data['project']
+
                             has_file = 'file' in request.FILES and request.FILES['file']
 
-                            if project and has_file:
+                            if has_file:
                                 nfile = request.FILES['file']
                                 nfile._name = generate_file_name("import_", nfile._name)
 
@@ -233,7 +240,7 @@ def views(request):
                                         else:
                                             cols = sheet.row_values(rowx)
 
-                                            # 0 - Property
+                                            # 0 - Project ID
                                             # 1 - Address
                                             # 2 - Date (MM/DD/YY)
                                             # 3 - Time (HH:MM militar time)
@@ -241,7 +248,7 @@ def views(request):
                                             # 5 - Type of the work
                                             # 6 - Contact Info
 
-                                            property = cols[0] if cols[0] else ''
+                                            project_id = int(cols[0].lstrip('0')) if cols[0] else ''
                                             address = cols[1] if cols[1] else ''
                                             date = convert_fecha_month_first_two_digits_year(cols[2]) if cols[2] else ''
                                             initial_time = cols[3] if cols[3] else ''
@@ -256,8 +263,7 @@ def views(request):
                                             if contact:
                                                 notes += 'Contact Info: {}'.format(contact)
 
-                                            work = Works(project=project,
-                                                         property_text=property,
+                                            work = Works(project_id=project_id,
                                                          customer_id=CUSTOMER_HOTWIRE_ID,
                                                          address=address,
                                                          date=date,

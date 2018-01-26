@@ -3,16 +3,50 @@
 {% block heading %}
     <script>
         $("#projects").addClass("active");
+
+        $("#btn-search").click(function () {
+            var search = $('#input-search').val();
+            if (search){
+                location.href = "{% url 'projects' %}?s="+search;
+            }
+        });
+
+        $('#input-search').keyup(function(e) {
+            if(e.keyCode === 13) {
+                $("#btn-search").trigger("click");
+            }
+        });
+
     </script>
 {% endblock %}
 
 {% block canvas %}
     <div class="container-fluid">
+
         <div class="row margin-row">
-            <p class="myheading"> <i class="fa fa-files-o"></i> {{ title }}</p>
+            <div class="col-sm-8">
+                <p class="myheading"> <i class="fa fa-list"></i> {{ title }}</p>
+            </div>
+
+            <div class="col-sm-4 text-right">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label class="sr-only" for="search"></label>
+                        <div class="input-group">
+                            <input class="form-control" id="input-search" placeholder="Search by name" value="{% if search %}{{ search }}{% endif %}">
+                        </div>
+                    </div>
+                    <a id="btn-search" class="btn btn-success" title="Search"><i class="fa fa-search"></i></a>
+                    {% if search %}<a href="{% url 'projects' %}" class="btn btn-info" title="All"><i class="fa fa-list-alt"></i></a>{% endif %}
+                </form>
+            </div>
+        </div>
+
+        <div class="row margin-row">
             <table class="table table-bordered table-hover">
                 <thead>
                 <tr style="font-weight: bold; font-size: 1.1em; background-color: #043b8a; color: white">
+                    <th style="width: 60px" class="text-center">PID</th>
                     <th>Name</th>
                     <th style="width: 170px" class="text-center">Group</th>
                     <th style="width: 100px" class="text-center">Works</th>
@@ -25,6 +59,7 @@
                 <tbody>
                 {% for p in projects %}
                     <tr>
+                        <td class="font14">{{ p.repr_id }}</td>
                         <td class="font14">{{ p }}</td>
                         <td class="text-center font14">{{ p.get_grupo_display }}</td>
                         <td class="text-center font14">{{ p.get_number_works|floatformat:0 }}</td>
@@ -49,10 +84,18 @@
             </table>
 
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-2">
                     <a class="btn btn-success" href="{% url 'projects' %}?action=add"><i class="fa fa-plus"></i> Add Project</a>
                 </div>
-                <div class="col-sm-6 text-right">
+                <div class="col-sm-6 text-center">
+                    <a class="btn btn-warning" href="{% url 'projects' %}?action=print_projects_hotwire" style="margin-left: 1em">
+                        <i class="fa fa-file-pdf-o"></i> Print HOTWIRE
+                    </a>
+                    <a class="btn btn-warning" href="{% url 'projects' %}?action=print_projects_hop" style="margin-left: 1em">
+                        <i class="fa fa-file-pdf-o"></i> Print HOP
+                    </a>
+                </div>
+                <div class="col-sm-4 text-right">
                     {% if paging.num_pages > 20 %}
                         <ul class="pagination">
                             {% if paging.first_page %}

@@ -151,8 +151,12 @@ class WorksViewDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins
                 work.save()
 
                 contact_emails = [CONTACT_EMAILS]
+                # send email to the user that created the work
                 if work.created_by and work.created_by.user and work.created_by.user.email:
-                    contact_emails = [work.created_by.user.email, CONTACT_EMAILS]
+                    contact_emails.append(work.created_by.user.email)
+                # send email to the feedback email in work model
+                if work.feedback_email:
+                    contact_emails.append(work.feedback_email)
 
                 if EMAIL_ACTIVE and work.end_time:
                     send_html_mail("HOP App - Complete Works",

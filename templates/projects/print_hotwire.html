@@ -1,0 +1,65 @@
+{% extends "easy_pdf/base.html" %}
+{% load static %}
+
+{% block layout_style %}
+
+    <style type="text/css" xmlns:pdf="http://www.w3.org/1999/html">
+        @page {
+            margin-left: 1cm;
+            margin-right: 1cm;
+            margin-top: 1cm;
+            margin-bottom: 1cm;
+        }
+
+        .td-header {
+            background-color: red;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .tr-header {
+            height: 30px;
+            text-align: center;
+        }
+
+        .td-info {
+            font-size: 1.2em;
+            height: 30px;
+        }
+
+    </style>
+
+{% endblock %}
+
+{% block content %}
+
+    <p style="text-align: right">{{ today|date:'m-d-Y' }}</p>
+    <h1 style="text-align: center">HOTWIRE PROJECTS</h1>
+
+    <table>
+
+        <tr>
+            <td style="width: 60%">
+                <img src="{{ logo_invoice }}" width="400px" height="230px" />
+            </td>
+        </tr>
+
+    </table>
+
+    <br/>
+
+    <table class="table-border-gray" style="border: 1px solid lightgoldenrodyellow">
+        <tr class="tr-header">
+            <td class="td-header" style="width: 20%">PROJECT ID</td>
+            <td class="td-header" style="width: 80%">PROJECT NAME</td>
+        </tr>
+        {% for project in projects %}
+            <tr>
+                <td class="td-info">{{ project.repr_id }}</td>
+                <td class="td-info">{{ project.name }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

@@ -56,7 +56,6 @@ class Projects(BaseModel):
         verbose_name_plural = 'Projects'
         db_table = 'projects'
         unique_together = ('name', )
-        ordering = ('name', )
 
     def has_relations(self):
         return self.works_set.exists() or self.properties_set.exists()
@@ -78,6 +77,9 @@ class Projects(BaseModel):
 
     def get_my_properties(self):
         return self.properties_set.order_by('name')
+
+    def repr_id(self):
+        return str(self.id).zfill(4)
 
 
 class Properties(BaseModel):
@@ -334,6 +336,9 @@ class Works(BaseModel):
 
     # if is created from import, lets save the file related with
     excel_file = models.ForeignKey(ExcelFiles, blank=True, null=True)
+
+    # Email for feedback
+    feedback_email = models.CharField(max_length=200, blank=True, null=True)
 
     def __str__(self):
         return "{} - {}".format(self.project, self.address)
