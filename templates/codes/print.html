@@ -1,0 +1,83 @@
+{% extends "easy_pdf/base.html" %}
+{% load static %}
+
+{% block layout_style %}
+
+    <style type="text/css" xmlns:pdf="http://www.w3.org/1999/html">
+        @page {
+            margin-left: 1cm;
+            margin-right: 1cm;
+            margin-top: 1cm;
+            margin-bottom: 1cm;
+        }
+
+        .td-header {
+            background-color: red;
+            color: white;
+            font-weight: bold;
+        }
+
+        .tr-header {
+            height: 30px;
+            margin-left: 1em;
+        }
+
+        .td-info {
+            font-size: 1em;
+            height: 35px;
+            margin-left: 0.5em;
+        }
+
+        .td-info-scope {
+            font-size: 0.8em;
+            height: 35px;
+            margin-left: 0.5em;
+        }
+
+        .td-info-code {
+            font-size: 1.2em;
+            height: 35px;
+            font-weight: bold;
+            margin-left: 0.5em;
+        }
+
+    </style>
+
+{% endblock %}
+
+{% block content %}
+
+    <p style="text-align: right">{{ today|date:'m-d-Y' }}</p>
+
+    <table>
+        <tr>
+            <td style="width: 60%">
+                <img src="{{ logo_invoice }}" width="300px" height="180px" />
+            </td>
+        </tr>
+    </table>
+
+    <br/>
+
+    <h1 style="text-align: center">WORK CODES - HOP</h1>
+
+    <br/>
+
+    <table class="table-border-gray" style="border: 1px solid lightgoldenrodyellow">
+        <tr class="tr-header">
+            <td class="td-header" style="width: 15%">Code</td>
+            <td class="td-header" style="width: 25%">Description</td>
+            <td class="td-header" style="width: 10%">Price</td>
+            <td class="td-header" style="width: 50%">Scope</td>
+        </tr>
+        {% for code in codes %}
+            <tr>
+                <td class="td-info-code">{{ code.code }}</td>
+                <td class="td-info">{{ code.description }}</td>
+                <td class="td-info" style="text-align: center">$ {{ code.price|floatformat:2 }}</td>
+                <td class="td-info-scope">{{ code.scope }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

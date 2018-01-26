@@ -136,7 +136,15 @@
                 <li id="jobtypes" class="menu-principal">
                     <a href="{% url 'jobtypes' %}">
                         <i class="fa fa-list"></i>
-                        <span class="menu-text">Job types</span>
+                        <span class="menu-text">Job Types</span>
+                        <span class="selected"></span>
+                    </a>
+                </li>
+
+                <li id="codes" class="menu-principal">
+                    <a href="{% url 'codes' %}">
+                        <i class="fa fa-codepen"></i>
+                        <span class="menu-text">Work Codes</span>
                         <span class="selected"></span>
                     </a>
                 </li>
@@ -293,6 +301,34 @@
         $(".menu-principal").removeClass("active");
 
         $(".myselect2").select2();
+
+        numerico = function(elemento, min, max, decimales) {
+            var nvalor;
+            var valor = elemento.val();
+            if (valor===""){
+                valor = parseFloat(min).toFixed(decimales);
+                elemento.val(valor);
+                return;
+            }
+            if (isNaN(valor)){
+                nvalor = parseFloat(min).toFixed(decimales);
+                elemento.val(nvalor);
+                return;
+            }
+            if (valor < min) {
+                nvalor = parseFloat(min).toFixed(decimales);
+                elemento.val(nvalor);
+                return;
+            }
+            if (max>0 && valor>max){
+                nvalor = parseFloat(max).toFixed(decimales);
+                elemento.val(nvalor);
+                return;
+            }
+            nvalor = parseFloat(valor).toFixed(decimales);
+            elemento.val(nvalor);
+        };
+
 
     });
 

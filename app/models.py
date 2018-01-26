@@ -298,7 +298,6 @@ class Works(BaseModel):
     customer = models.ForeignKey(Customers, blank=True, null=True)
     project = models.ForeignKey(Projects)
     property = models.ForeignKey(Properties, blank=True, null=True)
-    property_text = models.CharField(max_length=300, blank=True, null=True)
     address = models.TextField(blank=True, null=True)
     date = models.DateField(blank=True, null=True)
     initial_time = models.CharField(max_length=10, blank=True, null=True)
@@ -468,7 +467,10 @@ class InstallationsCodes(BaseModel):
         ordering = ('code', )
 
     def save(self, *args, **kwargs):
-        self.code = self.code.upper()
+        if self.code:
+            self.code = self.code.upper()
+        if self.scope:
+            self.scope = self.scope.upper()
         models.Model.save(self)
 
     def representation_work_details(self):

@@ -1,0 +1,26 @@
+{% extends "forms.html" %}
+
+{% block extraheading %}
+    <script>
+
+        $("#codes").addClass("active");
+        $("#id_code").focus();
+
+        $("#id_price").blur(function () {
+            numerico($(this), 0, 99999999999, 2);
+        });
+
+        $('textarea').click(function () {
+            $(this).css('resize', 'none');
+        });
+
+    </script>
+{% endblock %}
+
+{% block form-title %}{{ title }}{% endblock %}
+{% block form-action %}{% url 'codes' %}{% endblock %}
+{% block form-extra %}
+    <input type='hidden' name='action' value='edit'/>
+    <input type='hidden' name='id' value='{{ code.id }}'/>
+{% endblock %}
+{% block form-back %}{% url 'codes' %}{% endblock %}

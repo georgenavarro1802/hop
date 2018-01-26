@@ -54,6 +54,13 @@ class JobTypesForm(forms.Form):
     name = forms.CharField(max_length=200, required=True, label='Name')
 
 
+class InstallationsCodesForm(forms.Form):
+    code = forms.CharField(max_length=10, required=True, label='Code', widget=forms.TextInput(attrs={'class': 'imp-30'}))
+    description = forms.CharField(max_length=200, required=False, label='Description')
+    price = forms.FloatField(initial='0.00', required=False, label='Price', widget=forms.TextInput(attrs={'class': 'imp-30'}))
+    scope = forms.CharField(required=False, label='Scopes (separated by commas)', widget=forms.Textarea(attrs={'cols': '2', 'rows': '5'}))
+
+
 class CustomersForm(forms.Form):
     is_company = forms.BooleanField(required=False, initial=True,
                                     label='Is Company? (checked = Company. no checked = Customer)',

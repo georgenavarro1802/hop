@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block heading %}
+    <script>
+
+        $(".menu-principal").removeClass("active");
+
+        $("#codes").addClass("active");
+
+        $("#btn-search").click(function () {
+            var search = $('#input-search').val();
+            if (search){
+                location.href = "{% url 'codes' %}?s="+search;
+            }
+        });
+
+        $('#input-search').keyup(function(e) {
+            if(e.keyCode === 13) {
+                $("#btn-search").trigger("click");
+            }
+        });
+
+    </script>
+{% endblock %}
+
+{% block canvas %}
+    <div class="container-fluid">
+        <div class="row margin-row">
+
+            <div class="col-sm-8">
+                <p class="myheading"> <i class="fa fa-list"></i> {{ title }}</p>
+            </div>
+
+            <div class="col-sm-4 text-right">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label class="sr-only" for="search"></label>
+                        <div class="input-group">
+                            <input class="form-control" id="input-search" placeholder="Search by code" value="{% if search %}{{ search }}{% endif %}">
+                        </div>
+                    </div>
+                    <a id="btn-search" class="btn btn-success" title="Search"><i class="fa fa-search"></i></a>
+                    {% if search %}<a href="{% url 'codes' %}" class="btn btn-info" title="All"><i class="fa fa-list-alt"></i></a>{% endif %}
+                </form>
+            </div>
+        </div>
+
+        <div class="row margin-row">
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr style="font-weight: bold; font-size: 1.1em; background-color: #043b8a; color: white">
+                    <th style="width: 130px" class="text-center">Code</th>
+                    <th style="width: 260px">Description</th>
+                    <th style="width: 100px" class="text-center">Price</th>
+                    <th>Scope</th>
+                    <th style="width: 100px" class="text-center">Created at</th>
+                    <th style="width: 70px"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for c in codes %}
+                    <tr>
+                        <td class="font14">{{ c.code }}</td>
+                        <td class="font14">{{ c.description }}</td>
+                        <td class="text-right font14">$ {{ c.price|floatformat:2 }}</td>
+                        <td class="font12">{{ c.scope }}</td>
+                        <td class="text-center font12">{{ c.created_at|date:'m-d-Y' }}</td>
+                        <td>
+                            <a class="btn btn-xs btn-info tu" href="{% url 'codes' %}?action=edit&id={{ c.id }}" title="Edit"><i class="fa fa-edit"></i></a>
+                            {% if not c.has_relations %}
+                                <a class="btn btn-xs btn-danger tu" href="{% url 'codes' %}?action=delete&id={{ c.id }}" title="Delete" style="margin-left: 0.3em"><i class="fa fa-times"></i></a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5" class="alert alert-info">
+                            <i>There are not work codes in the system. Click in the <strong>+ Add Work Code</strong> button to add your first work code</i>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <a class="btn btn-success" href="{% url 'codes' %}?action=add"><i class="fa fa-plus"></i> Add Work Code</a>
+                    <a class="btn btn-warning" href="{% url 'codes' %}?action=print"><i class="fa fa-plus"></i> Print Work Code</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

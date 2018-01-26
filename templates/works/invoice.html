@@ -19,7 +19,7 @@
         }
 
         .tr-header {
-            height: 30px;
+            height: 40px;
             text-align: center;
         }
 
@@ -32,26 +32,36 @@
 
         .td-info {
             font-size: 1.2em;
+            padding-top:0.3em;
+            text-align: center;
         }
 
         .td-info-value {
-            font-size: 1.4em;
+            font-size: 1.5em;
+            padding-top:0.3em;
+            text-align: center;
+        }
+
+        .td-info-header {
+            font-size: 1.7em;
+            padding-top:0.3em;
+            text-align: center;
         }
 
         .td-bold {
             font-weight: bold;
         }
 
-        .tr-for-text-500 {
-            height: 500px;
+        .tr-for-text-400 {
+            height: 400px;
         }
 
-        .tr-for-text-60 {
-            height: 60px;
+        .tr-for-text-100 {
+            height: 100px;
         }
 
-        .tr-for-text-30 {
-            height: 30px;
+        .tr-for-text-40 {
+            height: 40px;
         }
 
     </style>
@@ -75,8 +85,8 @@
                     </tr>
 
                     <tr class="tr-header">
-                        <td class="td-info">01-25-2018</td>
-                        <td class="td-info">3456789</td>
+                        <td class="td-info-value">{{ work.date|date:'m-d-Y' }}</td>
+                        <td class="td-info-header">{{ work.id }}</td>
                     </tr>
                 </table>
 
@@ -90,15 +100,13 @@
     <table>
 
         <tr>
-
             <td style="width: 45%;">
                 <table class="table-border-gray">
                     <tr class="tr-header">
                         <td class="td-header">Bill To</td>
                     </tr>
-
-                    <tr class="tr-for-text-60">
-                        <td class="td-info"></td>
+                    <tr class="tr-for-text-100">
+                        <td class="td-info-header">{{ work.customer.name }}</td>
                     </tr>
                 </table>
             </td>
@@ -106,17 +114,18 @@
             <td style="width: 10%"></td>
 
             <td style="width: 45%">
-
                 <table class="table-border-gray">
                     <tr class="tr-header">
                         <td class="td-header">Pay To</td>
                     </tr>
-
-                    <tr class="tr-for-text-60">
-                        <td class="td-info"></td>
+                    <tr class="tr-for-text-100">
+                        <td style="text-align: center">
+                            <h4>HOP CONTRACTING INC.</h4>
+                            <p>671 WEST 18TH STREET, HIALEAH, FL, 33010</p>
+                            <p>TEL: (305) 902-6700</p>
+                        </td>
                     </tr>
                 </table>
-
             </td>
         </tr>
 
@@ -133,8 +142,8 @@
                     <tr class="tr-header">
                         <td class="td-header">Project</td>
                     </tr>
-                    <tr class="tr-for-text-30">
-                        <td class="td-info"></td>
+                    <tr class="tr-for-text-40">
+                        <td class="td-info-value">{{ work.project.name }}</td>
                     </tr>
                 </table>
             </td>
@@ -142,46 +151,40 @@
             <td style="width: 5%"></td>
 
             <td style="width: 20%">
-
                 <table class="table-border-gray">
                     <tr class="tr-header">
                         <td class="td-header">Terms</td>
                     </tr>
-                    <tr class="tr-for-text-30">
-                        <td class="td-info"></td>
+                    <tr class="tr-for-text-40">
+                        <td class="td-info-value">Net 30</td>
                     </tr>
                 </table>
-
             </td>
 
             <td style="width: 5%"></td>
 
             <td style="width: 20%">
-
                 <table class="table-border-gray">
                     <tr class="tr-header">
                         <td class="td-header">Type</td>
                     </tr>
-                    <tr class="tr-for-text-30">
-                        <td class="td-info"></td>
+                    <tr class="tr-for-text-40">
+                        <td class="td-info-value">OPS</td>
                     </tr>
                 </table>
-
             </td>
 
             <td style="width: 5%"></td>
 
             <td style="width: 25%">
-
                 <table class="table-border-gray">
                     <tr class="tr-header">
                         <td class="td-header">Purchasing Contact</td>
                     </tr>
-                    <tr class="tr-for-text-30">
-                        <td class="td-info"></td>
+                    <tr class="tr-for-text-40">
+                        <td class="td-info-value">{{ work.created_by.user.first_name }} {{ work.created_by.user.last_name }}</td>
                     </tr>
                 </table>
-
             </td>
 
         </tr>
@@ -193,14 +196,13 @@
     <table>
 
         <tr>
-
             <td style="width: 20%;">
                 <table class="table-border-gray">
                     <tr class="tr-header">
                         <td class="td-header">Items</td>
                     </tr>
-                    <tr class="tr-for-text-500">
-                        <td class="td-info"></td>
+                    <tr class="tr-for-text-400">
+                        <td class="td-info">{{ work.get_installation_code_by_report.code }}</td>
                     </tr>
                 </table>
             </td>
@@ -210,8 +212,14 @@
                     <tr class="tr-header">
                         <td class="td-header">Description</td>
                     </tr>
-                    <tr class="tr-for-text-500">
-                        <td class="td-info"></td>
+                    <tr class="tr-for-text-400">
+                        <td class="td-info">
+                            <p>{{ work.get_installation_code_by_report.description }}</p>
+                            <h4>Scope</h4>
+                            <p>{{ work.get_installation_code_by_report.scope }}</p>
+                            <h4>Address</h4>
+                            <p>{{ work.address }}</p>
+                        </td>
                     </tr>
                 </table>
             </td>
@@ -221,8 +229,8 @@
                     <tr class="tr-header">
                         <td class="td-header">Qty</td>
                     </tr>
-                    <tr class="tr-for-text-500">
-                        <td class="td-info"></td>
+                    <tr class="tr-for-text-400">
+                        <td class="td-info-header">1</td>
                     </tr>
                 </table>
             </td>
@@ -232,8 +240,8 @@
                     <tr class="tr-header">
                         <td class="td-header">Rate</td>
                     </tr>
-                    <tr class="tr-for-text-500">
-                        <td class="td-info"></td>
+                    <tr class="tr-for-text-400">
+                        <td class="td-info-value">{{ work.get_installation_code_by_report.price|floatformat:2 }}</td>
                     </tr>
                 </table>
             </td>
@@ -243,8 +251,8 @@
                     <tr class="tr-header">
                         <td class="td-header">Amount</td>
                     </tr>
-                    <tr class="tr-for-text-500">
-                        <td class="td-info"></td>
+                    <tr class="tr-for-text-400">
+                        <td class="td-info-value">{{ work.get_installation_code_by_report.price|floatformat:2 }}</td>
                     </tr>
                 </table>
             </td>
@@ -252,10 +260,8 @@
         </tr>
 
         <tr style="border: 2px solid lightgrey" class="tr-header">
-
             <td colspan="4"></td>
-            <td class="td-info-value td-bold">$ 0.00</td>
-
+            <td class="td-info-value td-bold">$ {{ work.get_installation_code_by_report.price|floatformat:2 }}</td>
         </tr>
 
     </table>

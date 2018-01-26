@@ -19,7 +19,7 @@ from django.conf.urls.static import static
 from django.conf.urls import url, include
 
 
-from app import views, projects, jobtypes, customers, users, reports, works, properties
+from app import views, projects, jobtypes, customers, users, reports, works, properties, codes
 
 urlpatterns = [
 
@@ -58,6 +58,9 @@ urlpatterns = [
 
     # WORKS
     url(r'^works$', works.views, name='works'),
+
+    # WORK CODES
+    url(r'^codes$', codes.views, name='codes'),
 
     # APIs Colors
     url(r'^set_color_hoe_header$', views.set_color_hoe_header, name='set_color_hoe_header'),
