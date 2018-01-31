@@ -1,5 +1,6 @@
 {% extends "easy_pdf/base.html" %}
 {% load static %}
+{% load humanize %}
 
 {% block layout_style %}
     <style type="text/css" xmlns:pdf="http://www.w3.org/1999/html">
@@ -241,7 +242,7 @@
                         <td class="td-header">Rate</td>
                     </tr>
                     <tr class="tr-for-text-400">
-                        <td class="td-info-value">{{ work.get_installation_code_by_report.price|floatformat:2 }}</td>
+                        <td class="td-info-value">{{ work.get_installation_code_by_report.price|floatformat:2|intcomma }}</td>
                     </tr>
                 </table>
             </td>
@@ -252,7 +253,7 @@
                         <td class="td-header">Amount</td>
                     </tr>
                     <tr class="tr-for-text-400">
-                        <td class="td-info-value">{{ work.get_installation_code_by_report.price|floatformat:2 }}</td>
+                        <td class="td-info-value">{{ work.get_installation_code_by_report.price|floatformat:2|intcomma }}</td>
                     </tr>
                 </table>
             </td>
@@ -261,7 +262,7 @@
 
         <tr style="border: 2px solid lightgrey" class="tr-header">
             <td colspan="4"></td>
-            <td class="td-info-value td-bold">$ {{ work.get_installation_code_by_report.price|floatformat:2 }}</td>
+            <td class="td-info-value td-bold">$ {{ work.get_installation_code_by_report.price|floatformat:2|intcomma }}</td>
         </tr>
 
     </table>
