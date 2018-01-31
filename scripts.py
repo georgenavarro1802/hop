@@ -27,12 +27,4 @@ if __name__ == '__main__':
     #     print('Update created by: {}'.format(work.id))
 
     # Works.objects.filter(created_by_id=37).update(created_by_id=30)
-    # print('Updated User - Work')
-
-    for work in Works.objects.all():
-
-        code = work.get_installation_code_by_report()
-        if code:
-            print("Update: {}".format(work.__str__()))
-
-    print('Done')
+    print('Updated User - Work')
