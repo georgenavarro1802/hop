@@ -35,7 +35,6 @@
             show_loading();
 
             var sel_project = $('#search-projects').val();
-            var sel_property = $('#search-properties').val();
             var sel_jobtype = $('#search-jobtypes').val();
             var sel_team = $('#search-teams').val();
             var sel_creator = $('#search-creator').val();
@@ -43,10 +42,11 @@
             var sel_initial_date = $('#search-initial-date').val();
             var sel_end_date = $('#search-end-date').val();
             var input_code = $('#search-code').val();
+            var input_installation_code = $('#search-installation-code').val();
             var input_address = $('#search-address').val();
 
             setTimeout(function () {
-                location.href = "{% url 'works' %}?project="+sel_project+'&property='+sel_property+'&jobtype='+sel_jobtype+'&team='+sel_team+'&creator='+sel_creator+'&status='+sel_status+'&idate='+sel_initial_date+'&edate='+sel_end_date+'&code='+input_code+'&address='+input_address;
+                location.href = "{% url 'works' %}?project="+sel_project+'&jobtype='+sel_jobtype+'&team='+sel_team+'&creator='+sel_creator+'&status='+sel_status+'&idate='+sel_initial_date+'&edate='+sel_end_date+'&code='+input_code+'&icode='+input_installation_code+'&address='+input_address;
             }, 2000);
 
         });
@@ -79,8 +79,8 @@
             $("#filters-search").slideToggle('2000');
         });
 
-
     </script>
+
 {% endblock %}
 
 {% block canvas %}
@@ -121,16 +121,6 @@
                         </div>
 
                         <div class="col-sm-3">
-                            <label for="search-properties">By Properties</label>
-                            <select class="form-control" id="search-properties" style="width: 100%; height: 2.5em">
-                                <option value="0">All Properties</option>
-                                {% for property in properties %}
-                                    <option value="{{ property.id }}" {% ifequal propertyid property.id %}selected{% endifequal %}>{{ property }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-
-                        <div class="col-sm-3">
                             <label for="search-jobtypes">By JobTypes</label>
                             <select class="form-control" id="search-jobtypes" style="width: 100%; height: 2.5em">
                                 <option value="0">All Job Types</option>
@@ -150,15 +140,7 @@
                             </select>
                         </div>
 
-                    </div>
-
-                </div>
-
-                <div class="row" style="margin-top: 1em">
-
-                    <div class="col-sm-12">
-
-                        <div class="col-sm-2">
+                        <div class="col-sm-3">
                             <label for="search-statuses">By Status</label>
                             <select class="form-control" id="search-statuses" style="width: 100%; height: 2.5em">
                                 <option value="0" {% ifequal statusid '0' %}selected{% endifequal %}>All Status</option>
@@ -166,6 +148,14 @@
                                 <option value="2" {% ifequal statusid '2' %}selected{% endifequal %}>Pending</option>
                             </select>
                         </div>
+
+                    </div>
+
+                </div>
+
+                <div class="row" style="margin-top: 1em">
+
+                    <div class="col-sm-12">
 
                         <div class="col-sm-2">
                             <label for="search-creator">By Creator</label>
@@ -188,15 +178,21 @@
                             </label>
                         </div>
 
+                        <div class="col-sm-4">
+                            <label for="search-address"> By Address:
+                                <input class="form-control" style="width: 350px; border-radius: 10px; margin-top: 0.4em" id="search-address" value="{% if address %}{{ address }}{% endif %}">
+                            </label>
+                        </div>
+
                         <div class="col-sm-1">
-                            <label for="search-code"> By Code:
+                            <label for="search-code"> By ID:
                                 <input class="form-control" style="border-radius: 10px; margin-top: 0.4em" id="search-code" value="{% if code %}{{ code }}{% endif %}">
                             </label>
                         </div>
 
-                        <div class="col-sm-3">
-                            <label for="search-code"> By Address:
-                                <input class="form-control" style="width: 300px; border-radius: 10px; margin-top: 0.4em" id="search-address" value="{% if address %}{{ address }}{% endif %}">
+                        <div class="col-sm-1">
+                            <label for="search-installation-code"> By Code:
+                                <input class="form-control" style="border-radius: 10px; margin-top: 0.4em; text-transform: uppercase" id="search-installation-code" value="{% if installation_code %}{{ installation_code }}{% endif %}">
                             </label>
                         </div>
 
@@ -359,7 +355,7 @@
             <div class="row">
                 <div class="col-sm-6">
                     <a class="btn btn-success" href="{% url 'works' %}?action=add"><i class="fa fa-plus"></i> Add New Work</a>
-                    <a class="btn btn-success" href="{% url 'works' %}?action=import" style="margin-left: 1em"><i class="fa fa-upload"></i> Import from Excel</a>
+                    <a class="btn btn-warning" href="{% url 'works' %}?action=import" style="margin-left: 1em"><i class="fa fa-upload"></i> Import from Excel</a>
                 </div>
                 <div class="col-sm-6 text-right">
                     {% if paging.num_pages > 20 %}

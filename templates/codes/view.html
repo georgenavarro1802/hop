@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load humanize %}
 
 {% block heading %}
     <script>
@@ -62,7 +63,7 @@
                     <tr>
                         <td class="font14">{{ c.code }}</td>
                         <td class="font14">{{ c.description }}</td>
-                        <td class="text-right font14">$ {{ c.price|floatformat:2 }}</td>
+                        <td class="text-right font14">$ {{ c.price|floatformat:2|intcomma }}</td>
                         <td class="font12">{{ c.scope }}</td>
                         <td class="text-center font12">{{ c.created_at|date:'m-d-Y' }}</td>
                         <td>
@@ -85,7 +86,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <a class="btn btn-success" href="{% url 'codes' %}?action=add"><i class="fa fa-plus"></i> Add Work Code</a>
-                    <a class="btn btn-warning" href="{% url 'codes' %}?action=print"><i class="fa fa-plus"></i> Print Work Code</a>
+                    <a class="btn btn-warning" href="{% url 'codes' %}?action=print" style="margin-left: 1em"><i class="fa fa-print"></i> Print Work Codes</a>
                 </div>
             </div>
 

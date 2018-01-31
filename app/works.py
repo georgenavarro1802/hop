@@ -432,10 +432,6 @@ def views(request):
             if 'project' in request.GET and int(request.GET['project']) > 0:
                 project_id = int(request.GET['project'])
 
-            property_id = None
-            if 'property' in request.GET and int(request.GET['property']) > 0:
-                property_id = int(request.GET['property'])
-
             jobtype_id = None
             if 'jobtype' in request.GET and int(request.GET['jobtype']) > 0:
                 jobtype_id = int(request.GET['jobtype'])
@@ -464,15 +460,16 @@ def views(request):
             if 'code' in request.GET and request.GET['code'] != '':
                 code = request.GET['code']
 
+            installation_code = ''
+            if 'icode' in request.GET and request.GET['icode'] != '':
+                installation_code = request.GET['icode'].upper()
+
             address = ''
             if 'address' in request.GET and request.GET['address'] != '':
                 address = request.GET['address']
 
             if project_id:
                 works = works.filter(project_id=project_id)
-
-            if property_id:
-                works = works.filter(property_id=property_id)
 
             if jobtype_id:
                 works = works.filter(workstypes__isnull=False, workstypes__type__id=jobtype_id).distinct()
@@ -504,7 +501,10 @@ def views(request):
                 works = works.filter(date__lte=end_date)
 
             if code:
-                works = works.filter(id__icontains=code)
+                works = works.filter(id=code)
+
+            if installation_code:
+                works = works.filter(installation_code__code=installation_code)
 
             if address:
                 works = works.filter(address__icontains=address)
@@ -529,17 +529,17 @@ def views(request):
             data['creators'] = creators if not data['is_hotwire'] else creators.filter(group=USER_GROUP_HOTWIRE_ID)
 
             data['projectid'] = project_id if project_id else 0
-            data['propertyid'] = property_id if property_id else 0
             data['jobtypeid'] = jobtype_id if jobtype_id else 0
             data['teamid'] = team_id if team_id else 0
             data['creatorid'] = creator_id if creator_id else 0
             data['statusid'] = str(status_id) if status_id else 0
             data['code'] = code if code else ''
+            data['installation_code'] = installation_code if installation_code else ''
             data['address'] = address if address else ''
             data['initial_date'] = initial_date.strftime('%m-%d-%Y') if initial_date else ''
             data['end_date'] = end_date.strftime('%m-%d-%Y') if end_date else ''
 
-            if project_id or property_id or jobtype_id or team_id or creator_id or status_id or code or address or initial_date or end_date:
+            if project_id or jobtype_id or team_id or creator_id or status_id or code or installation_code or address or initial_date or end_date:
                 data['is_search'] = True
                 data['count_of_works'] = works.count()
 
