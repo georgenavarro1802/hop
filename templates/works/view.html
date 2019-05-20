@@ -309,24 +309,24 @@
                                     {% endif %}
                                     {% if not w.is_completed %}
                                         <li><hr class="margin-10"/></li>
-                                        {% if is_administrator or is_dispatch %}
-                                            <li>
-                                                <a href="{% url 'works' %}?action=newteam&id={{ w.id }}">
-                                                    <i class="fa fa-recycle"></i> Reasign Team
-                                                </a>
-                                            </li>
-                                        {% endif %}
                                         <li>
                                             <a href="{% url 'works' %}?action=edit&id={{ w.id }}">
                                                 <i class="fa fa-edit"></i> Edit
                                             </a>
                                         </li>
-                                        <li>
-                                            <a href="{% url 'works' %}?action=delete&id={{ w.id }}">
-                                                <i class="fa fa-times"></i> Delete
-                                            </a>
-                                        </li>
                                     {% else %}
+                                        {% if is_administrator %}
+                                            <li>
+                                                <a href="{% url 'works' %}?action=newteam&id={{ w.id }}">
+                                                    <i class="fa fa-recycle"></i> Reasign Team
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'works' %}?action=delete&id={{ w.id }}">
+                                                    <i class="fa fa-times"></i> Delete
+                                                </a>
+                                            </li>
+                                        {% endif %}
                                         {% if w.get_installation_code_by_report %}
                                             <li>
                                                 <a href="{% url 'works' %}?action=invoice&id={{ w.id }}">

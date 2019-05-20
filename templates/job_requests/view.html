@@ -31,7 +31,9 @@
                         <td class="my-vertical-align font12">{{ j.notes }}</td>
                         <td class="my-vertical-align text-center font12">{{ j.created_at|date:'m-d-Y' }}</td>
                         <td class="my-vertical-align text-center">
-                            <a class="btn btn-danger btn-xs" href="{% url 'job_requests' %}?action=delete&id={{ j.id }}" title="Delete"><i class="fa fa-times"></i></a>
+                            <a class="tu" href="{% url 'job_requests' %}?action=delete&id={{ j.id }}" title="Delete">
+                                <i class="fa fa-times"></i>
+                            </a>
                         </td>
                     </tr>
                 {% empty %}
@@ -51,7 +53,8 @@
                             {% if paging.first_page %}
                                 <li><a href="{%  url 'job_requests' %}?page=1{% if search %}&s={{ search }}{% endif %}">1</a></li>
                                 <li><a href="{%  url 'job_requests' %}?page={{ paging.ellipsis_left}}{% if search %}&s={{ search }}{% endif %}"
-                                       class="active">...</a></li>
+                                       class="active">...</a>
+                                </li>
                             {% endif %}
                             {% for pagenumber in paging.pages %}
                                 <li {% ifequal pagenumber page.number %}class='active'{% endifequal %}>
