@@ -16,7 +16,7 @@
             <table class="table table-bordered table-hover">
                 <thead>
                 <tr style="font-weight: bold; font-size: 1.1em; background-color: #043b8a; color: white">
-                    <th style="width: 50px">Type</th>
+                    <th style="width: 70px">Type</th>
                     <th>Name</th>
                     <th style="width: 250px">Email</th>
                     <th style="width: 150px">Phone</th>
@@ -24,7 +24,7 @@
                     <th style="width: 60px" class="text-center">Comp.</th>
                     <th style="width: 60px" class="text-center">Incom.</th>
                     <th style="width: 60px" class="text-center">Created</th>
-                    <th style="width: 80px"></th>
+                    <th style="width: 70px"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -44,11 +44,11 @@
                         <td class="text-center font14">{{ c.get_number_works_completed|floatformat:0 }}</td>
                         <td class="text-center font14">{{ c.get_number_works_incompleted|floatformat:0 }}</td>
                         <td class="text-center font11">{{ c.created_at|date:'m-d-Y' }}</td>
-                        <td>
+                        <td class="text-center">
                             {% ifnotequal c.id customer_create_new_customer_id %}
-                                <a class="btn btn-xs btn-info tu" href="{% url 'customers' %}?action=edit&id={{ c.id }}" title="Edit"><i class="fa fa-edit"></i></a>
+                                <a class="tu" href="{% url 'customers' %}?action=edit&id={{ c.id }}" title="Edit"><i class="fa fa-pencil"></i></a>
                                 {% if not c.has_relations %}
-                                    <a class="btn btn-xs btn-danger tu" href="{% url 'customers' %}?action=delete&id={{ c.id }}" title="Delete" style="margin-left: 0.3em"><i class="fa fa-times"></i></a>
+                                    <a class="tu" href="{% url 'customers' %}?action=delete&id={{ c.id }}" title="Delete" style="margin-left: 0.4em"><i class="fa fa-times"></i></a>
                                 {% endif %}
                             {% endifnotequal %}
                         </td>

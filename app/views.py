@@ -27,7 +27,7 @@ def adduserdata(request, data):
     data['is_administrator'] = myuser.is_admin()
     data['is_technician'] = myuser.is_technician()
     data['is_dispatch'] = myuser.is_distpach()
-    data['is_hotwire'] = myuser.is_hotwire()
+    data['is_hotwire'] = False
 
     data['customer_create_new_customer_id'] = CUSTOMER_CREATE_NEW_CUSTOMER_ID
 
@@ -64,9 +64,6 @@ def index(request):
     data['jobtype_value_4'] = round(list_jobtypes_used_projects[3][0] / number_total_works * 100) if number_total_works else 0
     data['jobtype_value_5'] = round(list_jobtypes_used_projects[4][0] / number_total_works * 100) if number_total_works else 0
     data['jobtype_value_6'] = round(list_jobtypes_used_projects[5][0] / number_total_works * 100) if number_total_works else 0
-
-    if data['is_hotwire']:
-        return HttpResponseRedirect('/works?h=true')
 
     if data['is_dispatch']:
         return HttpResponseRedirect('/works')

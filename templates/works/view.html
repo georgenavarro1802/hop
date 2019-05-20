@@ -97,11 +97,6 @@
                 <a id="show-search" style="font-size: 1.2em; cursor: pointer; text-decoration: none">
                     <i class="fa fa-search"></i> Advanced Search
                 </a>
-                {% if is_hotwire %}
-                    <a href="{% url 'works' %}?action=customer_reports" title="Chart" style="margin-left: 1em; font-size: 1.2em; cursor: pointer; text-decoration: none">
-                        <i class="fa fa-bar-chart"></i> Reports
-                    </a>
-                {% endif %}
             </div>
 
             <div id="filters-search" style="display: none; margin-top: 5em" class="well">
@@ -110,12 +105,22 @@
 
                     <div class="col-sm-12">
 
+{#                        <div class="col-sm-3">#}
+{#                            <label for="search-projects">By Projects</label>#}
+{#                            <select class="form-control" id="search-projects" style="width: 100%; height: 2.5em">#}
+{#                                <option value="0">All Projects</option>#}
+{#                                {% for project in projects %}#}
+{#                                    <option value="{{ project.id }}" {% ifequal projectid project.id %}selected{% endifequal %}>{{ project }}</option>#}
+{#                                {% endfor %}#}
+{#                            </select>#}
+{#                        </div>#}
+
                         <div class="col-sm-3">
-                            <label for="search-projects">By Projects</label>
-                            <select class="form-control" id="search-projects" style="width: 100%; height: 2.5em">
-                                <option value="0">All Projects</option>
-                                {% for project in projects %}
-                                    <option value="{{ project.id }}" {% ifequal projectid project.id %}selected{% endifequal %}>{{ project }}</option>
+                            <label for="search-creator">By Creator</label>
+                            <select class="form-control" id="search-creator" style="width: 100%; height: 2.5em">
+                                <option value="0">All Users</option>
+                                {% for creator in creators %}
+                                    <option value="{{ creator.id }}" {% ifequal creatorid creator.id %}selected{% endifequal %}>{{ creator }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -158,16 +163,6 @@
                     <div class="col-sm-12">
 
                         <div class="col-sm-2">
-                            <label for="search-creator">By Creator</label>
-                            <select class="form-control" id="search-creator" style="width: 100%; height: 2.5em">
-                                <option value="0">All Users</option>
-                                {% for creator in creators %}
-                                    <option value="{{ creator.id }}" {% ifequal creatorid creator.id %}selected{% endifequal %}>{{ creator }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-
-                        <div class="col-sm-2">
                             <label for="search-initial-date"> Initial Date:
                                 <input class="form-control" value="{% if initial_date %}{{ initial_date|date:'m-d-Y' }}{% endif %}" id="search-initial-date" style="height: 2.5em; margin-top: 5px"/>
                             </label>
@@ -178,9 +173,9 @@
                             </label>
                         </div>
 
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <label for="search-address"> By Address:
-                                <input class="form-control" style="width: 350px; border-radius: 10px; margin-top: 0.4em" id="search-address" value="{% if address %}{{ address }}{% endif %}">
+                                <input class="form-control" style="width: 600px; border-radius: 10px; margin-top: 0.4em" id="search-address" value="{% if address %}{{ address }}{% endif %}">
                             </label>
                         </div>
 
@@ -227,12 +222,13 @@
             <table class="table table-bordered table-hover">
                 <thead>
                 <tr style="font-weight: bold; font-size: 1em; background-color: #043b8a; color: white">
-                    <th style="width: 80px">Cod.</th>
-                    <th style="width: 200px">Project</th>
+                    <th style="width: 100px">Cod.</th>
+{#                    <th style="width: 200px">Project</th>#}
                     <th>Address</th>
-                    <th style="width: 250px">Customer</th>
-                    <th style="width: 120px">Team/Date</th>
-                    <th style="width: 100px" class="text-center">Created by</th>
+                    <th style="width: 350px">Customer</th>
+                    <th style="width: 200px">Team</th>
+                    <th style="width: 150px">Date/Time</th>
+                    <th style="width: 80px" class="text-center">Creator</th>
                     <th style="width: 20px"></th>
                 </tr>
                 </thead>
@@ -251,16 +247,16 @@
                                     <i class="fa fa-file-excel-o"></i>
                                 </a>
                             {% endif %}
-                        </td>
-                        <td class="font12">
-                            {{ w.project }}
-                            {% if w.property %}
-                                <br/><span class="font10">{{ w.property }}</span>
-                            {% endif %}
                             {% if w.is_completed %}
                                 <br/><span class="label label-success">Completed</span>
                             {% endif %}
                         </td>
+{#                        <td class="font12">#}
+{#                            {{ w.project }}#}
+{#                            {% if w.property %}#}
+{#                                <br/><span class="font10">{{ w.property }}</span>#}
+{#                            {% endif %}#}
+{#                        </td>#}
                         <td class="font12">
                             {{ w.address }}
                             {% if w.is_completed and w.get_installation_code_by_report %}
@@ -270,8 +266,14 @@
                         </td>
                         <td class="font12">
                             {{ w.customer.name }} <br/>
-                            {{ w.customer.email }}<br/>
-                            {{ w.customer.phone }}
+                            {{ w.customer.phone|default_if_none:'' }}<br/>
+                            {{ w.customer.email|default_if_none:'' }}
+                        </td>
+                        <td class="font12">
+                            <b>Lead: </b> {{ w.leader }}
+                            {% if w.support1 %}<br/><b>Team: </b>{{ w.support1 }}{% endif %}
+                            {% if w.support2 %}| {{ w.support2 }}{% endif %}
+                            {% if w.support3 %}| {{ w.support3 }}{% endif %}
                         </td>
                         <td class="font12">
                             {{ w.leader }}<br/>
@@ -355,7 +357,7 @@
             <div class="row">
                 <div class="col-sm-6">
                     <a class="btn btn-success" href="{% url 'works' %}?action=add"><i class="fa fa-plus"></i> Add New Work</a>
-                    <a class="btn btn-warning" href="{% url 'works' %}?action=import" style="margin-left: 1em"><i class="fa fa-upload"></i> Import from Excel</a>
+{#                    <a class="btn btn-warning" href="{% url 'works' %}?action=import" style="margin-left: 1em"><i class="fa fa-upload"></i> Import from Excel</a>#}
                 </div>
                 <div class="col-sm-6 text-right">
                     {% if paging.num_pages > 20 %}

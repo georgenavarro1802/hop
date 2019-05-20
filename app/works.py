@@ -54,20 +54,22 @@ def views(request):
                                 customer = new_customer
 
                             # Work details
-                            project = f.cleaned_data['project']
-                            property = f.cleaned_data['property']
+                            # project = f.cleaned_data['project']
+                            project = None
+                            # property = f.cleaned_data['property']
+                            property = None
                             address = f.cleaned_data['address']
                             date = convertir_fecha_month_first(f.cleaned_data['date'])
                             initial_time = f.cleaned_data['initial_time']
                             notes = f.cleaned_data['notes']
 
                             # Work Team
-                            leader = Users.objects.get(pk=DEFAULT_DISPATCH_ID) if data['is_hotwire'] else f.cleaned_data['leader']
+                            leader = f.cleaned_data['leader']
                             support1 = f.cleaned_data['support1']
                             support2 = f.cleaned_data['support2']
                             support3 = f.cleaned_data['support3']
-                            support4 = f.cleaned_data['support4']
-                            support5 = f.cleaned_data['support5']
+                            # support4 = f.cleaned_data['support4']
+                            # support5 = f.cleaned_data['support5']
 
                             # Work Feedback Email
                             feedback_email = f.cleaned_data['feedback_email']
@@ -83,8 +85,8 @@ def views(request):
                                          support1=support1,
                                          support2=support2,
                                          support3=support3,
-                                         support4=support4,
-                                         support5=support5,
+                                         # support4=support4,
+                                         # support5=support5,
                                          created_by=data['myuser'],
                                          feedback_email=feedback_email)
                             work.save()
@@ -125,20 +127,20 @@ def views(request):
                             work.customer = customer
 
                             # Update Work detail
-                            work.project = f.cleaned_data['project']
-                            work.property = f.cleaned_data['property']
+                            work.project = None
+                            work.property = None
                             work.address = f.cleaned_data['address']
                             work.date = convertir_fecha_month_first(f.cleaned_data['date'])
                             work.initial_time = f.cleaned_data['initial_time']
                             work.notes = f.cleaned_data['notes']
 
                             # Update Word Team
-                            work.leader = Users.objects.get(pk=DEFAULT_DISPATCH_ID) if data['is_hotwire'] else f.cleaned_data['leader']
+                            work.leader = f.cleaned_data['leader']
                             work.support1 = f.cleaned_data['support1']
                             work.support2 = f.cleaned_data['support2']
                             work.support3 = f.cleaned_data['support3']
-                            work.support4 = f.cleaned_data['support4']
-                            work.support5 = f.cleaned_data['support5']
+                            # work.support4 = f.cleaned_data['support4']
+                            # work.support5 = f.cleaned_data['support5']
 
                             # Work Feedback Email
                             work.feedback_email = f.cleaned_data['feedback_email']
@@ -192,8 +194,8 @@ def views(request):
                             work.support1 = f.cleaned_data['support1']
                             work.support2 = f.cleaned_data['support2']
                             work.support3 = f.cleaned_data['support3']
-                            work.support4 = f.cleaned_data['support4']
-                            work.support5 = f.cleaned_data['support5']
+                            # work.support4 = f.cleaned_data['support4']
+                            # work.support5 = f.cleaned_data['support5']
 
                             work.save()
                             return ok_json(data={'redirect_url': '/works',
@@ -297,10 +299,7 @@ def views(request):
                 if action == 'add':
                     try:
                         data['title'] = 'Add Work'
-                        form = WorksForm()
-                        if data['is_hotwire']:
-                            form.for_hotwire()
-                        data['form'] = form
+                        data['form'] = WorksForm()
                         return render(request, 'works/add.html', data)
                     except Exception:
                         pass
@@ -322,8 +321,6 @@ def views(request):
                                                   'support3': work.support3,
                                                   'support4': work.support4,
                                                   'support5': work.support5})
-                        if data['is_hotwire']:
-                            form.for_hotwire()
                         data['form'] = form
                         return render(request, 'works/edit.html', data)
                     except Exception:
@@ -424,14 +421,11 @@ def views(request):
                                      Q(created_by__group=USER_GROUP_HOTWIRE_ID) |
                                      Q(project__grupo=PROJECT_GROUP_HOTWIRE)).distinct()
 
-            if data['is_hotwire']:
-                works = works.filter(customer__id=CUSTOMER_HOTWIRE_ID).distinct()
-
             # Filters
-            project_id = None
-            if 'project' in request.GET and int(request.GET['project']) > 0:
-                project_id = int(request.GET['project'])
-
+            # project_id = None
+            # if 'project' in request.GET and int(request.GET['project']) > 0:
+            #     project_id = int(request.GET['project'])
+            #
             jobtype_id = None
             if 'jobtype' in request.GET and int(request.GET['jobtype']) > 0:
                 jobtype_id = int(request.GET['jobtype'])
@@ -468,8 +462,8 @@ def views(request):
             if 'address' in request.GET and request.GET['address'] != '':
                 address = request.GET['address']
 
-            if project_id:
-                works = works.filter(project_id=project_id)
+            # if project_id:
+            #     works = works.filter(project_id=project_id)
 
             if jobtype_id:
                 works = works.filter(workstypes__isnull=False, workstypes__type__id=jobtype_id).distinct()
@@ -521,14 +515,14 @@ def views(request):
             data['page'] = page
             data['works'] = page.object_list
 
-            data['projects'] = Projects.objects.all().order_by('name') if not data['is_hotwire'] else Projects.objects.filter(works__customer__id=CUSTOMER_HOTWIRE_ID).distinct().order_by('name')
-            data['properties'] = Properties.objects.all().order_by('name') if not data['is_hotwire'] else Properties.objects.filter(works__customer__id=CUSTOMER_HOTWIRE_ID).distinct().order_by('name')
+            # data['projects'] = Projects.objects.all().order_by('name') if not data['is_hotwire'] else Projects.objects.filter(works__customer__id=CUSTOMER_HOTWIRE_ID).distinct().order_by('name')
+            # data['properties'] = Properties.objects.all().order_by('name') if not data['is_hotwire'] else Properties.objects.filter(works__customer__id=CUSTOMER_HOTWIRE_ID).distinct().order_by('name')
             data['jobtypes'] = JobTypes.objects.all().order_by('name')
             data['teams'] = Users.objects.filter(group=USER_GROUP_TECHNICIAN_ID)
             creators = Users.objects.exclude(id__in=USER_ADMIN_DEVELOPERS_IDS).order_by('user__username')
-            data['creators'] = creators if not data['is_hotwire'] else creators.filter(group=USER_GROUP_HOTWIRE_ID)
+            data['creators'] = creators
 
-            data['projectid'] = project_id if project_id else 0
+            # data['projectid'] = project_id if project_id else 0
             data['jobtypeid'] = jobtype_id if jobtype_id else 0
             data['teamid'] = team_id if team_id else 0
             data['creatorid'] = creator_id if creator_id else 0
@@ -539,7 +533,7 @@ def views(request):
             data['initial_date'] = initial_date.strftime('%m-%d-%Y') if initial_date else ''
             data['end_date'] = end_date.strftime('%m-%d-%Y') if end_date else ''
 
-            if project_id or jobtype_id or team_id or creator_id or status_id or code or installation_code or address or initial_date or end_date:
+            if jobtype_id or team_id or creator_id or status_id or code or installation_code or address or initial_date or end_date:
                 data['is_search'] = True
                 data['count_of_works'] = works.count()
 

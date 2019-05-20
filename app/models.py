@@ -223,9 +223,6 @@ class Users(BaseModel):
     def is_technician(self):
         return self.group == USER_GROUP_TECHNICIAN_ID
 
-    def is_hotwire(self):
-        return self.group == USER_GROUP_HOTWIRE_ID
-
     def is_distpach(self):
         return self.group == USER_GROUP_TECHNICIAN_ID and self.id == DEFAULT_DISPATCH_ID
 
@@ -323,7 +320,7 @@ class InstallationsCodes(BaseModel):
 
 class Works(BaseModel):
     customer = models.ForeignKey(Customers, blank=True, null=True)
-    project = models.ForeignKey(Projects)
+    project = models.ForeignKey(Projects, blank=True, null=True)
     property = models.ForeignKey(Properties, blank=True, null=True)
     address = models.TextField(blank=True, null=True)
     date = models.DateField(blank=True, null=True)

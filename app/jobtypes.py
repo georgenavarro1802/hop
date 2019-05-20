@@ -12,7 +12,7 @@ def views(request):
     data = {'title': 'JOB TYPES'}
     adduserdata(request, data)
 
-    if data['is_hotwire'] or data['is_dispatch']:
+    if data['is_dispatch']:
         return HttpResponseRedirect('/works')
 
     if request.method == 'POST':

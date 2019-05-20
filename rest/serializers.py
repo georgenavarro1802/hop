@@ -35,14 +35,14 @@ class UsersSerializer(serializers.HyperlinkedModelSerializer):
 
 class WorksSerializer(serializers.HyperlinkedModelSerializer):
 
-    project = serializers.ReadOnlyField(source='project.id')
+    # project = serializers.ReadOnlyField(source='project.id')
     leader = serializers.ReadOnlyField(source='leader.id')
     initial_time = serializers.SerializerMethodField()
     support1 = serializers.ReadOnlyField(source='support1.id')
     support2 = serializers.ReadOnlyField(source='support2.id')
     support3 = serializers.ReadOnlyField(source='support3.id')
-    support4 = serializers.ReadOnlyField(source='support4.id')
-    support5 = serializers.ReadOnlyField(source='support5.id')
+    # support4 = serializers.ReadOnlyField(source='support4.id')
+    # support5 = serializers.ReadOnlyField(source='support5.id')
     customer = serializers.ReadOnlyField(source='customer.id')
 
     class Meta:

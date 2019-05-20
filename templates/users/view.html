@@ -87,10 +87,10 @@
                             {{ u.get_number_works_incompleted|floatformat:0 }}
                         </td>
                         <td class="my-vertical-align text-center font12">{{ u.created_at|date:'m-d-Y' }}</td>
-                        <td class="my-vertical-align">
-                            <a class="btn btn-xs btn-info tu" href="{% url 'users' %}?action=edit&id={{ u.id }}" title="Edit"><i class="fa fa-edit"></i></a>
+                        <td class="my-vertical-align text-center">
+                            <a class="tu" href="{% url 'users' %}?action=edit&id={{ u.id }}" title="Edit"><i class="fa fa-pencil"></i></a>
                             {% if not u.has_relations %}
-                                <a class="btn btn-xs btn-danger tu" href="{% url 'users' %}?action=delete&id={{ u.id }}" title="Delete" style="margin-left: 0.2em"><i class="fa fa-times"></i></a>
+                                <a class="tu" href="{% url 'users' %}?action=delete&id={{ u.id }}" title="Delete" style="margin-left: 0.2em"><i class="fa fa-times"></i></a>
                             {% endif %}
                         </td>
                     </tr>
@@ -103,53 +103,6 @@
                 {% endfor %}
                 </tbody>
             </table>
-
-            <div class="row">
-                <div class="col-sm-6">
-                    <a class="btn btn-success" href="{% url 'users' %}?action=add"><i class="fa fa-plus"></i> Add User</a>
-                </div>
-                <div class="col-sm-6 text-right">
-                    {% if paging.num_pages > 20 %}
-                        <ul class="pagination">
-                            {% if paging.first_page %}
-                                <li><a href="{%  url 'users' %}?page=1{% if search %}&s={{ search }}{% endif %}">1</a></li>
-                                <li><a href="{%  url 'users' %}?page={{ paging.ellipsis_left}}{% if search %}&s={{ search }}{% endif %}"
-                                       class="active">...</a></li>
-                            {% endif %}
-                            {% for pagenumber in paging.pages %}
-                                <li {% ifequal pagenumber page.number %}class='active'{% endifequal %}>
-                                    <a href="{%  url 'users' %}?page={{ pagenumber }}{% if search %}&s={{ search }}{% endif %}">
-                                        {{ pagenumber }}
-                                    </a>
-                                </li>
-                            {% endfor %}
-                            {% if paging.last_page %}
-                                <li>
-                                    <a href="{%  url 'users' %}?page={{ paging.ellipsis_right }}{% if search %}&s={{ search }}{% endif %}"
-                                       class="active">
-                                        ...
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="{%  url 'users' %}?page={{ paging.num_pages }}{% if search %}&s={{ search }}{% endif %}">
-                                        {{ paging.num_pages }}
-                                    </a>
-                                </li>
-                            {% endif %}
-                        </ul>
-                    {% else %}
-                        <ul class='pagination pagination-sm'>
-                            {% for pagenumber in paging.page_range %}
-                                <li {% ifequal pagenumber page.number %}class='active'{% endifequal %}>
-                                    <a href="{%  url 'users' %}?page={{ pagenumber }}{% if search %}&s={{ search }}{% endif %}">
-                                        {{ pagenumber }}
-                                    </a>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-                </div>
-            </div>
 
         </div>
     </div>
