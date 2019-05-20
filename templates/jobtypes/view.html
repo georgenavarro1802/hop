@@ -65,9 +65,9 @@
                         <td class="text-center font12">{{ jt.created_at|date:'m-d-Y' }}</td>
                         <td class="text-center">
                             <a class="tu" href="{% url 'jobtypes' %}?action=edit&id={{ jt.id }}" title="Edit"><i class="fa fa-pencil"></i></a>
-                            {% if not jt.has_relations %}
+{#                            {% if not jt.has_relations %}#}
                                 <a class="tu" href="{% url 'jobtypes' %}?action=delete&id={{ jt.id }}" title="Delete" style="margin-left: 0.4em"><i class="fa fa-times"></i></a>
-                            {% endif %}
+{#                            {% endif %}#}
                         </td>
                     </tr>
                 {% empty %}

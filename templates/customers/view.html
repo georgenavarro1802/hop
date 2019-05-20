@@ -47,9 +47,9 @@
                         <td class="text-center">
                             {% ifnotequal c.id customer_create_new_customer_id %}
                                 <a class="tu" href="{% url 'customers' %}?action=edit&id={{ c.id }}" title="Edit"><i class="fa fa-pencil"></i></a>
-                                {% if not c.has_relations %}
+{#                                {% if not c.has_relations %}#}
                                     <a class="tu" href="{% url 'customers' %}?action=delete&id={{ c.id }}" title="Delete" style="margin-left: 0.4em"><i class="fa fa-times"></i></a>
-                                {% endif %}
+{#                                {% endif %}#}
                             {% endifnotequal %}
                         </td>
                     </tr>
