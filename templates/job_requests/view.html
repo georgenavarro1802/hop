@@ -14,7 +14,7 @@
             <table class="table table-bordered table-hover">
                 <thead>
                 <tr style="font-weight: bold; font-size: 1em; background-color: #043b8a; color: white">
-                    <th style="width: 20px">No.</th>
+                    <th style="width: 20px">Cod.</th>
                     <th style="width: 270px">Email</th>
                     <th style="width: 200px">Phone</th>
                     <th>Notes</th>
@@ -25,7 +25,7 @@
                 <tbody>
                 {% for j in job_requests %}
                     <tr>
-                         <td class="my-vertical-align font14">{{ forloop.counter }}</td>
+                         <td class="my-vertical-align font14">{{ j.repr_id }}</td>
                         <td class="my-vertical-align font14">{{ j.email }}</td>
                         <td class="my-vertical-align font14">{{ j.phone }}</td>
                         <td class="my-vertical-align font12">{{ j.notes }}</td>

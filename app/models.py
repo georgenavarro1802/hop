@@ -446,6 +446,9 @@ class JobRequests(BaseModel):
         verbose_name_plural = 'Job Requests'
         db_table = 'job_requests'
 
+    def repr_id(self):
+        return str(self.id).zfill(4)
+
     def get_my_job_request_types(self):
         return self.jobrequeststypes_set.all()
 
