@@ -107,6 +107,9 @@ def views(request):
                 user = myuser.user
                 try:
                     with transaction.atomic():
+                        user.users_set.all().delete()
+                        user.membership_set.all().delete()
+                        user.organisation_set.all().delete()
                         myuser.delete()
                         user.delete()
                         return ok_json(data={'redirect_url': '/users',

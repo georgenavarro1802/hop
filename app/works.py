@@ -175,8 +175,7 @@ def views(request):
                 work = Works.objects.get(pk=int(request.POST['id']))
                 try:
                     with transaction.atomic():
-                        if work.workstypes_set.exists():
-                            work.workstypes_set.all().delete()
+                        work.workstypes_set.all().delete()
                         work.delete()
                         return ok_json(data={'redirect_url': '/works',
                                              'msg': 'You have successfully deleted the WORK.'})

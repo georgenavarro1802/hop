@@ -68,6 +68,7 @@ def views(request):
                 customer = Customers.objects.get(pk=int(request.POST['id']))
                 try:
                     with transaction.atomic():
+                        customer.works_set.all().delete()
                         customer.delete()
                         return ok_json(data={'redirect_url': '/customers',
                                              'msg': 'You have successfully deleted the CUSTOMER.'})

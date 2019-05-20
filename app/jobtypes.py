@@ -60,6 +60,8 @@ def views(request):
                 jobtype = JobTypes.objects.get(pk=int(request.POST['id']))
                 try:
                     with transaction.atomic():
+                        jobtype.jobrequeststypes_set.all().delete()
+                        jobtype.workstypes_set.all().delete()
                         jobtype.delete()
                         return ok_json(data={'redirect_url': '/jobtypes',
                                              'msg': 'You have successfully deleted the JOB TYPE.'})

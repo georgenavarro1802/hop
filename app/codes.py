@@ -68,6 +68,7 @@ def views(request):
                 install_code = InstallationsCodes.objects.get(pk=int(request.POST['id']))
                 try:
                     with transaction.atomic():
+                        install_code.works_set.all().delete()
                         install_code.delete()
                         return ok_json(data={'redirect_url': '/codes',
                                              'msg': 'You have successfully deleted the Work CODE.'})
