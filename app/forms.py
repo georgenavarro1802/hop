@@ -1,8 +1,8 @@
 import os
 from django import forms
 
-from app.functions import USER_GROUP_TECHNICIAN_ID, USERS_GROUPS, PROJECTS_GROUPS, PROJECT_GROUP_HOTWIRE
-from app.models import Projects, Customers, Users, Properties
+from app.functions import USER_GROUP_TECHNICIAN_ID, USERS_GROUPS, PROJECTS_GROUPS
+from app.models import Projects, Customers, Users
 
 
 class ExtFileField(forms.FileField):
@@ -80,6 +80,8 @@ class UsersForm(forms.Form):
                             widget=forms.TextInput(attrs={'class': 'imp-50'}))
     avatar = ExtFileField(label='Avatar', help_text='Max size allowed 5Mb in jpeg, jpg, gif, png format',
                           required=False, ext_whitelist=(".jpeg", ".jpg", ".gif", ".png"), max_upload_size=5242880)
+    password = forms.CharField(max_length=300, required=False, label='Password',
+                               widget=forms.PasswordInput(attrs={'class': 'imp-100'}))
 
 
 class WorksForm(forms.Form):

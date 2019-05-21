@@ -59,7 +59,7 @@
             <ul class="right-navbar">
                 <li class="dropdown hoe-rheader-submenu hoe-header-profile">
                     <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
-                        <span><img class="img-circle " style="width: 30px!important; height: 30px!important;" src="{% if myuser.avatar %}{{ myuser.download_avatar }}{% else %}{% endif %}"></span>
+                        <span><img class="img-circle " style="width: 30px!important; height: 30px!important;" src="{% if myuser.avatar %}{{ myuser.download_avatar }}{% else %}{% static 'images/avatar.png' %}{% endif %}"></span>
                         <span style="margin-left: 1em">{{ myuser.user.first_name }} <b>{{ myuser.user.last_name }}</b> <i class=" fa fa-angle-down"></i></span>
                     </a>
                     <ul class="dropdown-menu ">
@@ -76,19 +76,19 @@
 
         {% if is_administrator %}
             <aside id="hoe-left-panel" hoe-position-type="absolute">
-            <div class="profile-box">
-                <div class="media">
-                    <a class="pull-left" href="javascript:void(0)">
-                        <img class="img-circle" src="{{ myuser.download_avatar }}">
-                    </a>
-                    <div class="media-body">
-                        <h5 class="media-heading">
-                            Welcome <span>{{ myuser }}</span>
-                        </h5>
-                        <small>{{ myuser.user_group_name }}</small>
-                    </div>
-                </div>
-            </div>
+{#            <div class="profile-box">#}
+{#                <div class="media">#}
+{#                    <a class="pull-left" href="javascript:void(0)">#}
+{#                        <img class="img-circle" src="{% if myuser.avatar %}{{ myuser.download_avatar }}{% else %}{% static 'images/avatar.png' %}{% endif %}">#}
+{#                    </a>#}
+{#                    <div class="media-body">#}
+{#                        <h5 class="media-heading">#}
+{#                            Welcome <span>{{ myuser }}</span>#}
+{#                        </h5>#}
+{#                        <small>{{ myuser.user_group_name }}</small>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
             <ul class="nav panel-list">
                 <li class="nav-level">Navigation</li>
                 <li id="dashboard" class="menu-principal">

@@ -9,9 +9,9 @@ from django.shortcuts import render
 from app.forms import WorksForm, NewLeaderForm, ChangeAddressForm, ImportXLSForm
 from app.functions import (bad_json, MiPaginator, ok_json, convertir_fecha_month_first, CUSTOMER_HOTWIRE_ID,
                            DEFAULT_DISPATCH_ID, USER_GROUP_TECHNICIAN_ID, USER_ADMIN_DEVELOPERS_IDS,
-                           USER_GROUP_HOTWIRE_ID, CUSTOMER_CREATE_NEW_CUSTOMER_ID, PROJECT_GROUP_HOTWIRE,
-                           generate_file_name, convert_fecha_month_first_two_digits_year)
-from app.models import Works, Customers, Users, Projects, JobTypes, Properties, ExcelFiles
+                           CUSTOMER_CREATE_NEW_CUSTOMER_ID, generate_file_name,
+                           convert_fecha_month_first_two_digits_year)
+from app.models import Works, Customers, Users, Projects, JobTypes, ExcelFiles
 from app.views import adduserdata
 from easy_pdf.rendering import render_to_pdf_response, fetch_resources
 
@@ -415,10 +415,10 @@ def views(request):
 
             works = Works.objects.order_by('-id')
 
-            if 'h' in request.GET and request.GET['h'] != '':
-                works = works.filter(Q(customer__id=CUSTOMER_HOTWIRE_ID) |
-                                     Q(created_by__group=USER_GROUP_HOTWIRE_ID) |
-                                     Q(project__grupo=PROJECT_GROUP_HOTWIRE)).distinct()
+            # if 'h' in request.GET and request.GET['h'] != '':
+            #     works = works.filter(Q(customer__id=CUSTOMER_HOTWIRE_ID) |
+            #                          Q(created_by__group=USER_GROUP_HOTWIRE_ID) |
+            #                          Q(project__grupo=PROJECT_GROUP_HOTWIRE)).distinct()
 
             # Filters
             # project_id = None

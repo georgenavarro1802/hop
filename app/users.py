@@ -3,6 +3,7 @@ from django.db import transaction
 from django.db.models import Q
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse
 
 from app.forms import UsersForm
 from app.functions import bad_json, ok_json, DEFAULT_PASSWORD, generate_file_name, USER_ADMIN_DEVELOPERS_IDS
@@ -28,6 +29,10 @@ def views(request):
                     try:
                         with transaction.atomic():
 
+                            password = f.cleaned_data['password']
+                            if not password:
+                                password = DEFAULT_PASSWORD
+
                             if User.objects.filter(username=f.cleaned_data['username']).exists():
                                 return bad_json(message="Username already exists in other User. "
                                                         "Please change the username of the user and try again.")
@@ -41,7 +46,7 @@ def views(request):
                                                last_name=f.cleaned_data['last_name'],
                                                email=f.cleaned_data['email'])
 
-                            django_user.set_password(DEFAULT_PASSWORD)
+                            django_user.set_password(password)
                             django_user.save()
 
                             myuser = Users(user=django_user,
@@ -55,8 +60,7 @@ def views(request):
                                 myuser.avatar = nfile
                                 myuser.save()
 
-                            return ok_json(data={'redirect_url': '/users',
-                                                 'msg': 'Successfully created a new USER ({})'.format(myuser.user_group_name())})
+                            return ok_json(data={'redirect_url': reverse('users'), 'msg': 'User successfully created!'})
 
                     except Exception:
                         return bad_json(error=1)
@@ -83,6 +87,8 @@ def views(request):
                             django_user.first_name = f.cleaned_data['first_name']
                             django_user.last_name = f.cleaned_data['last_name']
                             django_user.email = f.cleaned_data['email']
+                            if f.cleaned_data['password']:
+                                django_user.password = f.cleaned_data['password']
                             django_user.save()
 
                             myuser.group = int(f.cleaned_data['group'])
@@ -112,8 +118,7 @@ def views(request):
                         user.organisation_set.all().delete()
                         myuser.delete()
                         user.delete()
-                        return ok_json(data={'redirect_url': '/users',
-                                             'msg': 'You have successfully deleted the USER.'})
+                        return ok_json(data={'redirect_url': reverse('users'), 'msg': 'User successfully edited!'})
                 except Exception:
                     return bad_json(error=3)
 
@@ -152,11 +157,11 @@ def views(request):
                 if action == 'delete':
                     try:
                         data['title'] = 'Delete User'
-                        data['myuser'] = Users.objects.get(pk=request.GET['id'])
+                        data['theuser'] = Users.objects.get(pk=request.GET['id'])
                         data['is_delete'] = True
                         return render(request, 'users/delete.html', data)
 
-                    except Exception:
+                    except Exception as ex:
                         pass
 
             return HttpResponseRedirect('/users')

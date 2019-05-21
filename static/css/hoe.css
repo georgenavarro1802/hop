@@ -1075,6 +1075,8 @@ form input, form select, form textarea {
     font-weight: bold;
     color: darkblue;
     font-size: 2em;
+    vertical-align: middle;
+    margin-left: 0.5em;
 
 }
 

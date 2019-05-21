@@ -10,9 +10,9 @@
 {% block form-action %}{% url 'users' %}{% endblock %}
 {% block form-extra %}
     <input type='hidden' name='action' value='delete'/>
-    <input type='hidden' name='id' value='{{ myuser.id }}'/>
+    <input type='hidden' name='id' value='{{ theuser.id }}'/>
 {% endblock %}
 {% block form-back %}{% url 'users' %}{% endblock %}
-{% block form-object %}{{ myuser.complete_name }}{% endblock %}
+{% block form-object %}{{ theuser.complete_name }}{% endblock %}
 {% block buttonname %}YES{% endblock %}
 {% block buttoncancel %}NO{% endblock %}

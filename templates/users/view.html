@@ -27,7 +27,12 @@
         <div class="row margin-row">
 
             <div class="col-sm-8">
-                <p class="myheading"> <i class="fa fa-user"></i> {{ title }}</p>
+                <a class="btn btn-success tu" href="{% url 'users' %}?action=add" title="Add User">
+                    <i class="fa fa-plus"></i>
+                </a>
+                <span class="myheading">
+                    {{ title }}
+                </span>
             </div>
 
             <div class="col-sm-4 text-right">
@@ -38,7 +43,7 @@
                             <input class="form-control" id="input-search" placeholder="Search users" value="{% if search %}{{ search }}{% endif %}">
                         </div>
                     </div>
-                    <a id="btn-search" class="btn btn-success" title="Search"><i class="fa fa-search"></i></a>
+                    <a id="btn-search" class="btn btn-info" title="Search"><i class="fa fa-search"></i></a>
                     {% if search %}<a href="{% url 'users' %}" class="btn btn-info" title="All"><i class="fa fa-list-alt"></i></a>{% endif %}
                 </form>
             </div>

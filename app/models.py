@@ -5,7 +5,7 @@ from django.db import models, router
 from django.db.models import Q, Avg
 from django.db.models.deletion import Collector
 
-from app.functions import (USER_GROUP_ADMINISTRATOR_ID, USER_GROUP_TECHNICIAN_ID, USER_GROUP_HOTWIRE_ID,
+from app.functions import (USER_GROUP_ADMINISTRATOR_ID, USER_GROUP_TECHNICIAN_ID,
                            EVALUATION_TYPES, USERS_GROUPS, DEFAULT_DISPATCH_ID, PROJECTS_GROUPS, PROJECT_GROUP_HOP)
 
 
@@ -211,8 +211,6 @@ class Users(BaseModel):
             mygroup = "Admin"
         elif self.group == USER_GROUP_TECHNICIAN_ID:
             mygroup = "Technician"
-        elif self.group == USER_GROUP_HOTWIRE_ID:
-            mygroup = "Hotwire"
         else:
             mygroup = "N/A"
         return mygroup
