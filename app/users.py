@@ -101,8 +101,7 @@ def views(request):
                                 myuser.avatar = nfile
                                 myuser.save()
 
-                            return ok_json(data={'redirect_url': '/users',
-                                                 'msg': 'Successfully edited the USER ({})'.format(myuser.user_group_name())})
+                            return ok_json(data={'redirect_url': reverse('users'), 'msg': 'User successfully deleted'})
                     except Exception:
                         return bad_json(error=2)
                 else:
@@ -118,7 +117,7 @@ def views(request):
                         user.organisation_set.all().delete()
                         myuser.delete()
                         user.delete()
-                        return ok_json(data={'redirect_url': reverse('users'), 'msg': 'User successfully edited!'})
+                        return ok_json(data={'redirect_url': reverse('users'), 'msg': 'User successfully deleted!'})
                 except Exception:
                     return bad_json(error=3)
 
